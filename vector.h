@@ -13,6 +13,9 @@
 #include <math.h>
 #include <stdlib.h>
 
+#define RAY_T_MIN 0.0001f
+#define RAY_T_MAX 1.0e30f
+
 typedef struct  s_vector
 {
     double x;
@@ -20,6 +23,25 @@ typedef struct  s_vector
     double z;
 }               t_vector;
 
+typedef struct s_ray
+{
+	t_vector *origin;
+	t_vector *direction;
+	double tMax;
+	
+}				t_ray;
+
+typedef struct	s_shape
+{
+	
+}				t_shape;
+
+typedef struct	s_intersection
+{
+	t_ray *ray;
+	double t;
+	t_shape *shape;
+}				t_intersection;
 
 t_vector *copy_vector(t_vector *vect);
 t_vector *vector(void);
@@ -44,6 +66,11 @@ void devide_vector_const(t_vector **vect1, double a);
 
 
 double dot(t_vector *vect1, t_vector *vect2);
+
+t_ray *Ray(void);
+t_ray *Ray_copy(t_ray *ray);
+t_ray *Ray_fill(t_vector *origin, t_vector* direction, double tMax);
+t_vector *calculate(t_ray *ray, double t);
 
 
 #endif /* vector_h */
