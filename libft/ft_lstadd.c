@@ -1,18 +1,22 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   main.c                                             :+:      :+:    :+:   */
+/*   ft_lstadd.c                                        :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: cschoen <cschoen@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2019/09/28 20:32:31 by cschoen           #+#    #+#             */
-/*   Updated: 2019/09/28 20:33:21 by cschoen          ###   ########.fr       */
+/*   Created: 2018/12/30 14:43:40 by cschoen           #+#    #+#             */
+/*   Updated: 2018/12/31 19:53:34 by cschoen          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#include "vector.h"
+#include "libft.h"
 
-int	main(int argc, char **argv)
+void	ft_lstadd(t_list **alst, t_list *new)
 {
-	return (0);
+	if (new != NULL)
+	{
+		new->next = *alst;
+		*alst = new;
+	}
 }

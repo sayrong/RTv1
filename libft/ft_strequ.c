@@ -1,18 +1,25 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   main.c                                             :+:      :+:    :+:   */
+/*   ft_strequ.c                                        :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: cschoen <cschoen@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2019/09/28 20:32:31 by cschoen           #+#    #+#             */
-/*   Updated: 2019/09/28 20:33:21 by cschoen          ###   ########.fr       */
+/*   Created: 2018/12/14 19:31:25 by cschoen           #+#    #+#             */
+/*   Updated: 2018/12/31 17:32:46 by cschoen          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#include "vector.h"
+#include "libft.h"
 
-int	main(int argc, char **argv)
+int	ft_strequ(char const *s1, char const *s2)
 {
-	return (0);
+	if (s1 == NULL || s2 == NULL)
+		return (0);
+	while (*s1 && *s2 && *s1 == *s2)
+	{
+		s1++;
+		s2++;
+	}
+	return (*s1 == *s2);
 }

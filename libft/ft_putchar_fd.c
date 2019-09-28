@@ -1,18 +1,18 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   main.c                                             :+:      :+:    :+:   */
+/*   ft_putchar_fd.c                                    :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: cschoen <cschoen@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2019/09/28 20:32:31 by cschoen           #+#    #+#             */
-/*   Updated: 2019/09/28 20:33:21 by cschoen          ###   ########.fr       */
+/*   Created: 2018/12/19 14:13:00 by cschoen           #+#    #+#             */
+/*   Updated: 2018/12/19 15:00:39 by cschoen          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#include "vector.h"
+#include "libft.h"
 
-int	main(int argc, char **argv)
+void	ft_putchar_fd(char c, int fd)
 {
-	return (0);
+	write(fd, &c, 1);
 }

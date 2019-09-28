@@ -1,16 +1,21 @@
-//
-//  ray_init.c
-//  RTv1
-//
-//  Created by Babette Alvyn sharp on 26/09/2019.
-//  Copyright © 2019 Babette Alvyn sharp. All rights reserved.
-//
+/* ************************************************************************** */
+/*                                                                            */
+/*                                                        :::      ::::::::   */
+/*   ray_init.c                                         :+:      :+:    :+:   */
+/*                                                    +:+ +:+         +:+     */
+/*   By: cschoen <cschoen@student.42.fr>            +#+  +:+       +#+        */
+/*                                                +#+#+#+#+#+   +#+           */
+/*   Created: 2019/09/28 20:42:44 by cschoen           #+#    #+#             */
+/*   Updated: 2019/09/29 00:00:46 by cschoen          ###   ########.fr       */
+/*                                                                            */
+/* ************************************************************************** */
 
 #include "vector.h"
 
-t_ray *Ray(void)
+t_ray		*ray(void)
 {
-	t_ray *new;
+	t_ray	*new;
+
 	if (!(new = (t_ray*)malloc(sizeof(t_ray))))
 		return (NULL);
 	new->direction = vector();
@@ -21,9 +26,10 @@ t_ray *Ray(void)
 	return (new);
 }
 
-t_ray *Ray_copy(t_ray *ray)
+t_ray		*ray_copy(t_ray *ray)
 {
-	t_ray *new;
+	t_ray	*new;
+
 	if (!(new = (t_ray*)malloc(sizeof(t_ray))))
 		return (NULL);
 	new->direction = copy_vector(ray->direction);
@@ -34,9 +40,10 @@ t_ray *Ray_copy(t_ray *ray)
 	return (new);
 }
 
-t_ray *Ray_fill(t_vector *origin, t_vector* direction, double tMax)
+t_ray		*ray_fill(t_vector *origin, t_vector* direction, double tMax)
 {
-	t_ray *new;
+	t_ray	*new;
+
 	if (!(new = (t_ray*)malloc(sizeof(t_ray))))
 		return (NULL);
 	new->direction = origin;
@@ -48,10 +55,10 @@ t_ray *Ray_fill(t_vector *origin, t_vector* direction, double tMax)
 }
 
 //point of intersection when found T value
-t_vector *calculate(t_ray *ray, double t)
+t_vector	*calculate(t_ray *ray, double t)
 {
-	t_vector *new;
-	
+	t_vector	*new;
+
 	if (!(new = multiply_vectors_const(ray->direction, t)))
 		return (NULL);
 	plus_vector(&new,ray->origin);

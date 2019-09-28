@@ -1,18 +1,29 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   main.c                                             :+:      :+:    :+:   */
+/*   ft_strncat.c                                       :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: cschoen <cschoen@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2019/09/28 20:32:31 by cschoen           #+#    #+#             */
-/*   Updated: 2019/09/28 20:33:21 by cschoen          ###   ########.fr       */
+/*   Created: 2018/12/12 18:04:03 by cschoen           #+#    #+#             */
+/*   Updated: 2019/09/22 16:27:38 by cschoen          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#include "vector.h"
+#include "libft.h"
 
-int	main(int argc, char **argv)
+char	*ft_strncat(char *s1, char *s2, size_t n)
 {
-	return (0);
+	char	*start;
+
+	start = s1;
+	while (*s1)
+		s1++;
+	while (*s2 && n)
+	{
+		*s1++ = *s2++;
+		n--;
+	}
+	*s1 = '\0';
+	return (start);
 }
