@@ -6,31 +6,11 @@
 /*   By: cschoen <cschoen@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/09/28 20:42:44 by cschoen           #+#    #+#             */
-/*   Updated: 2019/09/29 17:41:59 by cschoen          ###   ########.fr       */
+/*   Updated: 2019/09/29 22:56:26 by cschoen          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "rt.h"
-
-void	ray_null(t_ray **ray)
-{
-	if (ray != NULL && *ray != NULL)
-	{
-		v3_del(&((*ray)->origin));
-		v3_del(&((*ray)->direction));
-		(*ray)->t_max = RAY_T_MAX;
-	}
-}
-
-void	ray_del(t_ray **ray)
-{
-	if (ray != NULL && *ray != NULL)
-	{
-		ray_null(ray);
-		free(*ray);
-		*ray = NULL;
-	}
-}
 
 t_ray		*ray_new(void)
 {
@@ -74,11 +54,16 @@ t_ray		*ray_new_copy(t_ray *ray)
 
 t_ray		*ray_copy(t_ray *ray1, t_ray *ray2)
 {
-	if (!ray1 || !ray2)
-		null_error();
-	v3_copy(ray1->origin, ray2->origin);
-	v3_copy(ray1->direction, ray2->direction);
-	ray1->t_max = ray2->t_max;
+	if (!ray2)
+		ray_del(&ray1);
+	else if (!ray1)
+		ray1 = ray_new_copy(ray2);
+	else
+	{
+		v3_copy(ray1->origin, ray2->origin);
+		v3_copy(ray1->direction, ray2->direction);
+		ray1->t_max = ray2->t_max;
+	}
 	return (ray1);
 }
 

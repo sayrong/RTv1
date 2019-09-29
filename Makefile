@@ -1,6 +1,6 @@
 .PHONY: clean fclean re git
 
-OS = MACOS
+OS = LINUX
 C = fast commit
 NAME = RTv1
 
@@ -11,11 +11,16 @@ SRCDIR = ./src/
 OBJDIR = ./obj/
 BINDIR = ./bin/
 
-SRCNAME = main.c
+SRCNAME = main.c \
+		ray_init.c \
+		plane_init.c \
+		shape_init.c \
+		intersection_init.c
+
 OBJNAME = $(SRCNAME:.c=.o)
 OBJ = $(addprefix $(OBJDIR),$(OBJNAME))
 
-VECINIT = -I $(VECDIR) -L $(VECDIR) -lvec
+VECINIT = -I $(VECDIR) -L $(VECDIR) -lvec -lm
 LFTINIT = -I $(LFTDIR) -L $(LFTDIR) -lft
 MLXINIT = -I /usr/local/include -L /usr/local/lib -lmlx
 

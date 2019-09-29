@@ -6,7 +6,7 @@
 /*   By: cschoen <cschoen@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/09/28 22:17:12 by cschoen           #+#    #+#             */
-/*   Updated: 2019/09/29 17:08:09 by cschoen          ###   ########.fr       */
+/*   Updated: 2019/09/29 20:56:07 by cschoen          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -54,7 +54,7 @@ t_vector3	*new_normalize(t_vector3 *v)
 
 	if (!v)
 		null_error();
-	new_v = v_new_copy(v);
+	new_v = v3_new_copy(v);
 	normalize(new_v);
 	return (new_v);
 }
@@ -72,7 +72,7 @@ t_vector3	*cross(t_vector3 *v1, t_vector3 *v2)
 
 	if (!v1 || !v2)
 		null_error();
-	new_v = v_new();
+	new_v = v3_new();
 	new_v->x = v1->y * v2->z - v1->z * v2->y;
 	new_v->y = v1->z * v2->x - v1->x * v2->z;
 	new_v->z = v1->x * v2->y - v1->y * v2->x;
@@ -85,7 +85,7 @@ t_vector3	*v3_new_plus(t_vector3 *v1, t_vector3 *v2)
 
 	if (!v1 || !v2)
 		null_error();
-	new_v = v_new();
+	new_v = v3_new();
 	new_v->x = v1->x + v2->x;
 	new_v->y = v1->y + v2->y;
 	new_v->z = v1->z + v2->z;
@@ -98,7 +98,7 @@ t_vector3	*v3_new_minus(t_vector3 *v1, t_vector3 *v2)
 
 	if (!v1 || !v2)
 		null_error();
-	new_v = v_new();
+	new_v = v3_new();
 	new_v->x = v1->x - v2->x;
 	new_v->y = v1->y - v2->y;
 	new_v->z = v1->z - v2->z;
@@ -111,7 +111,7 @@ t_vector3	*v3_new_mult(t_vector3 *v1, t_vector3 *v2)
 
 	if (!v1 || !v2)
 		null_error();
-	new_v = v_new();
+	new_v = v3_new();
 	new_v->x = v1->x * v2->x;
 	new_v->y = v1->y * v2->y;
 	new_v->z = v1->z * v2->z;
@@ -124,7 +124,7 @@ t_vector3	*v3_new_div(t_vector3 *v1, t_vector3 *v2)
 
 	if (!v1 || !v2)
 		null_error();
-	new_v = v_new();
+	new_v = v3_new();
 	new_v->x = v1->x / v2->x;
 	new_v->y = v1->y / v2->y;
 	new_v->z = v1->z / v2->z;
@@ -137,7 +137,7 @@ t_vector3	*v3_new_mult_by_num(t_vector3 *v, double a)
 
 	if (!v)
 		null_error();
-	new_v = v_new_copy(v);
+	new_v = v3_new_copy(v);
 	new_v->x *= a;
 	new_v->y *= a;
 	new_v->z *= a;
@@ -150,7 +150,7 @@ t_vector3	*v3_new_div_by_num(t_vector3 *v, double a)
 
 	if (!v)
 		null_error();
-	new_v = v_new_copy(v);
+	new_v = v3_new_copy(v);
 	new_v->x /= a;
 	new_v->y /= a;
 	new_v->z /= a;
@@ -163,7 +163,7 @@ t_vector3	*v3_new_div_on_num(double a, t_vector3 *v)
 
 	if (!v)
 		null_error();
-	new_v = v_new1(a);
+	new_v = v3_new1(a);
 	new_v->x /= v->x;
 	new_v->y /= v->y;
 	new_v->z /= v->z;

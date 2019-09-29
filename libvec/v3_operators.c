@@ -6,7 +6,7 @@
 /*   By: cschoen <cschoen@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/09/29 03:05:09 by cschoen           #+#    #+#             */
-/*   Updated: 2019/09/29 15:58:08 by cschoen          ###   ########.fr       */
+/*   Updated: 2019/09/29 22:35:28 by cschoen          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -14,11 +14,16 @@
 
 t_vector3	*v3_copy(t_vector3 *v1, t_vector3 *v2)
 {
-	if (!v1 || !v2)
-		null_error();
-	v1->x = v2->x;
-	v1->y = v2->y;
-	v1->z = v2->z;
+	if (!v2)
+		v3_del(&v1);
+	else if (!v1)
+		v1 = v3_new_copy(v2);
+	else
+	{
+		v1->x = v2->x;
+		v1->y = v2->y;
+		v1->z = v2->z;
+	}
 	return (v1);
 }
 

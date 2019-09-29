@@ -6,13 +6,18 @@
 /*   By: cschoen <cschoen@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/09/28 20:32:31 by cschoen           #+#    #+#             */
-/*   Updated: 2019/09/28 20:33:21 by cschoen          ###   ########.fr       */
+/*   Updated: 2019/09/29 20:41:27 by cschoen          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#include "vector.h"
+#include "rt.h"
 
-int	main(int argc, char **argv)
+int	main(void)
 {
+	t_shape	*shape;
+
+	shape = NULL;
+	if (!shape)
+		shape = shape_new();
 	return (0);
 }
