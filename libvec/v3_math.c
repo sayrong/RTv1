@@ -6,23 +6,23 @@
 /*   By: cschoen <cschoen@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/09/28 22:17:12 by cschoen           #+#    #+#             */
-/*   Updated: 2019/09/28 23:49:57 by cschoen          ###   ########.fr       */
+/*   Updated: 2019/09/29 03:34:01 by cschoen          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "vector.h"
 
-double		length_sq(t_vector *v)
+double		length_sq(t_vector3 *v)
 {
 	return (v->x * v->x + v->y * v->y + v->z * v->z);
 }
 
-double		length(t_vector *v)
+double		length(t_vector3 *v)
 {
 	return (sqrt(length_sq(v)));
 }
 
-double		normalize(t_vector *v)
+double		normalize(t_vector3 *v)
 {
 	double	l;
 
@@ -33,18 +33,18 @@ double		normalize(t_vector *v)
 	return (l);
 }
 
-t_vector	*normalize_copy(t_vector *v)
+t_vector3	*normalized(t_vector3 *v)
 {
-	t_vector	*new_v;
+	t_vector3	*new_v;
 
-	new_v = v_copy(v);
+	new_v = v_new_copy(v);
 	normalize(new_v);
 	return (new_v);
 }
 
-t_vector	*v_new_plus(t_vector *v1, t_vector *v2)
+t_vector3	*v3_new_plus(t_vector3 *v1, t_vector3 *v2)
 {
-	t_vector	*new_v;
+	t_vector3	*new_v;
 
 	new_v = v_new();
 	new_v->x = v1->x + v2->x;
@@ -53,16 +53,9 @@ t_vector	*v_new_plus(t_vector *v1, t_vector *v2)
 	return (new_v);
 }
 
-void		v_plus(t_vector *v1, t_vector *v2)
+t_vector3	*v3_new_minus(t_vector3 *v1, t_vector3 *v2)
 {
-	v1->x += v2->x;
-	v1->y += v2->y;
-	v1->z += v2->z;
-}
-
-t_vector	*v_new_minus(t_vector *v1, t_vector *v2)
-{
-	t_vector	*new_v;
+	t_vector3	*new_v;
 
 	new_v = v_new();
 	new_v->x = v1->x - v2->x;
@@ -71,16 +64,9 @@ t_vector	*v_new_minus(t_vector *v1, t_vector *v2)
 	return (new_v);
 }
 
-void		v_minus(t_vector *v1, t_vector *v2)
+t_vector3	*v3_new_mult(t_vector3 *v1, t_vector3 *v2)
 {
-	v1->x -= v2->x;
-	v1->y -= v2->y;
-	v1->z -= v2->z;
-}
-
-t_vector	*v_new_mult(t_vector *v1, t_vector *v2)
-{
-	t_vector	*new_v;
+	t_vector3	*new_v;
 
 	new_v = v_new();
 	new_v->x = v1->x * v2->x;
@@ -89,9 +75,9 @@ t_vector	*v_new_mult(t_vector *v1, t_vector *v2)
 	return (new_v);
 }
 
-t_vector	*v_new_div(t_vector *v1, t_vector *v2)
+t_vector3	*v3_new_div(t_vector3 *v1, t_vector3 *v2)
 {
-	t_vector	*new_v;
+	t_vector3	*new_v;
 
 	new_v = v_new();
 	new_v->x = v1->x / v2->x;
@@ -100,51 +86,47 @@ t_vector	*v_new_div(t_vector *v1, t_vector *v2)
 	return (new_v);
 }
 
-t_vector	*v_new_mult_by_scalar(t_vector *v1, double a)
+t_vector3	*v3_new_mult_by_scalar(t_vector3 *v, double a)
 {
-	t_vector	*new_v;
+	t_vector3	*new_v;
 
-	new_v = v_copy(v1);
+	new_v = v_new_copy(v);
 	new_v->x *= a;
 	new_v->y *= a;
 	new_v->z *= a;
 	return (new_v);
 }
 
-void		v_mult_by_scalar(t_vector *v1, double a)
+t_vector3	*v3_new_div_by_scalar(t_vector3 *v, double a)
 {
-	v1->x *= a;
-	v1->y *= a;
-	v1->z *= a;
-}
+	t_vector3	*new_v;
 
-t_vector	*v_new_div_by_scalar(t_vector *v, double a)
-{
-	t_vector	*new_v;
-
-	new_v = v_copy(v);
+	new_v = v_new_copy(v);
 	new_v->x /= a;
 	new_v->y /= a;
 	new_v->z /= a;
 	return (new_v);
 }
 
-void		v_div_by_scalar(t_vector *v, double a)
+t_vector3	*v3_new_div_on_scalar(double a, t_vector3 *v)
 {
-	v->x /= a;
-	v->y /= a;
-	v->z /= a;
+	t_vector3	*new_v;
+
+	new_v = v_new1(a);
+	new_v->x /= v->x;
+	new_v->y /= v->y;
+	new_v->z /= v->z;
+	return (new_v);
 }
 
-
-double		dot(t_vector *v1, t_vector *v2)
+double		dot(t_vector3 *v1, t_vector3 *v2)
 {
 	return (v1->x * v2->x + v1->y * v2->y + v1->z * v2->z);
 }
 
-t_vector	*cross(t_vector *v1, t_vector *v2)
+t_vector3	*cross(t_vector3 *v1, t_vector3 *v2)
 {
-	t_vector	*new_v;
+	t_vector3	*new_v;
 
 	new_v = v_new();
 	new_v->x = v1->y * v2->z - v1->z * v2->y;
