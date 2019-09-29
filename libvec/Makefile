@@ -11,10 +11,10 @@ O_FILES = v3_init.o \
 all: $(NAME)
 
 $(NAME): $(O_FILES)
-	@ar rc $(NAME) $(O_FILES)
+	ar rc $(NAME) $(O_FILES)
 
 %.o: %.c
-	@$(GCC) -c $< -I./ -o $@
+	$(GCC) -c $< -I./ -o $@
 
 clean:
 	@/bin/rm -f $(O_FILES)
