@@ -6,7 +6,7 @@
 /*   By: cschoen <cschoen@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/09/29 18:36:44 by cschoen           #+#    #+#             */
-/*   Updated: 2019/09/29 23:59:27 by cschoen          ###   ########.fr       */
+/*   Updated: 2019/09/30 01:01:35 by cschoen          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -44,10 +44,10 @@ t_shape	*shape_new_copy(t_shape *shape)
 	new_shape->type = shape->type;
 	if (new_shape->type == PLANE)
 		new_shape->plane = plane_new_copy(shape->plane);
-//TO DO SPHERE CONE CYLINDER
-	/*
 	else if (new_shape->type == SPHERE)
 		new_shape->sphere = sphere_new_copy(shape->sphere);
+//TO DO CONE CYLINDER
+	/*
 	else if (new_shape->type == CONE)
 		new_shape->cone = cone_new_copy(shape->cone);
 	else if (new_shape->type == CYLINDER)
@@ -73,10 +73,10 @@ t_shape	*shape_copy(t_shape *shape1, t_shape *shape2)
 		{
 			if (shape1->type == PLANE)
 				plane_copy(shape1->plane, shape2->plane);
-//TO DO SPHERE CONE CYLINDER
-/*
 			else if (shape1->type == SPHERE)
 				sphere_copy(shape1->sphere, shape2->sphere);
+//TODO CONE CYLINDER
+/*
 			else if (shape1->type == CONE)
 				cone_copy(shape1->cone, shape2->cone);
 			else if (shape1->type == CYLINDER)
@@ -93,10 +93,10 @@ _Bool	shape_intersect(t_inter *inter, t_shape *shape)
 		null_error();
 	if (shape->type == PLANE)
 		return (plane_intersect(inter, shape));
-// TO DO SPHERE CONE CYLINDER
-/*
 	if (shape->type == SPHERE)
 		return (sphere_intersect(inter, shape));
+//TODO CONE CYLINDER
+/*
 	if (shape->type == CONE)
 		return (cone_intersect(inter, shape));
 	if (shape->type == CYLINDER)
@@ -111,14 +111,14 @@ _Bool	shape_does_intersect(t_ray *ray, t_shape *shape)
 		null_error();
 	if (shape->type == PLANE)
 		return (plane_does_intersect(ray, shape));
-// TO DO SPHERE CONE CYLINDER
-/*
 	if (shape->type == SPHERE)
-		return (sphere_does_intersect(inter, shape));
+		return (sphere_does_intersect(ray, shape));
+//TODO CONE CYLINDER
+/*
 	if (shape->type == CONE)
-		return (cone_does_intersect(inter, shape));
+		return (cone_does_intersect(ray, shape));
 	if (shape->type == CYLINDER)
-		return (cylinder_does_intersect(inter, shape));
+		return (cylinder_does_intersect(ray, shape));
 */
 	return (FALSE);
 }

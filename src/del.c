@@ -1,12 +1,12 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   shape_del.c                                        :+:      :+:    :+:   */
+/*   del.c                                              :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: cschoen <cschoen@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/09/29 22:18:15 by cschoen           #+#    #+#             */
-/*   Updated: 2019/09/29 22:57:24 by cschoen          ###   ########.fr       */
+/*   Updated: 2019/09/30 00:21:49 by cschoen          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -31,6 +31,16 @@ void	plane_del(t_plane **plane)
 		v3_del(&((*plane)->normal));
 		free(*plane);
 		*plane = NULL;
+	}
+}
+
+void	sphere_del(t_sphere **sphere)
+{
+	if (sphere != NULL && *sphere != NULL)
+	{
+		v3_del(&((*sphere)->center));
+		free(*sphere);
+		*sphere = NULL;
 	}
 }
 

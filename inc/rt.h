@@ -6,7 +6,7 @@
 /*   By: cschoen <cschoen@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/09/29 14:15:02 by cschoen           #+#    #+#             */
-/*   Updated: 2019/09/29 23:18:48 by cschoen          ###   ########.fr       */
+/*   Updated: 2019/09/30 00:46:23 by cschoen          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -46,7 +46,8 @@ typedef struct	s_plane
 
 typedef struct	s_sphere
 {
-
+	t_vector3	*center;
+	double		radius;
 }				t_sphere;
 
 typedef struct	s_cone
@@ -77,9 +78,9 @@ typedef struct	s_intersection
 
 void			ray_del(t_ray **ray);
 void			plane_del(t_plane **plane);
-void			sphere_del(t_plane **sphere);
-void			cone_del(t_plane **cone);
-void			cylinder_del(t_plane **cylinder);
+void			sphere_del(t_sphere **sphere);
+void			cone_del(t_cone **cone);
+void			cylinder_del(t_cylinder **cylinder);
 void			shape_del(t_shape **shape);
 void			inter_del(t_inter **inter);
 
@@ -94,6 +95,12 @@ t_plane			*plane_new_copy(t_plane *plane);
 t_plane			*plane_copy(t_plane *plane1, t_plane *plane2);
 _Bool			plane_intersect(t_inter *inter, t_shape *shape);
 _Bool			plane_does_intersect(t_ray *ray, t_shape *shape);
+
+t_sphere		*sphere_new(t_vector3 *center, double radius);
+t_sphere		*sphere_new_copy(t_sphere *sphere);
+t_sphere		*sphere_copy(t_sphere *sphere1, t_sphere *sphere2);
+_Bool			sphere_intersect(t_inter *inter, t_shape *shape);
+_Bool			sphere_does_intersect(t_ray *ray, t_shape *shape);
 
 t_shape			*shape_init_null(t_shape *shape);
 t_shape			*shape_new(void);
