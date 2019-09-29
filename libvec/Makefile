@@ -3,6 +3,7 @@
 NAME = libvec.a
 GCC = gcc -Wall -Werror -Wextra
 O_FILES = v3_init.o \
+		v2_init.o \
 		v3_operators.o \
 		v3_math.o \
 		error.o

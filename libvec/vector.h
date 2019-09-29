@@ -6,7 +6,7 @@
 /*   By: cschoen <cschoen@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/09/28 19:31:47 by cschoen           #+#    #+#             */
-/*   Updated: 2019/09/29 03:30:06 by cschoen          ###   ########.fr       */
+/*   Updated: 2019/09/29 04:05:32 by cschoen          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -79,6 +79,12 @@ double			length_sq(t_vector3 *v);
 double			length(t_vector3 *v);
 double			normalize(t_vector3 *v);
 double			dot(t_vector3 *v1, t_vector3 *v2);
+
+t_vector2		*v2_new(void);
+t_vector2		*v2_new1(double f);
+t_vector2		*v2_new2(double u, double v);
+t_vector2		*v2_new_copy(t_vector2 *vec);
+t_vector2		*v2_copy(t_vector2 *vec1, t_vector2 *vec2);
 
 t_ray			*ray(void);
 t_ray			*ray_copy(t_ray *ray);
