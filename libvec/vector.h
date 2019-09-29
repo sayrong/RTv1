@@ -6,7 +6,7 @@
 /*   By: cschoen <cschoen@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/09/28 19:31:47 by cschoen           #+#    #+#             */
-/*   Updated: 2019/09/29 16:26:10 by cschoen          ###   ########.fr       */
+/*   Updated: 2019/09/29 17:08:43 by cschoen          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -33,6 +33,7 @@ typedef struct	s_vector2
 
 void			error(char *str);
 void			null_error(void);
+void			v3_del(t_vector3 **vec);
 
 t_vector3		*v3_new(void);
 t_vector3		*v3_new1(double f);

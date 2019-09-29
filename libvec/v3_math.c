@@ -6,11 +6,20 @@
 /*   By: cschoen <cschoen@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/09/28 22:17:12 by cschoen           #+#    #+#             */
-/*   Updated: 2019/09/29 16:25:40 by cschoen          ###   ########.fr       */
+/*   Updated: 2019/09/29 17:08:09 by cschoen          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "vector.h"
+
+void	v3_del(t_vector3 **vec)
+{
+	if (vec != NULL && *vec != NULL)
+	{
+		free(*vec);
+		*vec = NULL;
+	}
+}
 
 double		length_sq(t_vector3 *v)
 {

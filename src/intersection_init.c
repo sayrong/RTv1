@@ -6,57 +6,70 @@
 /*   By: cschoen <cschoen@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/09/28 23:59:26 by cschoen           #+#    #+#             */
-/*   Updated: 2019/09/29 14:28:25 by cschoen          ###   ########.fr       */
+/*   Updated: 2019/09/29 17:57:26 by cschoen          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "rt.h"
 
-t_intersection	*intersection(void)
+t_inter		*inter_new(void)
 {
-	t_intersection	*new_i;
+	t_inter	*new_inter;
 
-	if (!(new_i = (t_intersection*)malloc(sizeof(t_intersection))))
-		return (NULL);
-	new_i->ray = Ray();
-	new_i->shape = NULL;
-	new_i->t = RAY_T_MAX;
-	return (new_i);
+	if (!(new_inter = (t_inter*)malloc(sizeof(t_inter))))
+		error("inter_new: ");
+	new_inter->ray = ray_new();
+	new_inter->t = RAY_T_MAX;
+	new_inter->shape = NULL;
+	return (new_inter);
 }
 
-t_intersection	*intersection_copy(t_intersection *inter)
+t_inter		*inter_new_copy(t_inter *inter)
 {
-	t_intersection	*new_i;
+	t_inter	*new_inter;
 
-	if (!(new_i = (t_intersection*)malloc(sizeof(t_intersection))))
-		return (NULL);
-	new_i->ray = Ray_copy(inter->ray);
-	//TO-DO
-	new_i->shape = NULL;
-	new_i->t = inter->t;
-	return (new_i);
+	if (!inter)
+		null_error();
+	if (!(new_inter = (t_inter*)malloc(sizeof(t_inter))))
+		error("inter_new_copy: ");
+	new_inter->ray = ray_new_copy(inter->ray);
+	new_inter->t = inter->t;
+	//TO-DO new_inter->shape = shape_new_copy(inter->shape);
+	new_inter->shape = NULL;
+	return (new_inter);
 }
 
-
-t_intersection	*intersection_ray(t_ray *ray)
+t_inter		*inter_copy(t_inter *inter1, t_inter *inter2)
 {
-	t_intersection	*new_i;
-
-	if (!(new_i = (t_intersection*)malloc(sizeof(t_intersection))))
-		return (NULL);
-	new_i->ray = Ray_copy(ray);
-	//TO-DO
-	new_i->shape = NULL;
-	new_i->t = ray->t_max;
-	return (new_i);
+	if (!inter1 || !inter2)
+		null_error();
+	ray_copy(inter1->ray, inter2->ray);
+	inter1->t = inter2->t;
+	//TO-DO shape_copy(inter1->shape, inter2->shape);
+	inter1->shape = NULL;
+	return (inter1);
 }
 
-int				intersectrd(t_intersection *inter)
+t_inter		*inter_new_ray(t_ray *ray)
 {
-	return (inter->shape != NULL);
+	t_inter	*new_inter;
+
+	if (!ray)
+		null_error();
+	if (!(new_inter = (t_inter*)malloc(sizeof(t_inter))))
+		error("inter_new_ray: ");
+	new_inter->ray = ray_new_copy(ray);
+	new_inter->t = ray->t_max;
+	new_inter->shape = NULL;
+	return (new_inter);
 }
 
-t_vector3		*position(t_intersection *inter)
+t_vector3	*position(t_inter *inter)
 {
 	return (calculate(inter->ray, inter->t));
+}
+
+_Bool		intersected(t_inter *inter)
+{
+	return (inter->shape != NULL);
 }
