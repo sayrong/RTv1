@@ -6,7 +6,7 @@
 /*   By: cschoen <cschoen@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/09/28 20:44:23 by cschoen           #+#    #+#             */
-/*   Updated: 2019/09/29 04:02:59 by cschoen          ###   ########.fr       */
+/*   Updated: 2019/09/29 15:55:52 by cschoen          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -52,6 +52,8 @@ t_vector3	*v3_new_copy(t_vector3 *v)
 {
 	t_vector3	*new_v;
 
+	if (!v)
+		null_error();
 	if (!(new_v = (t_vector3*)malloc(sizeof(t_vector3))))
 		error("v3_new_copy: ");
 	new_v->x = v->x;
