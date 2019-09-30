@@ -6,7 +6,7 @@
 /*   By: cschoen <cschoen@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/09/29 14:15:02 by cschoen           #+#    #+#             */
-/*   Updated: 2019/09/30 00:46:23 by cschoen          ###   ########.fr       */
+/*   Updated: 2019/09/30 02:48:41 by cschoen          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -18,6 +18,8 @@
 
 # define TRUE 1
 # define FALSE 0
+# define HEIGHT 800
+# define WIDTH 800
 
 # include "../libvec/vector.h"
 # include "../libft/libft.h"
@@ -76,6 +78,23 @@ typedef struct	s_intersection
 	t_shape		*shape;
 }				t_inter;
 
+typedef struct	s_camera
+{
+	double		h;
+	double		w;
+	t_vector3	*origin;
+	t_vector3	*forward;
+	t_vector3	*up;
+	t_vector3	*right;
+}				t_cam;
+
+typedef struct	s_img
+{
+	int			width;
+	int			height;
+	double		*data;
+}				t_img;
+
 void			ray_del(t_ray **ray);
 void			plane_del(t_plane **plane);
 void			sphere_del(t_sphere **sphere);
@@ -115,5 +134,12 @@ t_inter			*inter_copy(t_inter *inter1, t_inter *inter2);
 t_inter			*inter_new_ray(t_ray *ray);
 t_vector3		*position(t_inter *inter);
 _Bool			intersected(t_inter *inter);
+
+t_cam			*cam_init_null(t_cam *cam);
+t_cam			*camera_new(t_vector3 *origin, t_vector3 *target,
+							t_vector3 *upguide, t_vector2 *fov_ratio);
+t_ray			*make_ray(t_vector2 *point, t_cam *cam);
+
+t_img			*img_new(int width, int height);
 
 #endif

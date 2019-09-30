@@ -16,7 +16,9 @@ SRCNAME = main.c \
 		plane_init.c \
 		sphere_init.c \
 		shape_init.c \
-		intersection_init.c
+		intersection_init.c \
+		camera_init.c \
+		image_init.c
 
 OBJNAME = $(SRCNAME:.c=.o)
 OBJ = $(addprefix $(OBJDIR),$(OBJNAME))

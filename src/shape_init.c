@@ -6,7 +6,7 @@
 /*   By: cschoen <cschoen@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/09/29 18:36:44 by cschoen           #+#    #+#             */
-/*   Updated: 2019/09/30 01:01:35 by cschoen          ###   ########.fr       */
+/*   Updated: 2019/09/30 02:14:40 by cschoen          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -14,6 +14,8 @@
 
 t_shape	*shape_init_null(t_shape *shape)
 {
+	if (!shape)
+		null_error();
 	shape->type = CNT_OF_TYPES;
 	shape->plane = NULL;
 	shape->sphere = NULL;
