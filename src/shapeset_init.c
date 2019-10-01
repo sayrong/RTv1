@@ -6,7 +6,7 @@
 /*   By: cschoen <cschoen@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/09/30 23:48:51 by cschoen           #+#    #+#             */
-/*   Updated: 2019/10/01 03:38:49 by cschoen          ###   ########.fr       */
+/*   Updated: 2019/10/01 03:55:37 by cschoen          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -70,7 +70,7 @@ void		add_shape(t_shape *shape, t_shapeset *set)
 		put_error("Error: Shapeset Overflow.");
 	if (set->size == set->max_size)
 		resize_set(set, (set->max_size * 2 < 100) ? set->max_size * 2 : 100);
-	shape_copy(set->shapes[set->size], shape);
+	set->shapes[set->size] = shape_copy(set->shapes[set->size], shape);
 	++set->size;
 }
 

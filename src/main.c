@@ -6,7 +6,7 @@
 /*   By: cschoen <cschoen@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/09/28 20:32:31 by cschoen           #+#    #+#             */
-/*   Updated: 2019/10/01 03:38:41 by cschoen          ###   ########.fr       */
+/*   Updated: 2019/10/01 04:16:51 by cschoen          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -46,7 +46,7 @@ void	ray_trace(t_img *img, t_cam *cam, t_shapeset *scene)
 			if (shapeset_intersect(inter, scene))
 				*cur_pixel = 255 << 16 | 255 << 8 | 255;
 			else
-				*cur_pixel = 255 << 16;
+				*cur_pixel = 0;
 			inter_del(&inter);
 		}
 	}
@@ -88,12 +88,12 @@ static void	input_hook(t_win *win)
 
 int		main(void)
 {
-	int		width = 400;
-	int		height = 200;
+	int		width = 500;
+	int		height = 500;
 	t_win	*win = win_new(width, height);
 	t_img	*img = img_new(width, height, win);
 	t_cam	*cam = camera_new(v3_new3(-5.0, 1.0, 0.0), v3_new3(0.0, 1.0, 0.0),
-		v3_new(), v2_new2(25.0 * PI / 180.0, (double)width / (double)height));
+		v3_new(), v2_new2(25.0 * PI / 180, (double)width / (double)height));
 	t_plane	*floor = plane_new(v3_new3(0.0, 0.0, 0.0), v3_new());
 	t_sphere	*sphere = sphere_new(v3_new3(0.0, 1.0, 0.0), 1.0);
 	t_shape	*sh_plane = shape_new();
@@ -101,10 +101,10 @@ int		main(void)
 	t_shapeset	*scene;
 	sh_plane->plane = floor;
 	sh_plane->type = PLANE;
-	sh_plane->sphere = sphere;
-	sh_plane->type = SPHERE;
-	//	shape_copy_plane(sh_plane, floor);
-	//	shape_copy_sphere(sh_sphere, sphere);
+	sh_sphere->sphere = sphere;
+	sh_sphere->type = SPHERE;
+//	shape_copy_plane(sh_plane, floor);
+//	shape_copy_sphere(sh_sphere, sphere);
 	scene = shapeset_new(2);
 	add_shape(sh_plane, scene);
 	add_shape(sh_sphere, scene);
