@@ -6,7 +6,7 @@
 /*   By: cschoen <cschoen@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/09/29 19:15:45 by cschoen           #+#    #+#             */
-/*   Updated: 2019/09/29 23:57:45 by cschoen          ###   ########.fr       */
+/*   Updated: 2019/10/01 03:11:50 by cschoen          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -41,7 +41,9 @@ t_plane	*plane_copy(t_plane *plane1, t_plane *plane2)
 	if (!plane2)
 		plane_del(&plane1);
 	else if (!plane1)
+	{
 		plane1 = plane_new_copy(plane2);
+	}
 	else
 	{
 		v3_copy(plane1->position, plane2->position);

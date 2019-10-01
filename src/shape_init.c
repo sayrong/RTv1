@@ -6,7 +6,7 @@
 /*   By: cschoen <cschoen@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/09/29 18:36:44 by cschoen           #+#    #+#             */
-/*   Updated: 2019/09/30 02:14:40 by cschoen          ###   ########.fr       */
+/*   Updated: 2019/10/01 03:37:46 by cschoen          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -32,6 +32,40 @@ t_shape	*shape_new(void)
 		error("shape_new: ");
 	shape_init_null(new_shape);
 	return (new_shape);
+}
+
+t_shape	*shape_copy_plane(t_shape *shape, t_plane *plane)
+{
+	if (!shape)
+		shape = shape_new();
+	if (!plane)
+	{
+		plane_del(&shape->plane);
+		shape->type = CNT_OF_TYPES;
+	}
+	else
+	{
+		plane_copy(shape->plane, plane);
+		shape->type = PLANE;
+	}
+	return (shape);
+}
+
+t_shape	*shape_copy_sphere(t_shape *shape, t_sphere *sphere)
+{
+	if (!shape)
+		shape = shape_new();
+	if (!sphere)
+	{
+		sphere_del(&shape->sphere);
+		shape->type = CNT_OF_TYPES;
+	}
+	else
+	{
+		sphere_copy(shape->sphere, sphere);
+		shape->type = CYLINDER;
+	}
+	return (shape);
 }
 
 t_shape	*shape_new_copy(t_shape *shape)
@@ -68,7 +102,7 @@ t_shape	*shape_copy(t_shape *shape1, t_shape *shape2)
 	{
 		if (shape1->type != shape2->type)
 		{
-			shape_del(shape1);
+			shape_del(&shape1);
 			shape1 = shape_new_copy(shape2);
 		}
 		else

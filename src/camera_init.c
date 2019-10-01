@@ -6,7 +6,7 @@
 /*   By: cschoen <cschoen@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/09/30 01:59:27 by cschoen           #+#    #+#             */
-/*   Updated: 2019/09/30 02:49:55 by cschoen          ###   ########.fr       */
+/*   Updated: 2019/10/01 02:16:22 by cschoen          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -43,12 +43,14 @@ t_cam	*camera_new(t_vector3 *origin, t_vector3 *target,
 	new_cam->up = new_cross(new_cam->right, new_cam->forward);
 	new_cam->h = tan(fov_ratio->u);
 	new_cam->w = new_cam->h * fov_ratio->v;
+	return (new_cam);
 }
 
 t_ray	*make_ray(t_vector2 *point, t_cam *cam)
 {
 	t_vector3	*direction;
 	t_vector3	*temp;
+	t_ray		*ray;
 
 	if (!point || !cam)
 		null_error();
@@ -58,5 +60,7 @@ t_ray	*make_ray(t_vector2 *point, t_cam *cam)
 	v3_del(&temp);
 	v3_plus(direction, cam->forward);
 	normalize(direction);
-	return (ray_new3(cam->origin, direction, RAY_T_MAX));
+	ray = ray_new3(cam->origin, direction, RAY_T_MAX);
+	v3_del(&direction);
+	return (ray);
 }

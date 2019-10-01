@@ -12,10 +12,12 @@ OBJDIR = ./obj/
 BINDIR = ./bin/
 
 SRCNAME = main.c \
+		del.c \
 		ray_init.c \
 		plane_init.c \
 		sphere_init.c \
 		shape_init.c \
+		shapeset_init.c \
 		intersection_init.c \
 		camera_init.c \
 		image_init.c

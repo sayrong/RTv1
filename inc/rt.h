@@ -6,7 +6,7 @@
 /*   By: cschoen <cschoen@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/09/29 14:15:02 by cschoen           #+#    #+#             */
-/*   Updated: 2019/09/30 02:48:41 by cschoen          ###   ########.fr       */
+/*   Updated: 2019/10/01 03:17:19 by cschoen          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -20,7 +20,9 @@
 # define FALSE 0
 # define HEIGHT 800
 # define WIDTH 800
+# define PI 3.14159265359
 
+# include <mlx.h>
 # include "../libvec/vector.h"
 # include "../libft/libft.h"
 
@@ -32,6 +34,12 @@ typedef enum	e_shape_type
 	CYLINDER,
 	CNT_OF_TYPES
 }				t_type;
+
+typedef struct	s_point
+{
+	int			x;
+	int			y;
+}				t_point;
 
 typedef struct	s_ray
 {
@@ -71,6 +79,13 @@ typedef struct	s_shape
 	t_cylinder	*cylinder;
 }				t_shape;
 
+typedef struct	s_shapeset
+{
+	t_shape		**shapes;
+	int			size;
+	int			max_size;
+}				t_shapeset;
+
 typedef struct	s_intersection
 {
 	t_ray		*ray;
@@ -88,12 +103,27 @@ typedef struct	s_camera
 	t_vector3	*right;
 }				t_cam;
 
-typedef struct	s_img
+typedef struct	s_win
 {
+	void		*mlx_ptr;
+	void		*win_ptr;
 	int			width;
 	int			height;
-	double		*data;
+}				t_win;
+
+typedef struct	s_img
+{
+	void		*img_ptr;
+	char		*data;
+	int			bpp;
+	int			size_line;
+	int			endian;
+	int			width;
+	int			height;
+//	double		*data;
 }				t_img;
+
+void			put_error(char *str);
 
 void			ray_del(t_ray **ray);
 void			plane_del(t_plane **plane);
@@ -123,10 +153,18 @@ _Bool			sphere_does_intersect(t_ray *ray, t_shape *shape);
 
 t_shape			*shape_init_null(t_shape *shape);
 t_shape			*shape_new(void);
+t_shape			*shape_copy_plane(t_shape *shape, t_plane *plane);
+t_shape			*shape_copy_sphere(t_shape *shape, t_sphere *sphere);
 t_shape			*shape_new_copy(t_shape *shape);
 t_shape			*shape_copy(t_shape *shape1, t_shape *shape2);
 _Bool			shape_intersect(t_inter *inter, t_shape *shape);
 _Bool			shape_does_intersect(t_ray *ray, t_shape *shape);
+
+t_shapeset		*shapeset_new(int size);
+t_shapeset		*resize_set(t_shapeset *set, int new_size);
+void			add_shape(t_shape *shape, t_shapeset *set);
+_Bool			shapeset_intersect(t_inter *inter, t_shapeset *set);
+_Bool			shapeset_does_intersect(t_ray *ray, t_shapeset *set);
 
 t_inter			*inter_new(void);
 t_inter			*inter_new_copy(t_inter *inter);
@@ -140,6 +178,10 @@ t_cam			*camera_new(t_vector3 *origin, t_vector3 *target,
 							t_vector3 *upguide, t_vector2 *fov_ratio);
 t_ray			*make_ray(t_vector2 *point, t_cam *cam);
 
-t_img			*img_new(int width, int height);
+t_win			*win_new(int width, int height);
+t_img			*img_new(int width, int height, t_win *win);
+int				*get_pixel(int x, int y, t_img *img);
+
+void			ray_trace(t_img *img, t_cam *cam, t_shapeset *scene);
 
 #endif
