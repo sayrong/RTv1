@@ -6,7 +6,7 @@
 /*   By: cschoen <cschoen@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/09/28 20:42:44 by cschoen           #+#    #+#             */
-/*   Updated: 2019/09/29 22:56:26 by cschoen          ###   ########.fr       */
+/*   Updated: 2019/10/02 00:19:29 by cschoen          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -60,8 +60,8 @@ t_ray		*ray_copy(t_ray *ray1, t_ray *ray2)
 		ray1 = ray_new_copy(ray2);
 	else
 	{
-		v3_copy(ray1->origin, ray2->origin);
-		v3_copy(ray1->direction, ray2->direction);
+		ray1->origin = v3_copy(ray1->origin, ray2->origin);
+		ray1->direction = v3_copy(ray1->direction, ray2->direction);
 		ray1->t_max = ray2->t_max;
 	}
 	return (ray1);

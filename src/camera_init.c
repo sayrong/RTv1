@@ -6,7 +6,7 @@
 /*   By: cschoen <cschoen@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/09/30 01:59:27 by cschoen           #+#    #+#             */
-/*   Updated: 2019/10/01 02:16:22 by cschoen          ###   ########.fr       */
+/*   Updated: 2019/10/02 01:27:02 by cschoen          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -28,7 +28,7 @@ t_cam	*cam_init_null(t_cam *cam)
 t_cam	*camera_new(t_vector3 *origin, t_vector3 *target,
 					t_vector3 *upguide, t_vector2 *fov_ratio)
 {
-	t_cam		*new_cam;
+	t_cam	*new_cam;
 
 	if (!fov_ratio)
 		null_error();
@@ -43,6 +43,19 @@ t_cam	*camera_new(t_vector3 *origin, t_vector3 *target,
 	new_cam->up = new_cross(new_cam->right, new_cam->forward);
 	new_cam->h = tan(fov_ratio->u);
 	new_cam->w = new_cam->h * fov_ratio->v;
+	return (new_cam);
+}
+
+t_cam	*camera_new_dp(t_vector3 *origin, t_vector3 *target,
+					t_vector3 *upguide, t_vector2 *fov_ratio)
+{
+	t_cam	*new_cam;
+
+	new_cam = camera_new(origin, target, upguide, fov_ratio);
+	v3_del(&origin);
+	v3_del(&target);
+	v3_del(&upguide);
+	v2_del(&fov_ratio);
 	return (new_cam);
 }
 

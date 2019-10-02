@@ -6,7 +6,7 @@
 /*   By: cschoen <cschoen@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/09/29 14:15:02 by cschoen           #+#    #+#             */
-/*   Updated: 2019/10/01 03:17:19 by cschoen          ###   ########.fr       */
+/*   Updated: 2019/10/02 02:38:31 by cschoen          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -18,8 +18,8 @@
 
 # define TRUE 1
 # define FALSE 0
-# define HEIGHT 800
-# define WIDTH 800
+# define WIDTH 500
+# define HEIGHT 500
 # define PI 3.14159265359
 
 # include <mlx.h>
@@ -34,12 +34,6 @@ typedef enum	e_shape_type
 	CYLINDER,
 	CNT_OF_TYPES
 }				t_type;
-
-typedef struct	s_point
-{
-	int			x;
-	int			y;
-}				t_point;
 
 typedef struct	s_ray
 {
@@ -115,13 +109,24 @@ typedef struct	s_img
 {
 	void		*img_ptr;
 	char		*data;
+//	double		*data;
 	int			bpp;
 	int			size_line;
 	int			endian;
 	int			width;
 	int			height;
-//	double		*data;
 }				t_img;
+
+typedef struct	s_rt
+{
+	t_point2	size;
+	t_win		*win;
+	t_img		*img;
+	t_cam		*cam;
+	t_shapeset	*scene;
+}				t_rt;
+
+double			sqr(double num);
 
 void			put_error(char *str);
 
@@ -140,12 +145,14 @@ t_ray			*ray_copy(t_ray *ray1, t_ray *ray2);
 t_vector3		*calculate(t_ray *ray, double t);
 
 t_plane			*plane_new(t_vector3 *position, t_vector3 *normal);
+t_plane			*plane_new_dp(t_vector3 *position, t_vector3 *normal);
 t_plane			*plane_new_copy(t_plane *plane);
 t_plane			*plane_copy(t_plane *plane1, t_plane *plane2);
 _Bool			plane_intersect(t_inter *inter, t_shape *shape);
 _Bool			plane_does_intersect(t_ray *ray, t_shape *shape);
 
 t_sphere		*sphere_new(t_vector3 *center, double radius);
+t_sphere		*sphere_new_dp(t_vector3 *center, double radius);
 t_sphere		*sphere_new_copy(t_sphere *sphere);
 t_sphere		*sphere_copy(t_sphere *sphere1, t_sphere *sphere2);
 _Bool			sphere_intersect(t_inter *inter, t_shape *shape);
@@ -162,7 +169,7 @@ _Bool			shape_does_intersect(t_ray *ray, t_shape *shape);
 
 t_shapeset		*shapeset_new(int size);
 t_shapeset		*resize_set(t_shapeset *set, int new_size);
-void			add_shape(t_shape *shape, t_shapeset *set);
+t_shapeset		*add_shape(t_shape *shape, t_shapeset *set);
 _Bool			shapeset_intersect(t_inter *inter, t_shapeset *set);
 _Bool			shapeset_does_intersect(t_ray *ray, t_shapeset *set);
 
@@ -176,12 +183,15 @@ _Bool			intersected(t_inter *inter);
 t_cam			*cam_init_null(t_cam *cam);
 t_cam			*camera_new(t_vector3 *origin, t_vector3 *target,
 							t_vector3 *upguide, t_vector2 *fov_ratio);
+t_cam			*camera_new_dp(t_vector3 *origin, t_vector3 *target,
+							t_vector3 *upguide, t_vector2 *fov_ratio);
 t_ray			*make_ray(t_vector2 *point, t_cam *cam);
 
 t_win			*win_new(int width, int height);
 t_img			*img_new(int width, int height, t_win *win);
 int				*get_pixel(int x, int y, t_img *img);
 
-void			ray_trace(t_img *img, t_cam *cam, t_shapeset *scene);
+void			ray_trace(t_img *img, t_cam *cam, t_shapeset *scene,
+						t_point2 size);
 
 #endif

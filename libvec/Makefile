@@ -1,7 +1,7 @@
 .PHONY: clean fclean re
 
 NAME = libvec.a
-GCC = gcc -Wall -Werror -Wextra
+GCC = gcc -Wall -Werror -Wextra -g
 O_FILES = v3_init.o \
 		v2_init.o \
 		v3_operators.o \

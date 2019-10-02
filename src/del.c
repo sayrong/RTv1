@@ -6,7 +6,7 @@
 /*   By: cschoen <cschoen@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/09/29 22:18:15 by cschoen           #+#    #+#             */
-/*   Updated: 2019/09/30 00:21:49 by cschoen          ###   ########.fr       */
+/*   Updated: 2019/10/02 00:04:57 by cschoen          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -49,9 +49,9 @@ void	shape_del(t_shape **shape)
 	if (shape != NULL && *shape != NULL)
 	{
 		plane_del(&(*shape)->plane);
-//TO DO SPHERE CONE CYLINDER
-/*
 		sphere_del(&(*shape)->sphere);
+//TODO CONE CYLINDER
+/*
 		cone_del(&(*shape)->cone);
 		cylinder_del(&(*shape)->cylinder);
 */

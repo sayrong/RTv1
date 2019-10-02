@@ -6,7 +6,7 @@
 /*   By: cschoen <cschoen@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/09/28 19:31:47 by cschoen           #+#    #+#             */
-/*   Updated: 2019/09/30 02:21:03 by cschoen          ###   ########.fr       */
+/*   Updated: 2019/10/02 01:55:11 by cschoen          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -31,10 +31,19 @@ typedef struct	s_vector2
 	double		v;
 }				t_vector2;
 
+typedef struct	s_point2
+{
+	int			x;
+	int			y;
+}				t_point2;
+
 void			error(char *str);
 void			null_error(void);
 void			v3_del(t_vector3 **vec);
 void			v2_del(t_vector2 **vec);
+
+t_point2		p2_set(int x, int y);
+t_vector2		v2_set(double u, double v);
 
 t_vector3		*v3_new(void);
 t_vector3		*v3_new1(double f);

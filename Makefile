@@ -31,7 +31,7 @@ MLXINIT = -I /usr/local/include -L /usr/local/lib -lmlx
 
 LINUX = -lXext -lX11 -lm -lpthread
 MACOS = -framework OpenGL -framework AppKit
-WFLAGS = -Wall -Wextra -Werror
+WFLAGS = -Wall -Wextra -Werror -g
 
 all: $(BINDIR)$(NAME)
 

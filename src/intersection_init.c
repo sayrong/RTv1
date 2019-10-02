@@ -6,7 +6,7 @@
 /*   By: cschoen <cschoen@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/09/28 23:59:26 by cschoen           #+#    #+#             */
-/*   Updated: 2019/09/29 23:03:49 by cschoen          ###   ########.fr       */
+/*   Updated: 2019/10/02 00:11:21 by cschoen          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -60,9 +60,9 @@ t_inter		*inter_copy(t_inter *inter1, t_inter *inter2)
 		inter1 = inter_new_copy(inter2);
 	else
 	{
-		ray_copy(inter1->ray, inter2->ray);
+		inter1->ray = ray_copy(inter1->ray, inter2->ray);
 		inter1->t = inter2->t;
-		shape_copy(inter1->shape, inter2->shape);
+		inter1->shape = shape_copy(inter1->shape, inter2->shape);
 	}
 	return (inter1);
 }

@@ -6,7 +6,7 @@
 /*   By: cschoen <cschoen@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/09/29 18:36:44 by cschoen           #+#    #+#             */
-/*   Updated: 2019/10/01 03:37:46 by cschoen          ###   ########.fr       */
+/*   Updated: 2019/10/02 03:17:24 by cschoen          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -30,8 +30,7 @@ t_shape	*shape_new(void)
 
 	if (!(new_shape = (t_shape*)malloc(sizeof(t_shape))))
 		error("shape_new: ");
-	shape_init_null(new_shape);
-	return (new_shape);
+	return (shape_init_null(new_shape));
 }
 
 t_shape	*shape_copy_plane(t_shape *shape, t_plane *plane)
@@ -45,7 +44,7 @@ t_shape	*shape_copy_plane(t_shape *shape, t_plane *plane)
 	}
 	else
 	{
-		plane_copy(shape->plane, plane);
+		shape->plane = plane_copy(shape->plane, plane);
 		shape->type = PLANE;
 	}
 	return (shape);
@@ -62,8 +61,8 @@ t_shape	*shape_copy_sphere(t_shape *shape, t_sphere *sphere)
 	}
 	else
 	{
-		sphere_copy(shape->sphere, sphere);
-		shape->type = CYLINDER;
+		shape->sphere = sphere_copy(shape->sphere, sphere);
+		shape->type = SPHERE;
 	}
 	return (shape);
 }
@@ -108,9 +107,9 @@ t_shape	*shape_copy(t_shape *shape1, t_shape *shape2)
 		else
 		{
 			if (shape1->type == PLANE)
-				plane_copy(shape1->plane, shape2->plane);
+				shape1->plane = plane_copy(shape1->plane, shape2->plane);
 			else if (shape1->type == SPHERE)
-				sphere_copy(shape1->sphere, shape2->sphere);
+				shape1->sphere = sphere_copy(shape1->sphere, shape2->sphere);
 //TODO CONE CYLINDER
 /*
 			else if (shape1->type == CONE)

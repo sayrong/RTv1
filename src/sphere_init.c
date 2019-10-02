@@ -6,7 +6,7 @@
 /*   By: cschoen <cschoen@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/09/30 00:05:54 by cschoen           #+#    #+#             */
-/*   Updated: 2019/09/30 00:58:48 by cschoen          ###   ########.fr       */
+/*   Updated: 2019/10/02 01:20:34 by cschoen          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -25,6 +25,15 @@ t_sphere	*sphere_new(t_vector3 *center, double radius)
 		error("sphere_new: ");
 	new_sphere->center = v3_new_copy(center);
 	new_sphere->radius = radius;
+	return (new_sphere);
+}
+
+t_sphere	*sphere_new_dp(t_vector3 *center, double radius)
+{
+	t_sphere	*new_sphere;
+
+	new_sphere = sphere_new(center, radius);
+	v3_del(&center);
 	return (new_sphere);
 }
 
@@ -49,7 +58,7 @@ t_sphere	*sphere_copy(t_sphere *sphere1, t_sphere *sphere2)
 		sphere1 = sphere_new_copy(sphere2);
 	else
 	{
-		v3_copy(sphere1->center, sphere2->center);
+		sphere1->center = v3_copy(sphere1->center, sphere2->center);
 		sphere1->radius = sphere2->radius;
 	}
 	return (sphere1);
@@ -80,7 +89,7 @@ _Bool	sphere_intersect(t_inter *inter, t_shape *shape)
 		inter->t = t[1];
 	else
 		return (FALSE);
-	shape_copy(inter->shape, shape);
+	inter->shape = shape_copy(inter->shape, shape);
 	return (TRUE);
 }
 
