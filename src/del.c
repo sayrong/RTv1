@@ -65,7 +65,7 @@ void	inter_del(t_inter **inter)
 	if (inter != NULL && *inter != NULL)
 	{
 		ray_del(&(*inter)->ray);
-		shape_del(&(*inter)->shape);
+		//shape_del(&(*inter)->shape);
 		free(*inter);
 		*inter = NULL;
 	}

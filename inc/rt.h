@@ -35,6 +35,13 @@ typedef enum	e_shape_type
 	CNT_OF_TYPES
 }				t_type;
 
+typedef struct s_color
+{
+    int r;
+    int g;
+    int b;
+}               t_color;
+
 typedef struct	s_ray
 {
 	t_vector3	*origin;
@@ -52,6 +59,7 @@ typedef struct	s_sphere
 {
 	t_vector3	*center;
 	double		radius;
+    t_color     *color;
 }				t_sphere;
 
 typedef struct	s_cone
@@ -125,6 +133,9 @@ typedef struct	s_rt
 	t_cam		*cam;
 	t_shapeset	*scene;
 }				t_rt;
+
+t_color         *white(void);
+int             get_color(t_color *c);
 
 double			sqr(double num);
 

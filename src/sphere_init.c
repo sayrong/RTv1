@@ -23,6 +23,7 @@ t_sphere	*sphere_new(t_vector3 *center, double radius)
 
 	if (!(new_sphere = (t_sphere*)malloc(sizeof(t_sphere))))
 		error("sphere_new: ");
+    new_sphere->color = white();
 	new_sphere->center = v3_new_copy(center);
 	new_sphere->radius = radius;
 	return (new_sphere);
@@ -89,7 +90,7 @@ _Bool	sphere_intersect(t_inter *inter, t_shape *shape)
 		inter->t = t[1];
 	else
 		return (FALSE);
-	inter->shape = shape_copy(inter->shape, shape);
+    inter->shape = shape;//shape_copy(inter->shape, shape);
 	return (TRUE);
 }
 

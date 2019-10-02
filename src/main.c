@@ -40,7 +40,10 @@ void	ray_trace(t_img *img, t_cam *cam, t_shapeset *scene, t_point2 size)
 			inter = inter_new_ray(ray);
 			ray_del(&ray);
 			if (shapeset_intersect(inter, scene))
-				*cur_pixel = 255 << 16 | 255 << 8 | 255;
+            {
+				//*cur_pixel = 255 << 16 | 255 << 8 | 255;
+                *cur_pixel = get_color(inter->shape->sphere->color);
+            }
 			else
 				*cur_pixel = 0;
 			inter_del(&inter);
@@ -82,74 +85,125 @@ static void	input_hook(t_rt *rt)
 	mlx_hook(rt->win->win_ptr, 2, 3, deal_key, (void *)0);
 }
 
+int testCodeDan()
+{
+    t_rt        *rt;
+    t_plane        *floor;
+    t_shape        *sh_plane;
+    t_sphere    *sphere;
+    t_shape        *sh_sphere;
+    t_sphere    *sphere2;
+    t_shape        *sh_sphere2;
+    t_sphere    *sphere3;
+    t_shape        *sh_sphere3;
+    t_plane        *plane;
+    t_shape        *shape_pl;
+    
+    if (!(rt = (t_rt*)malloc(sizeof(t_rt))))
+        error("RT: ");
+    rt->size = p2_set(WIDTH, HEIGHT);
+    rt->win = win_new(rt->size.x, rt->size.y);
+    rt->img = img_new(rt->size.x, rt->size.y, rt->win);
+    // dp - means "delete params"
+    rt->cam = camera_new_dp(v3_new3(-5.0, 0.0, 0.0),
+                            v3_new3(0.0, 0.0, 0.0),
+                            v3_new3(0.0, 1.0, 0.0),
+                            v2_new2(25.0 * PI / 180,
+                                    (double)rt->size.x / (double)rt->size.y));
+    rt->scene = shapeset_new(2);
+    
+    floor = plane_new_dp(v3_new3(0.0, -4.0, 1.0), v3_new3(-1.0, 4.0, -2.0));
+    plane = plane_new_dp(v3_new3(0.0, -4.0, 1.0), v3_new3(1.0, 8.0, -2.0));
+    sphere = sphere_new_dp(v3_new3(3.0, 2.0, 1.4), 1.0);
+    sphere2 = sphere_new_dp(v3_new3(3.0, 2.0, 2.0), 1.0);
+    sphere3 = sphere_new_dp(v3_new3(3.0, 2.0, 0.8), 1.0);
+    
+    sh_plane = shape_new();
+    sh_plane->plane = floor;
+    sh_plane->type = PLANE;
+    //    sh_plane = NULL;
+    //    sh_plane = shape_copy_plane(sh_plane, floor);
+    
+    sh_sphere = shape_new();
+    sh_sphere->sphere = sphere;
+    sh_sphere->type = SPHERE;
+    //    sh_sphere = NULL;
+    //    sh_sphere = shape_copy_sphere(sh_sphere, sphere);
+    
+    shape_pl = NULL;
+    shape_pl = shape_copy_plane(shape_pl, plane);
+    
+    sh_sphere2 = NULL;
+    sh_sphere2 = shape_copy_sphere(sh_sphere2, sphere2);
+    
+    sh_sphere3 = NULL;
+    sh_sphere3 = shape_copy_sphere(sh_sphere3, sphere3);
+    
+    rt->scene = add_shape(shape_pl, rt->scene);
+    rt->scene = add_shape(sh_sphere, rt->scene);
+    rt->scene = add_shape(sh_sphere3, rt->scene);
+    rt->scene = add_shape(sh_sphere3, rt->scene);
+    rt->scene = add_shape(sh_sphere2, rt->scene);
+    rt->scene = add_shape(sh_sphere, rt->scene);
+    rt->scene = add_shape(sh_sphere2, rt->scene);
+    //    rt->scene = add_shape(sh_plane, rt->scene);
+    
+    ray_trace(rt->img, rt->cam, rt->scene, p2_set(0, 0));
+    mlx_put_image_to_window(rt->win->mlx_ptr, rt->win->win_ptr,
+                            rt->img->img_ptr, 0, 0);
+    ft_putendl("ready");
+    input_hook(rt);
+    mlx_loop(rt->win->mlx_ptr);
+    return (0);
+}
+
+
+int testCodeDim()
+{
+    t_rt        *rt;
+    t_sphere    *sphere;
+    t_shape     *sh_sphere;
+    
+    if (!(rt = (t_rt*)malloc(sizeof(t_rt))))
+        error("RT: ");
+    
+    rt->size = p2_set(WIDTH, HEIGHT);
+    rt->win = win_new(rt->size.x, rt->size.y);
+    rt->img = img_new(rt->size.x, rt->size.y, rt->win);
+    
+    rt->cam = camera_new_dp(v3_new3(5.0, 0.0, 0.0),
+                            v3_new3(0.0, 0.0, 0.0),
+                            v3_new3(0.0, 1.0, 0.0),
+                            v2_new2(25.0 * PI / 180,
+                                    (double)rt->size.x / (double)rt->size.y));
+    
+    rt->scene = shapeset_new(1);
+    
+    sphere = sphere_new_dp(v3_new3(0, 0, 0), 1.0);
+    sphere->color->g = 0;
+    sphere->color->b = 0;
+    
+    sh_sphere = shape_new();
+    sh_sphere->sphere = sphere;
+    sh_sphere->type = SPHERE;
+    
+    rt->scene = add_shape(sh_sphere, rt->scene);
+    
+    ray_trace(rt->img, rt->cam, rt->scene, p2_set(0, 0));
+    mlx_put_image_to_window(rt->win->mlx_ptr, rt->win->win_ptr,
+                            rt->img->img_ptr, 0, 0);
+    ft_putendl("ready");
+    input_hook(rt);
+    mlx_loop(rt->win->mlx_ptr);
+    
+    return (0);
+}
+
+
 int		main(void)
 {
-	t_rt		*rt;
-	t_plane		*floor;
-	t_shape		*sh_plane;
-	t_sphere	*sphere;
-	t_shape		*sh_sphere;
-	t_sphere	*sphere2;
-	t_shape		*sh_sphere2;
-	t_sphere	*sphere3;
-	t_shape		*sh_sphere3;
-	t_plane		*plane;
-	t_shape		*shape_pl;
-
-	if (!(rt = (t_rt*)malloc(sizeof(t_rt))))
-		error("RT: ");
-	rt->size = p2_set(WIDTH, HEIGHT);
-	rt->win = win_new(rt->size.x, rt->size.y);
-	rt->img = img_new(rt->size.x, rt->size.y, rt->win);
-// dp - means "delete params"
-	rt->cam = camera_new_dp(v3_new3(-5.0, 0.0, 0.0),
-							v3_new3(0.0, 0.0, 0.0),
-							v3_new3(0.0, 1.0, 0.0),
-							v2_new2(25.0 * PI / 180,
-									(double)rt->size.x / (double)rt->size.y));
-	rt->scene = shapeset_new(2);
-
-	floor = plane_new_dp(v3_new3(0.0, -4.0, 1.0), v3_new3(-1.0, 4.0, -2.0));
-	plane = plane_new_dp(v3_new3(0.0, -4.0, 1.0), v3_new3(1.0, 8.0, -2.0));
-	sphere = sphere_new_dp(v3_new3(3.0, 2.0, 1.4), 1.0);
-	sphere2 = sphere_new_dp(v3_new3(3.0, 2.0, 2.0), 1.0);
-	sphere3 = sphere_new_dp(v3_new3(3.0, 2.0, 0.8), 1.0);
-
-	sh_plane = shape_new();
-	sh_plane->plane = floor;
-	sh_plane->type = PLANE;
-//	sh_plane = NULL;
-//	sh_plane = shape_copy_plane(sh_plane, floor);
-
-	sh_sphere = shape_new();
-	sh_sphere->sphere = sphere;
-	sh_sphere->type = SPHERE;
-//	sh_sphere = NULL;
-//	sh_sphere = shape_copy_sphere(sh_sphere, sphere);
-
-	shape_pl = NULL;
-	shape_pl = shape_copy_plane(shape_pl, plane);
-
-	sh_sphere2 = NULL;
-	sh_sphere2 = shape_copy_sphere(sh_sphere2, sphere2);
-
-	sh_sphere3 = NULL;
-	sh_sphere3 = shape_copy_sphere(sh_sphere3, sphere3);
-
-	rt->scene = add_shape(shape_pl, rt->scene);
-	rt->scene = add_shape(sh_sphere, rt->scene);
-	rt->scene = add_shape(sh_sphere3, rt->scene);
-	rt->scene = add_shape(sh_sphere3, rt->scene);
-	rt->scene = add_shape(sh_sphere2, rt->scene);
-	rt->scene = add_shape(sh_sphere, rt->scene);
-	rt->scene = add_shape(sh_sphere2, rt->scene);
-	//	rt->scene = add_shape(sh_plane, rt->scene);
-
-	ray_trace(rt->img, rt->cam, rt->scene, p2_set(0, 0));
-	mlx_put_image_to_window(rt->win->mlx_ptr, rt->win->win_ptr,
-							rt->img->img_ptr, 0, 0);
-	ft_putendl("ready");
-	input_hook(rt);
-	mlx_loop(rt->win->mlx_ptr);
-	return (0);
+    //testCodeDan();
+    testCodeDim();
 }
+
+

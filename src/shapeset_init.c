@@ -75,7 +75,7 @@ t_shapeset	*add_shape(t_shape *shape, t_shapeset *set)
 		else
 			set = resize_set(set, 100);
 	}
-	set->shapes[set->size] = shape_copy(set->shapes[set->size], shape);
+    set->shapes[set->size] = shape;//shape_copy(set->shapes[set->size], shape);
 	++set->size;
 	return (set);
 }
