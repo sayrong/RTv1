@@ -19,6 +19,41 @@ void	put_error(char *str)
 	exit(1);
 }
 
+double compute_light(t_vector3 *P, t_vector3 *N, t_shapeset *scene)
+{
+    double i;
+    int count;
+    t_light *light;
+    t_vector3 *L;
+    double res;
+    
+    i = 0;
+    count = 0;
+    while (count < 2)
+    {
+        light = scene->light[count];
+        if (light->type == ambient)
+            i += light->intensity;
+        else
+        {
+            if (light->type == point)
+                L = v3_new_minus(light->position, P);
+            else
+                L = light->position;
+            res = dot(N, L);
+            if (res > 0)
+            {
+                double tmp1 = light->intensity * res;
+                double tmp2 = length(N) * length(L);
+                double tmp3 = tmp1 / tmp2;
+                i += tmp3;
+            }
+        }
+        count++;
+    }
+    return (i);
+}
+
 void	ray_trace(t_img *img, t_cam *cam, t_shapeset *scene, t_point2 size)
 {
 	t_vector2	screen_coord;
@@ -38,11 +73,16 @@ void	ray_trace(t_img *img, t_cam *cam, t_shapeset *scene, t_point2 size)
 			ray = make_ray(&screen_coord, cam);
 			cur_pixel = get_pixel(size.x, size.y, img);
 			inter = inter_new_ray(ray);
-			ray_del(&ray);
+			//ray_del(&ray);
 			if (shapeset_intersect(inter, scene))
             {
-				//*cur_pixel = 255 << 16 | 255 << 8 | 255;
-                *cur_pixel = get_color(inter->shape->sphere->color);
+                t_vector3 *tmp1 = v3_new_mult_by_num(ray->direction, inter->t);
+                t_vector3 *P = v3_new_plus(cam->origin, tmp1);
+                t_vector3 *N = v3_new_minus(P, v3_new3(1, 1, 1));
+                N = v3_new_div_by_num(N, length(N));
+                double l = compute_light(P, N, scene);
+				////*cur_pixel = 255 << 16 | 255 << 8 | 255;
+                *cur_pixel = get_color(inter->shape->sphere->color, l);
             }
 			else
 				*cur_pixel = 0;
@@ -171,15 +211,15 @@ int testCodeDim()
     rt->win = win_new(rt->size.x, rt->size.y);
     rt->img = img_new(rt->size.x, rt->size.y, rt->win);
     
-    rt->cam = camera_new_dp(v3_new3(5.0, 0.0, 0.0),
+    rt->cam = camera_new_dp(v3_new3(0.0, 0.0, 20.0),
                             v3_new3(0.0, 0.0, 0.0),
                             v3_new3(0.0, 1.0, 0.0),
                             v2_new2(25.0 * PI / 180,
                                     (double)rt->size.x / (double)rt->size.y));
     
-    rt->scene = shapeset_new(1);
+    rt->scene = shapeset_new(2);
     
-    sphere = sphere_new_dp(v3_new3(0, 0, 0), 1.0);
+    sphere = sphere_new_dp(v3_new3(0, 0, 5), 3.0);
     sphere->color->g = 0;
     sphere->color->b = 0;
     
@@ -188,6 +228,32 @@ int testCodeDim()
     sh_sphere->type = SPHERE;
     
     rt->scene = add_shape(sh_sphere, rt->scene);
+    
+    //light
+    t_light *l1 = (t_light*)malloc(sizeof(t_light));
+    l1->type = ambient;
+    l1->intensity = 0.2;
+    l1->position = NULL;
+    
+    t_light *l2 = (t_light*)malloc(sizeof(t_light));
+    l2->type = point;
+    l2->intensity = 0.6;
+    l2->position = v3_new3(4, 10, 5);
+    
+    rt->scene->light = (t_light**)malloc(sizeof(t_light*) * 2);
+    rt->scene->light[0] = l1;
+    rt->scene->light[1] = l2;
+    
+    t_sphere *sphere1 = sphere_new_dp(v3_new3(0, 2, 7), 2);
+    sphere1->color->g = 255;
+    sphere1->color->b = 0;
+    
+    t_shape     *sh_sphere1 = shape_new();
+    sh_sphere1->sphere = sphere1;
+    sh_sphere1->type = SPHERE;
+    
+    rt->scene = add_shape(sh_sphere1, rt->scene);
+    ///
     
     ray_trace(rt->img, rt->cam, rt->scene, p2_set(0, 0));
     mlx_put_image_to_window(rt->win->mlx_ptr, rt->win->win_ptr,

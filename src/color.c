@@ -20,7 +20,10 @@ t_color *white(void)
     return (new);
 }
 
-int get_color(t_color *c)
+int get_color(t_color *c, double light)
 {
-    return (c->r << 16 | c->g << 8 | c->b);
+    int newRed = c->r * light;
+    int newGreen = c->g * light;
+    int newBlue = c->b * light;
+    return (newRed << 16 | newGreen << 8 | newBlue);
 }

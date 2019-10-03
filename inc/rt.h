@@ -35,6 +35,21 @@ typedef enum	e_shape_type
 	CNT_OF_TYPES
 }				t_type;
 
+typedef enum e_light_type
+{
+    ambient,
+    point,
+    directional
+}           t_light_type;
+
+typedef struct s_light
+{
+    t_light_type type;
+    double       intensity;
+    t_vector3    *position;
+    
+}              t_light;
+
 typedef struct s_color
 {
     int r;
@@ -84,6 +99,7 @@ typedef struct	s_shape
 typedef struct	s_shapeset
 {
 	t_shape		**shapes;
+    t_light     **light;
 	int			size;
 	int			max_size;
 }				t_shapeset;
@@ -135,7 +151,7 @@ typedef struct	s_rt
 }				t_rt;
 
 t_color         *white(void);
-int             get_color(t_color *c);
+int             get_color(t_color *c, double light);
 
 double			sqr(double num);
 
