@@ -94,6 +94,7 @@ typedef struct	s_shape
 	t_sphere	*sphere;
 	t_cone		*cone;
 	t_cylinder	*cylinder;
+	int			light_intens;
 }				t_shape;
 
 typedef struct	s_shapeset
