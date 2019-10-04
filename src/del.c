@@ -44,28 +44,28 @@ void	sphere_del(t_sphere **sphere)
 	}
 }
 
-void	shape_del(t_shape **shape)
-{
-	if (shape != NULL && *shape != NULL)
-	{
-		plane_del(&(*shape)->plane);
-		sphere_del(&(*shape)->sphere);
-//TODO CONE CYLINDER
-/*
-		cone_del(&(*shape)->cone);
-		cylinder_del(&(*shape)->cylinder);
-*/
-		free(*shape);
-		*shape = NULL;
-	}
-}
+//void	shape_del(t_shape **shape)
+//{
+//	if (shape != NULL && *shape != NULL)
+//	{
+//		plane_del(&(*shape)->plane);
+//		sphere_del(&(*shape)->sphere);
+////TODO CONE CYLINDER
+///*
+//		cone_del(&(*shape)->cone);
+//		cylinder_del(&(*shape)->cylinder);
+//*/
+//		free(*shape);
+//		*shape = NULL;
+//	}
+//}
 
 void	inter_del(t_inter **inter)
 {
 	if (inter != NULL && *inter != NULL)
 	{
 		ray_del(&(*inter)->ray);
-		shape_del(&(*inter)->shape);
+		//shape_del(&(*inter)->shape);
 		free(*inter);
 		*inter = NULL;
 	}

@@ -25,6 +25,8 @@ t_sphere	*sphere_new(t_vector3 *center, double radius)
 		error("sphere_new: ");
 	new_sphere->center = v3_new_copy(center);
 	new_sphere->radius = radius;
+	new_sphere->shape = SPHERE;
+	new_sphere->color = white();
 	return (new_sphere);
 }
 
@@ -64,19 +66,22 @@ t_sphere	*sphere_copy(t_sphere *sphere1, t_sphere *sphere2)
 	return (sphere1);
 }
 
-_Bool	sphere_intersect(t_inter *inter, t_shape *shape)
+_Bool	sphere_intersect(t_inter *inter, t_list_shape *shape_in_list)
 {
 	t_ray	*local_ray;
 	double	coef[3];
 	double	discriminant;
 	double	t[2];
+	t_sphere *sphere;
 
-	(!inter || !inter->ray || !shape || !shape->sphere) ? null_error() : 0;
+	(!inter || !inter->ray || !shape_in_list) ? null_error() : 0;
+	sphere = (t_sphere*)shape_in_list->content;
+	
 	local_ray = ray_new_copy(inter->ray);
-	v3_minus(local_ray->origin, shape->sphere->center);
+	v3_minus(local_ray->origin, sphere->center);
 	coef[0] = length_sq(local_ray->direction);
 	coef[1] = 2.0 * dot(local_ray->direction, local_ray->origin);
-	coef[2] = length_sq(local_ray->origin) - sqr(shape->sphere->radius);
+	coef[2] = length_sq(local_ray->origin) - sqr(sphere->radius);
 	discriminant = coef[1] * coef[1] - 4.0 * coef[0] * coef[2];
 	ray_del(&local_ray);
 	if (discriminant < 0.0)
@@ -84,37 +89,47 @@ _Bool	sphere_intersect(t_inter *inter, t_shape *shape)
 	t[0] = (-coef[1] - sqrt(discriminant)) / (2.0 * coef[0]);
 	t[1] = (-coef[1] + sqrt(discriminant)) / (2.0 * coef[0]);
 	if (t[0] > RAY_T_MIN && t[0] < inter->t)
+	{
 		inter->t = t[0];
+		inter->shape = shape_in_list;
+	}
 	else if (t[1] > RAY_T_MIN && t[1] < inter->t)
 		inter->t = t[1];
 	else
 		return (FALSE);
-	inter->shape = shape_copy(inter->shape, shape);
+	//get clossest t
+	//need to discuss
+	if (t[1] > RAY_T_MIN && t[1] < inter->t)
+	{
+		inter->t = t[1];
+		inter->shape = shape_in_list;
+	}
 	return (TRUE);
 }
 
-_Bool	sphere_does_intersect(t_ray *ray, t_shape *shape)
-{
-	t_ray	*local_ray;
-	double	coef[3];
-	double	discriminant;
-	double	t[2];
+//_Bool	sphere_does_intersect(t_ray *ray, t_shape *shape)
+//{
+//	t_ray	*local_ray;
+//	double	coef[3];
+//	double	discriminant;
+//	double	t[2];
+//
+//	(!ray || !shape || !shape->sphere) ? null_error() : 0;
+//	local_ray = ray_new_copy(ray);
+//	v3_minus(local_ray->origin, shape->sphere->center);
+//	coef[0] = length_sq(local_ray->direction);
+//	coef[1] = 2.0 * dot(local_ray->direction, local_ray->origin);
+//	coef[2] = length_sq(local_ray->origin) - sqr(shape->sphere->radius);
+//	discriminant = coef[1] * coef[1] - 4.0 * coef[0] * coef[2];
+//	ray_del(&local_ray);
+//	if (discriminant < 0.0)
+//		return (FALSE);
+//	t[0] = (-coef[1] - sqrt(discriminant)) / (2.0 * coef[0]);
+//	if (t[0] > RAY_T_MIN && t[0] < ray->t_max)
+//		return (TRUE);
+//	t[1] = (-coef[1] + sqrt(discriminant)) / (2.0 * coef[0]);
+//	if (t[1] > RAY_T_MIN && t[1] < ray->t_max)
+//		return (TRUE);
+//	return (FALSE);
+//}
 
-	(!ray || !shape || !shape->sphere) ? null_error() : 0;
-	local_ray = ray_new_copy(ray);
-	v3_minus(local_ray->origin, shape->sphere->center);
-	coef[0] = length_sq(local_ray->direction);
-	coef[1] = 2.0 * dot(local_ray->direction, local_ray->origin);
-	coef[2] = length_sq(local_ray->origin) - sqr(shape->sphere->radius);
-	discriminant = coef[1] * coef[1] - 4.0 * coef[0] * coef[2];
-	ray_del(&local_ray);
-	if (discriminant < 0.0)
-		return (FALSE);
-	t[0] = (-coef[1] - sqrt(discriminant)) / (2.0 * coef[0]);
-	if (t[0] > RAY_T_MIN && t[0] < ray->t_max)
-		return (TRUE);
-	t[1] = (-coef[1] + sqrt(discriminant)) / (2.0 * coef[0]);
-	if (t[1] > RAY_T_MIN && t[1] < ray->t_max)
-		return (TRUE);
-	return (FALSE);
-}

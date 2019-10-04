@@ -60,40 +60,47 @@ t_plane	*plane_copy(t_plane *plane1, t_plane *plane2)
 	return (plane1);
 }
 
-_Bool	plane_intersect(t_inter *inter, t_shape *shape)
+_Bool	plane_intersect(t_inter *inter, t_list_shape *shape_in_list)
 {
 	t_vector3	*temp;
 	double		d_dot_n;
 	double		t;
+	t_plane		*plane;
 
-	if (!inter || !inter->ray || !shape || !shape->plane)
+	if (!inter || !inter->ray || !shape_in_list)
 		null_error();
-	if ((d_dot_n = dot(inter->ray->direction, shape->plane->normal)) == 0.0)
+	plane = (t_plane*)shape_in_list->content;
+	if ((d_dot_n = dot(inter->ray->direction, plane->normal)) == 0.0)
 		return (FALSE);
-	temp = v3_new_minus(shape->plane->position, inter->ray->origin);
-	t = dot(temp, shape->plane->normal) / d_dot_n;
+	temp = v3_new_minus(plane->position, inter->ray->origin);
+	t = dot(temp, plane->normal) / d_dot_n;
 	v3_del(&temp);
 	if (t <= RAY_T_MIN || t >= RAY_T_MAX)
 		return (FALSE);
-	inter->t = t;
-	inter->shape = shape_copy(inter->shape, shape);
+	//need to find clossed t
+	if (t < inter->t)
+	{
+		inter->t = t;
+		inter->shape = shape_in_list;
+	}
 	return (TRUE);
 }
 
-_Bool	plane_does_intersect(t_ray *ray, t_shape *shape)
-{
-	t_vector3	*temp;
-	double		d_dot_n;
-	double		t;
+//_Bool	plane_does_intersect(t_ray *ray, t_shape *shape)
+//{
+//	t_vector3	*temp;
+//	double		d_dot_n;
+//	double		t;
+//
+//	if (!ray || !shape || !shape->plane)
+//		null_error();
+//	if ((d_dot_n = dot(ray->direction, shape->plane->normal)) == 0.0)
+//		return (FALSE);
+//	temp = v3_new_minus(shape->plane->position, ray->origin);
+//	t = dot(temp, shape->plane->normal) / d_dot_n;
+//	v3_del(&temp);
+//	if (t <= RAY_T_MIN || t >= RAY_T_MAX)
+//		return (FALSE);
+//	return (TRUE);
+//}
 
-	if (!ray || !shape || !shape->plane)
-		null_error();
-	if ((d_dot_n = dot(ray->direction, shape->plane->normal)) == 0.0)
-		return (FALSE);
-	temp = v3_new_minus(shape->plane->position, ray->origin);
-	t = dot(temp, shape->plane->normal) / d_dot_n;
-	v3_del(&temp);
-	if (t <= RAY_T_MIN || t >= RAY_T_MAX)
-		return (FALSE);
-	return (TRUE);
-}
