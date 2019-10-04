@@ -163,6 +163,11 @@ typedef struct	s_rt
 }				t_rt;
 
 
+
+
+_Bool	cone_intersect(t_inter *inter, t_list_shape *shape_in_list);
+
+
 //lists
 t_list_shape 	*new_shape_list(void *content, t_shape_type type);
 void			add_new_shape(t_list_shape *list, void *content, t_shape_type type);

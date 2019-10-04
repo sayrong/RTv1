@@ -25,6 +25,8 @@ t_vector3 *get_center(t_inter		*inter)
 		return ((t_sphere*)inter->shape->content)->center;
 	if (inter->shape->shape == PLANE)
 		return ((t_plane*)inter->shape->content)->normal;
+	if (inter->shape->shape == CONE)
+		return ((t_cone*)inter->shape->content)->dir;
 	else
 		return NULL;
 }
@@ -158,7 +160,14 @@ int testCodeDim()
 	add_new_shape(rt->shapes, (void*)plane, plane->shape);
 	
 	
-	
+	//test CONE
+	t_cone *cone = (t_cone*)malloc(sizeof(t_cone));
+	cone->angle = 10;
+	cone->color = white();
+	cone->position = v3_new3(5, 0, -50);
+	cone->dir = v3_new3(0, 1, 0);
+	cone->shape = CONE;
+	//add_new_shape(rt->shapes, (void*)cone, cone->shape);
 
 	//create light
 	
