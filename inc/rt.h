@@ -68,6 +68,7 @@ typedef struct	s_plane
 {
 	t_vector3	*position;
 	t_vector3	*normal;
+	t_color     *color;
 }				t_plane;
 
 typedef struct	s_sphere
@@ -95,6 +96,7 @@ typedef struct	s_shape
 	t_cone		*cone;
 	t_cylinder	*cylinder;
 	int			light_intens;
+	t_color		*color;
 }				t_shape;
 
 typedef struct	s_shapeset

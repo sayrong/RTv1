@@ -86,10 +86,10 @@ _Bool	sphere_intersect(t_inter *inter, t_shape *shape)
 	t[1] = (-coef[1] + sqrt(discriminant)) / (2.0 * coef[0]);
 	if (t[0] > RAY_T_MIN && t[0] < inter->t)
 		inter->t = t[0];
-	else if (t[1] > RAY_T_MIN && t[1] < inter->t)
+	if (t[1] > RAY_T_MIN && t[1] < inter->t)
 		inter->t = t[1];
-	else
-		return (FALSE);
+	//else
+		//return (FALSE);
     inter->shape = shape;//shape_copy(inter->shape, shape);
 	return (TRUE);
 }

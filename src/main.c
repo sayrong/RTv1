@@ -93,18 +93,18 @@ void	ray_trace(t_img *img, t_cam *cam, t_shapeset *scene, t_point2 size)
 			//ray_del(&ray);
 			if (shapeset_intersect(inter, scene))
             {
-				t_vector3 *dir = v3_new_mult_by_num(ray->direction, -1);
+				//t_vector3 *dir = v3_new_mult_by_num(ray->direction, -1);
 				inter->shape->light_intens = 10;
 				
 				
-                t_vector3 *tmp1 = v3_new_mult_by_num(dir, inter->t);
+                t_vector3 *tmp1 = v3_new_mult_by_num(ray->direction, inter->t);
                 t_vector3 *P = v3_new_plus(cam->origin, tmp1);
                 t_vector3 *N = v3_new_minus(P, v3_new3(1, 1, 1));
                 N = v3_new_div_by_num(N, length(N));
 				
                 double l = compute_light(P, N, scene, ray->direction, inter->shape->light_intens);
 				////*cur_pixel = 255 << 16 | 255 << 8 | 255;
-                *cur_pixel = get_color(inter->shape->sphere->color, l);
+                *cur_pixel = get_color(inter->shape->color, l);
             }
 			else
 				*cur_pixel = 0;
@@ -233,13 +233,13 @@ int testCodeDim()
     rt->win = win_new(rt->size.x, rt->size.y);
     rt->img = img_new(rt->size.x, rt->size.y, rt->win);
     
-    rt->cam = camera_new_dp(v3_new3(0.0, 0.0, -5.0),
-                            v3_new3(0.0, 0.0, 1.0),
+    rt->cam = camera_new_dp(v3_new3(0.0, 5.0, 30.0),
+                            v3_new3(0.0, 0.0, -40.0),
                             v3_new3(0.0, 1.0, 0.0),
                             v2_new2(25.0 * PI / 180,
                                     (double)rt->size.x / (double)rt->size.y));
     
-    rt->scene = shapeset_new(2);
+    rt->scene = shapeset_new(6);
     
     sphere = sphere_new_dp(v3_new3(0, 0, 13), 3.0);
     sphere->color->g = 0;
@@ -248,6 +248,7 @@ int testCodeDim()
     sh_sphere = shape_new();
     sh_sphere->sphere = sphere;
     sh_sphere->type = SPHERE;
+	sh_sphere->color = sphere->color;
     
     rt->scene = add_shape(sh_sphere, rt->scene);
     
@@ -260,23 +261,99 @@ int testCodeDim()
     t_light *l2 = (t_light*)malloc(sizeof(t_light));
     l2->type = point;
     l2->intensity = 0.6;
-    l2->position = v3_new3(0, 5, 9);
+    l2->position = v3_new3(0, 8, 4);
     
     rt->scene->light = (t_light**)malloc(sizeof(t_light*) * 2);
     rt->scene->light[0] = l1;
     rt->scene->light[1] = l2;
     
-    t_sphere *sphere1 = sphere_new_dp(v3_new3(0, 5, 10), 0.5);
+    t_sphere *sphere1 = sphere_new_dp(v3_new3(0, 5, 13), 0.5);
     sphere1->color->g = 255;
     sphere1->color->b = 0;
     
     t_shape     *sh_sphere1 = shape_new();
     sh_sphere1->sphere = sphere1;
     sh_sphere1->type = SPHERE;
+	sh_sphere1->color = sphere1->color;
     
     rt->scene = add_shape(sh_sphere1, rt->scene);
     ///
-    
+	
+	t_sphere *sphereG = sphere_new_dp(v3_new3(0, 8, 8), 0.2);
+	sphereG->color->g = 0;
+	sphereG->color->b = 255;
+	sphereG->color->r = 0;
+	
+	t_shape     *sh_sphereG = shape_new();
+	sh_sphereG->sphere = sphereG;
+	sh_sphereG->type = SPHERE;
+	sh_sphereG->color = sphereG->color;
+	
+	rt->scene = add_shape(sh_sphereG, rt->scene);
+	
+	//room
+	///
+	t_vector3 *floorPos = v3_new3(0, 1, 0);
+	t_vector3 *norm = v3_new3(0, 1, 0);
+	t_plane *floor = plane_new(floorPos, norm);
+	floor->color->r = 100;
+	floor->color->b = 0;
+	
+	t_shape     *floorS = shape_new();
+	floorS->plane = floor;
+	floorS->type = PLANE;
+	floorS->color = floor->color;
+	
+	rt->scene = add_shape(floorS, rt->scene);
+	///
+	/*
+	t_vector3 *floorPos1 = v3_new3(140, 0, 0);
+	t_vector3 *norm1 = v3_new3(-1, 0, 0);
+	t_plane *floor1 = plane_new(floorPos, norm);
+	floor1->color->r = 0;
+	floor1->color->b = 150;
+	
+	t_shape     *floorS1 = shape_new();
+	floorS1->plane = floor;
+	floorS1->type = PLANE;
+	floorS1->color = floor->color;
+	
+	rt->scene = add_shape(floorS1, rt->scene);
+	////
+	
+	t_vector3 *floorPos2 = v3_new3(-100, 0, 0);
+	t_vector3 *norm2 = v3_new3(2, 1, 0);
+	t_plane *floor2 = plane_new(floorPos, norm);
+	floor2->color->r = 255;
+	floor2->color->b = 0;
+	
+	t_shape     *floorS2 = shape_new();
+	floorS2->plane = floor;
+	floorS2->type = PLANE;
+	floorS2->color = floor->color;
+	
+	rt->scene = add_shape(floorS2, rt->scene);
+	///
+	
+	t_vector3 *floorPos4 = v3_new3(0, 0, 100);
+	t_vector3 *norm4 = v3_new3(0, 0, -1);
+	t_plane *floor4 = plane_new(floorPos, norm);
+	floor4->color->r = 0;
+	floor4->color->b = 255;
+	
+	t_shape     *floorS4 = shape_new();
+	floorS4->plane = floor;
+	floorS4->type = PLANE;
+	floorS4->color = floor->color;
+	
+	rt->scene = add_shape(floorS4, rt->scene);
+	
+	*/
+	
+	
+	//
+	
+	
     ray_trace(rt->img, rt->cam, rt->scene, p2_set(0, 0));
     mlx_put_image_to_window(rt->win->mlx_ptr, rt->win->win_ptr,
                             rt->img->img_ptr, 0, 0);

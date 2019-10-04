@@ -18,6 +18,7 @@ t_plane	*plane_new(t_vector3 *position, t_vector3 *normal)
 
 	if (!(new_plane = (t_plane*)malloc(sizeof(t_plane))))
 		error("plane_new: ");
+	new_plane->color = white();
 	new_plane->position = v3_new_copy(position);
 	new_plane->normal = v3_new_copy(normal);
 	return (new_plane);
@@ -75,8 +76,12 @@ _Bool	plane_intersect(t_inter *inter, t_shape *shape)
 	v3_del(&temp);
 	if (t <= RAY_T_MIN || t >= RAY_T_MAX)
 		return (FALSE);
-	inter->t = t;
-	inter->shape = shape_copy(inter->shape, shape);
+	if (inter->t > t)
+	{
+		inter->t = t;
+		inter->shape = shape;
+	}
+	//shape_copy(inter->shape, shape);
 	return (TRUE);
 }
 
