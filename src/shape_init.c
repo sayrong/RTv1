@@ -132,11 +132,9 @@ _Bool	shape_intersect(t_inter *inter, t_list_shape *shape)
 		return (sphere_intersect(inter, shape));
 	if (shape->shape == CONE)
 		return (cone_intersect(inter, shape));
-//TODO CONE CYLINDER
-/*
-	if (shape->type == CYLINDER)
+	if (shape->shape == CYLINDER)
 		return (cylinder_intersect(inter, shape));
-*/
+
 	return (FALSE);
 }
 

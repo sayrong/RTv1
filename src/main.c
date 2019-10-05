@@ -31,6 +31,67 @@ t_vector3 *get_center(t_inter		*inter)
 		return NULL;
 }
 
+t_vector3 *get_normal(t_inter		*inter, t_ray *ray, double t)
+{
+	if (inter->shape->shape == SPHERE)
+		return ((t_sphere*)inter->shape->content)->center;
+	if (inter->shape->shape == PLANE)
+	{
+		t_vector3 *tmp3 = v3_new_mult_by_num(ray->direction, t);
+		t_vector3 *P = v3_new_plus(ray->origin, tmp3);
+		t_vector3 *N = v3_new_div_by_num(P, length(P));
+		return N;
+	}
+	
+	if (inter->shape->shape == CONE)
+	{
+		t_cone *cone = (t_cone*)inter->shape->content;
+		double tmp1 = dot(ray->direction, cone->dir) * t;
+		t_vector3 *x = v3_new_minus(ray->origin, cone->position);
+		double tmp2 = dot(x, cone->dir);
+		double m = tmp1 + tmp2;
+		
+		//search intersec point
+		t_vector3 *tmp3 = v3_new_mult_by_num(ray->direction, t);
+		t_vector3 *P = v3_new_plus(ray->origin, tmp3);
+		
+		t_vector3 *tmp4 = v3_new_minus(P, cone->position);
+		
+		double angleRad = degrees_to_rad(cone->angle);
+		double tmp5 = 1 + tan(angleRad) * tan(angleRad);
+		
+		t_vector3 *tmp6 = v3_new_mult_by_num(cone->dir, tmp5);
+		t_vector3 *tmp7 = v3_new_mult_by_num(tmp6, m);
+		
+		t_vector3 *fin = v3_new_minus(tmp4, tmp7);
+		
+		t_vector3 *N = v3_new_div_by_num(fin, length(fin));
+		return N;
+	}
+	else if (inter->shape->shape == CYLINDER)
+	{
+		t_cylinder *cyl = (t_cylinder*)inter->shape->content;
+		
+		t_vector3 *x = v3_new_minus(ray->origin, cyl->position);
+		
+		double tmp1 = dot(ray->direction, cyl->dir) * t;
+		double tmp2 = dot(x, cyl->dir);
+		double m = tmp1 + tmp2;
+		
+		t_vector3 *tmp3 = v3_new_mult_by_num(ray->direction, t);
+		t_vector3 *P = v3_new_plus(ray->origin, tmp3);
+		
+		t_vector3 *tmp4 = v3_new_minus(P, cyl->position);
+		t_vector3 *tmp5 = v3_new_mult_by_num(cyl->dir, m);
+		t_vector3 *tmp6 = v3_new_minus(tmp4, tmp5);
+		
+		t_vector3 *N = v3_new_div_by_num(tmp6, length(tmp6));
+		return N;
+	}
+		return NULL;
+}
+
+
 
 int get_specular(t_inter		*inter)
 {
@@ -69,8 +130,16 @@ void	ray_trace(t_img *img, t_cam *cam, t_list_shape *scene, t_point2 size, t_lis
 				
 				t_vector3 *tmp1 = v3_new_mult_by_num(ray->direction, inter->t);
 				t_vector3 *P = v3_new_plus(cam->origin, tmp1);
-				t_vector3 *N = v3_new_minus(P, get_center(inter));
-				N = v3_new_div_by_num(N, length(N));
+				t_vector3 *N;
+				
+				
+				if (inter->shape->shape != SPHERE)
+					N = get_normal(inter, ray, inter->t);
+				else
+				{
+					N = v3_new_minus(P, get_center(inter));
+					N = v3_new_div_by_num(N, length(N));
+				}
 				
 				t_vector3 *to_cam = v3_new_mult_by_num(ray->direction, -1);
 				
@@ -132,20 +201,28 @@ int testCodeDim()
 	rt->win = win_new(rt->size.x, rt->size.y);
 	rt->img = img_new(rt->size.x, rt->size.y, rt->win);
 	
-	rt->cam = camera_new_dp(v3_new3(0.0, 5.0, 30.0),
-							v3_new3(0.0, -20.0, -30.0),
+	rt->cam = camera_new_dp(v3_new3(0.0, 8.0, 50.0),
+							v3_new3(0.0, 0.0, 0.0),
 							v3_new3(0.0, 1.0, 0.0),
 							v2_new2(25.0 * PI / 180,
 									(double)rt->size.x / (double)rt->size.y));
 	
 	
 	//create object
-	sphere = sphere_new_dp(v3_new3(0, 0, 13), 3.0);
+	sphere = sphere_new_dp(v3_new3(-5, 0, 13), 3.0);
 	sphere->color->b = 0;
 	sphere->color->g = 0;
 	//add object to all shapes
-	sphere->specular = 100;
+	sphere->specular = 300;
 	rt->shapes = new_shape_list((void*)sphere, sphere->shape);
+	
+	
+	t_sphere *sphere1 = sphere_new_dp(v3_new3(5, 0, 13), 3.0);
+	sphere1->color->b = 0;
+	sphere1->color->g = 0;
+	//add object to all shapes
+	sphere1->specular = 300;
+	add_new_shape(rt->shapes, (void*)sphere1, sphere1->shape);
 	
 	
 	//create plane
@@ -162,12 +239,14 @@ int testCodeDim()
 	
 	//test CONE
 	t_cone *cone = (t_cone*)malloc(sizeof(t_cone));
-	cone->angle = 10;
+	cone->angle = 90;
 	cone->color = white();
-	cone->position = v3_new3(5, 0, -50);
+	cone->color->r = 0;
+	cone->color->b = 0;
+	cone->position = v3_new3(0, 5, 0);
 	cone->dir = v3_new3(0, 1, 0);
 	cone->shape = CONE;
-	//add_new_shape(rt->shapes, (void*)cone, cone->shape);
+	add_new_shape(rt->shapes, (void*)cone, cone->shape);
 
 	//create light
 	
@@ -180,17 +259,27 @@ int testCodeDim()
 	t_light *light = (t_light*)malloc(sizeof(t_light));
 	light->type = point;
 	light->intensity = 0.5;
-	light->position = v3_new3(0, 6, 17);
+	light->position = v3_new3(20, 6, 50);
 	add_new_light(rt->light, light, light->type);
 
 	
 	t_light *l2 = (t_light*)malloc(sizeof(t_light));
 	l2->type = directional;
 	l2->intensity = 0.2;
-	l2->position = v3_new3(0, 8, 15);
+	l2->position = v3_new3(0, -1, -1);
 	add_new_light(rt->light, l2, l2->type);
 
 	
+	//CYL test
+	t_cylinder *cyl = (t_cylinder*)malloc(sizeof(t_cylinder));
+	cyl->position = v3_new3(0, 0, 10);
+	cyl->dir = v3_new3(0, 1, 0);
+	cyl->color = white();
+	cyl->color->g = 0;
+	cyl->radius = 2;
+	cyl->lenght = 5; // ???
+	cyl->shape = CYLINDER;
+	add_new_shape(rt->shapes, (void*)cyl, cyl->shape);
 	
 	ray_trace(rt->img, rt->cam, rt->shapes, p2_set(0, 0), rt->light);
 	

@@ -110,6 +110,12 @@ typedef struct	s_cone
 
 typedef struct	s_cylinder
 {
+	t_vector3		*position;
+	t_vector3		*dir;
+	double			radius;
+	double			lenght;
+	t_color			*color;
+	t_shape_type 	shape;
 
 }				t_cylinder;
 
@@ -166,7 +172,10 @@ typedef struct	s_rt
 
 
 _Bool	cone_intersect(t_inter *inter, t_list_shape *shape_in_list);
+_Bool	cylinder_intersect(t_inter *inter, t_list_shape *shape_in_list);
 
+double degrees_to_rad(double angleInDegrees);
+int define_t(double t1, double t2, double *t);
 
 //lists
 t_list_shape 	*new_shape_list(void *content, t_shape_type type);
