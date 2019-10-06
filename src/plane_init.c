@@ -86,6 +86,20 @@ _Bool	plane_intersect(t_inter *inter, t_list_shape *shape_in_list)
 	return (TRUE);
 }
 
+t_vector3 *get_plane_normal(t_plane *plane, t_ray *ray)
+{
+	t_vector3	*normal;
+	double 		d;
+	
+	d = dot(ray->direction, plane->normal);
+	if (d < 0)
+		normal = v3_new_copy(plane->normal);
+	else
+		normal = v3_new_mult_by_num(plane->normal, -1);
+	return (normal);
+}
+
+
 //_Bool	plane_does_intersect(t_ray *ray, t_shape *shape)
 //{
 //	t_vector3	*temp;

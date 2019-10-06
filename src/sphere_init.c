@@ -107,6 +107,17 @@ _Bool	sphere_intersect(t_inter *inter, t_list_shape *shape_in_list)
 	return (TRUE);
 }
 
+t_vector3 *get_sphere_normal(t_sphere *sphere, t_vector3 *hit_point)
+{
+	t_vector3 *normal;
+	t_vector3 *tmp;
+	
+	tmp = v3_new_minus(hit_point, sphere->center);
+	normal = v3_new_div_by_num(tmp, length(tmp));
+	free(tmp);
+	return (normal);
+}
+
 //_Bool	sphere_does_intersect(t_ray *ray, t_shape *shape)
 //{
 //	t_ray	*local_ray;

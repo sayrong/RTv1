@@ -38,8 +38,10 @@ _Bool	cone_intersect(t_inter *inter, t_list_shape *shape_in_list)
 	double t1 = 0;
 	double t2 = 0;
 
+	
 	t_cone *cone = ((t_cone*)shape_in_list->content);
 	t_ray *local_ray = ray_new_copy(inter->ray);
+	
 	
 	t_vector3 *x = v3_new_minus(local_ray->origin, cone->position);
 
@@ -70,11 +72,28 @@ _Bool	cone_intersect(t_inter *inter, t_list_shape *shape_in_list)
 		t1 = (-b + sqrt(Discr)) / (2 * a);
 		t2 = (-b - sqrt(Discr)) / (2 * a);
 	}
-	if (!define_t(t1, t2, &(inter->t)))
+//	if (!define_t(t1, t2, &(inter->t)))
+//	{
+//
+//		inter->shape = shape_in_list;
+//		return (TRUE);
+//	}
+	t1 = t1 < t2 && t1 > RAY_T_MIN ? t1 : t2;
+	if (t1 > RAY_T_MIN && t1 < inter->t)
 	{
+		t_vector3	*tmp = v3_new_mult_by_num(local_ray->direction, t1);
+		t_vector3	*hit_point = v3_new_plus(local_ray->origin, tmp);
+		
+		//remove up
+//		if (cone->position->y < hit_point->y)
+//		{
+//			return (FALSE);
+//		}
 		inter->shape = shape_in_list;
+		inter->t = t1;
 		return (TRUE);
 	}
+	
 	return (FALSE);
 	
 	

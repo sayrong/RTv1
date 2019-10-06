@@ -98,3 +98,4 @@ t_vector2	*v2_copy(t_vector2 *vec1, t_vector2 *vec2)
 	}
 	return (vec1);
 }
+

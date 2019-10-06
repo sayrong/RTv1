@@ -12,6 +12,18 @@
 
 #include "vector.h"
 
+void free_temp_v(t_vector3 **ar, int size)
+{
+	int i;
+	
+	i = 0;
+	while (i < size)
+	{
+		free(ar[i]);
+		i++;
+	}
+}
+
 void	v3_del(t_vector3 **vec)
 {
 	if (vec != NULL && *vec != NULL)

@@ -169,10 +169,13 @@ typedef struct	s_rt
 }				t_rt;
 
 
-
+t_vector3 *get_sphere_normal(t_sphere *sphere, t_vector3 *hit_point);
+t_vector3 *get_plane_normal(t_plane *plane, t_ray *ray);
 
 _Bool	cone_intersect(t_inter *inter, t_list_shape *shape_in_list);
+
 _Bool	cylinder_intersect(t_inter *inter, t_list_shape *shape_in_list);
+t_vector3 *get_cyl_normal(t_cylinder *cyl, t_ray *ray, t_vector3 *hit_point, double t);
 
 double degrees_to_rad(double angleInDegrees);
 int define_t(double t1, double t2, double *t);

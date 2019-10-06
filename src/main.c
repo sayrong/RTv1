@@ -33,62 +33,90 @@ t_vector3 *get_center(t_inter		*inter)
 
 t_vector3 *get_normal(t_inter		*inter, t_ray *ray, double t)
 {
-	if (inter->shape->shape == SPHERE)
-		return ((t_sphere*)inter->shape->content)->center;
-	if (inter->shape->shape == PLANE)
-	{
-		t_vector3 *tmp3 = v3_new_mult_by_num(ray->direction, t);
-		t_vector3 *P = v3_new_plus(ray->origin, tmp3);
-		t_vector3 *N = v3_new_div_by_num(P, length(P));
-		return N;
-	}
+	t_vector3	*hit_point;
+	t_vector3	*tmp;
 	
+	tmp = v3_new_mult_by_num(ray->direction, t);
+	hit_point = v3_new_plus(ray->origin, tmp);
+	
+	if (inter->shape->shape == SPHERE)
+		return (get_sphere_normal((t_sphere*)inter->shape->content, hit_point));
+	if (inter->shape->shape == PLANE)
+		return (get_plane_normal((t_plane*)inter->shape->content, ray));
 	if (inter->shape->shape == CONE)
 	{
 		t_cone *cone = (t_cone*)inter->shape->content;
+		
+		double angleRad = degrees_to_rad(cone->angle);
+		double k = tan(angleRad);
+		
 		double tmp1 = dot(ray->direction, cone->dir) * t;
 		t_vector3 *x = v3_new_minus(ray->origin, cone->position);
 		double tmp2 = dot(x, cone->dir);
 		double m = tmp1 + tmp2;
 		
-		//search intersec point
-		t_vector3 *tmp3 = v3_new_mult_by_num(ray->direction, t);
-		t_vector3 *P = v3_new_plus(ray->origin, tmp3);
+		t_vector3 *tmp3 = v3_new_minus(hit_point, cone->position);
+		t_vector3 *tmp4 = v3_new_mult_by_num(cone->dir, m);
+		t_vector3 *tmp5 = v3_new_minus(tmp3, tmp4);
 		
-		t_vector3 *tmp4 = v3_new_minus(P, cone->position);
+		t_vector3 *tmp6 = v3_new_mult_by_num(cone->dir, m);
+		t_vector3 *tmp7 = v3_new_mult_by_num(tmp6, k);
+		t_vector3 *tmp8 = v3_new_mult_by_num(tmp7, k);
 		
-		double angleRad = degrees_to_rad(cone->angle);
-		double tmp5 = 1 + tan(angleRad) * tan(angleRad);
-		
-		t_vector3 *tmp6 = v3_new_mult_by_num(cone->dir, tmp5);
-		t_vector3 *tmp7 = v3_new_mult_by_num(tmp6, m);
-		
-		t_vector3 *fin = v3_new_minus(tmp4, tmp7);
+		t_vector3 *fin = v3_new_minus(tmp5, tmp8);
 		
 		t_vector3 *N = v3_new_div_by_num(fin, length(fin));
 		return N;
+		
+		//////////////////////
+		
+//		double tmp1 = dot(ray->direction, cone->dir) * t;
+//		t_vector3 *x = v3_new_minus(ray->origin, cone->position);
+//		double tmp2 = dot(x, cone->dir);
+//		double m = tmp1 + tmp2;
+//
+//		//search intersec point
+//		t_vector3 *tmp3 = v3_new_mult_by_num(ray->direction, t);
+//		t_vector3 *P = v3_new_plus(ray->origin, tmp3);
+//
+//		t_vector3 *tmp4 = v3_new_minus(P, cone->position);
+//
+//		double angleRad = degrees_to_rad(cone->angle);
+//		double tmp5 = 1 + tan(angleRad) * tan(angleRad);
+//
+//		t_vector3 *tmp6 = v3_new_mult_by_num(cone->dir, tmp5);
+//		t_vector3 *tmp7 = v3_new_mult_by_num(tmp6, m);
+//
+//		t_vector3 *fin = v3_new_minus(tmp4, tmp7);
+//
+//		t_vector3 *N = v3_new_div_by_num(fin, length(fin));
+//		return N;
+		
+		//////////////////////
+		
+//		t_vector3 *dirC = v3_new_mult_by_num(cone->dir, -1);
+//
+//		t_vector3 *tmp1 = v3_new_mult_by_num(ray->direction, t);
+//		t_vector3 *tmp2 = v3_new_plus(ray->origin, tmp1);
+//		t_vector3 *tmp3 = v3_new_minus(tmp2, cone->position);
+//
+//
+//        double angleRad = degrees_to_rad(cone->angle);
+//        double angleTmp = 1 + tan(angleRad) * tan(angleRad);
+//		double tmp4 = dot(tmp3, dirC) * angleTmp;
+//
+//		t_vector3 *tmp5 = v3_new_mult_by_num(dirC, tmp4);
+//		t_vector3 *tmp6 = v3_new_minus(tmp3, tmp5);
+//
+//		t_vector3 *N = v3_new_div_by_num(tmp6, length(tmp6));
+//
+//		return N;
+		
+		
 	}
 	else if (inter->shape->shape == CYLINDER)
-	{
-		t_cylinder *cyl = (t_cylinder*)inter->shape->content;
-		
-		t_vector3 *x = v3_new_minus(ray->origin, cyl->position);
-		
-		double tmp1 = dot(ray->direction, cyl->dir) * t;
-		double tmp2 = dot(x, cyl->dir);
-		double m = tmp1 + tmp2;
-		
-		t_vector3 *tmp3 = v3_new_mult_by_num(ray->direction, t);
-		t_vector3 *P = v3_new_plus(ray->origin, tmp3);
-		
-		t_vector3 *tmp4 = v3_new_minus(P, cyl->position);
-		t_vector3 *tmp5 = v3_new_mult_by_num(cyl->dir, m);
-		t_vector3 *tmp6 = v3_new_minus(tmp4, tmp5);
-		
-		t_vector3 *N = v3_new_div_by_num(tmp6, length(tmp6));
-		return N;
-	}
-		return NULL;
+		return (get_cyl_normal((t_cylinder*)inter->shape->content, ray, hit_point, t));
+	return NULL;
 }
 
 
@@ -126,21 +154,11 @@ void	ray_trace(t_img *img, t_cam *cam, t_list_shape *scene, t_point2 size, t_lis
 			//ray_del(&ray);
 			if (shapeset_intersect(inter, scene))
 			{
-				//*cur_pixel = 255 << 16 | 255 << 8 | 255;
-				
 				t_vector3 *tmp1 = v3_new_mult_by_num(ray->direction, inter->t);
-				t_vector3 *P = v3_new_plus(cam->origin, tmp1);
+				t_vector3 *P = v3_new_plus(ray->origin, tmp1);
 				t_vector3 *N;
 				
-				
-				if (inter->shape->shape != SPHERE)
-					N = get_normal(inter, ray, inter->t);
-				else
-				{
-					N = v3_new_minus(P, get_center(inter));
-					N = v3_new_div_by_num(N, length(N));
-				}
-				
+				N = get_normal(inter, ray, inter->t);
 				t_vector3 *to_cam = v3_new_mult_by_num(ray->direction, -1);
 				
 				light_percent = compute_light(P, N, lights, to_cam, get_specular(inter));
@@ -237,13 +255,24 @@ int testCodeDim()
 	add_new_shape(rt->shapes, (void*)plane, plane->shape);
 	
 	
+	t_vector3 *posit1 = v3_new3(0, 0, -55);
+	t_vector3 *norm1 = v3_new3(0, 0, 1);
+	t_plane *plane1 = plane_new(posit1, norm1);
+	plane1->color = white();
+	plane1->color->r = 0;
+	plane1->color->g = 0;
+	plane1->shape = PLANE;
+	plane1->specular = 0;
+	add_new_shape(rt->shapes, (void*)plane1, plane->shape);
+	
+	
 	//test CONE
 	t_cone *cone = (t_cone*)malloc(sizeof(t_cone));
 	cone->angle = 90;
 	cone->color = white();
 	cone->color->r = 0;
 	cone->color->b = 0;
-	cone->position = v3_new3(0, 5, 0);
+	cone->position = v3_new3(4, 5, 0);
 	cone->dir = v3_new3(0, 1, 0);
 	cone->shape = CONE;
 	add_new_shape(rt->shapes, (void*)cone, cone->shape);
@@ -256,17 +285,23 @@ int testCodeDim()
 	l1->position = NULL;
 	rt->light = new_light_list(l1, l1->type);
 	
+	
+	t_sphere *sun = sphere_new_dp(v3_new3(5, 5, 20), 0.3);
+	sun->color->b = 0;
+	sun->specular = -1;
+	add_new_shape(rt->shapes, (void*)sun, sun->shape);
+	
 	t_light *light = (t_light*)malloc(sizeof(t_light));
 	light->type = point;
 	light->intensity = 0.5;
-	light->position = v3_new3(20, 6, 50);
-	add_new_light(rt->light, light, light->type);
+	light->position = v3_new3(5, 5, 20);
+	//add_new_light(rt->light, light, light->type);
 
 	
 	t_light *l2 = (t_light*)malloc(sizeof(t_light));
 	l2->type = directional;
-	l2->intensity = 0.2;
-	l2->position = v3_new3(0, -1, -1);
+	l2->intensity = 0.4;
+	l2->position = v3_new3(0, 2, 2);
 	add_new_light(rt->light, l2, l2->type);
 
 	

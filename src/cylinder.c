@@ -100,3 +100,23 @@ _Bool	cylinder_intersect(t_inter *inter, t_list_shape *shape_in_list)
 //	return (0);
 	
 }
+
+
+
+t_vector3 *get_cyl_normal(t_cylinder *cyl, t_ray *ray, t_vector3 *hit_point, double t)
+{
+	//scalar that determines the closest point on the axis
+	double		m;
+	t_vector3	*x;
+	t_vector3	*tmp[3];
+	t_vector3	*normal;
+	
+	x = v3_new_minus(ray->origin, cyl->position);
+	m = dot(ray->direction, cyl->dir) * t + dot(x, cyl->dir);;
+	tmp[0] = v3_new_minus(hit_point, cyl->position);
+	tmp[1] = v3_new_mult_by_num(cyl->dir, m);
+	tmp[2] = v3_new_minus(tmp[0], tmp[1]);
+	normal = v3_new_div_by_num(tmp[2], length(tmp[2]));
+	free_temp_v(tmp, 3);
+	return (normal);
+}
