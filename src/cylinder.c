@@ -21,7 +21,7 @@ _Bool	cylinder_intersect(t_inter *inter, t_list_shape *shape_in_list)
 	double tmp1 = dot(local_ray->direction, local_ray->direction);
 	double tmp2 = pow(dot(local_ray->direction, cylinder->dir), 2);
 	double a = tmp1 - tmp2;
-	
+
 	//a = dot(local_ray->direction, local_ray->direction) - pow(dot(local_ray->direction, cylinder->dir), 2);
 
 	double tmp3 = dot(local_ray->direction, x);
@@ -29,12 +29,14 @@ _Bool	cylinder_intersect(t_inter *inter, t_list_shape *shape_in_list)
 	double tmp5 = dot(x, cylinder->dir);
 	double tmp6 = tmp4 * tmp5;
 	double b = 2 * (tmp3 - tmp6);
-	
+	ray_del(&local_ray);
+
 	//b = (dot(local_ray->direction, x) - dot(local_ray->direction, cylinder->dir) * dot(x, cylinder->dir)) * 2;
 
 	double tmp7 = dot(x, x);
 	double tmp8 = pow(dot(x, cylinder->dir), 2) + cylinder->radius * cylinder->radius;
 	double c = tmp7 - tmp8;
+	v3_del(&x);
 
 	double Discr = pow(b, 2) - 4 * a * c;
 
@@ -50,9 +52,9 @@ _Bool	cylinder_intersect(t_inter *inter, t_list_shape *shape_in_list)
 //		return (1);
 //	}
 //	return (0);
-	
-	
-	
+
+
+
 	if (Discr == 0)
 		t1 = -b / (2 * a);
 	else
@@ -68,7 +70,7 @@ _Bool	cylinder_intersect(t_inter *inter, t_list_shape *shape_in_list)
 	return (FALSE);
 
 ///////////////////////////////////////////////////
-	
+
 //	double t[2];
 //	double discr;
 //	double abc[3];
@@ -98,7 +100,7 @@ _Bool	cylinder_intersect(t_inter *inter, t_list_shape *shape_in_list)
 //		return (1);
 //	}
 //	return (0);
-	
+
 }
 
 
@@ -110,7 +112,7 @@ t_vector3 *get_cyl_normal(t_cylinder *cyl, t_ray *ray, t_vector3 *hit_point, dou
 	t_vector3	*x;
 	t_vector3	*tmp[3];
 	t_vector3	*normal;
-	
+
 	x = v3_new_minus(ray->origin, cyl->position);
 	m = dot(ray->direction, cyl->dir) * t + dot(x, cyl->dir);;
 	tmp[0] = v3_new_minus(hit_point, cyl->position);

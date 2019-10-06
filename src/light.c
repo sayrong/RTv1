@@ -16,7 +16,7 @@ double compute_specular(t_vector3 *normal_to_intersect, t_vector3 *light_vector,
 	t_vector3 *tmp3;
 	double res;
 	double percent;
-	
+
 	percent = 0;
 	tmp1 = v3_new_mult_by_num(normal_to_intersect, 2);
 	tmp2 = dot(normal_to_intersect, light_vector);
@@ -27,6 +27,9 @@ double compute_specular(t_vector3 *normal_to_intersect, t_vector3 *light_vector,
 	{
 		percent = pow(res/(length(return_light_vector) * length(to_camera_vector)), object_specular);
 	}
+	v3_del(&tmp1);
+	v3_del(&tmp3);
+	v3_del(&return_light_vector);
 	return (percent);
 }
 
@@ -37,10 +40,10 @@ double compute_light(t_vector3 *intersection_point, t_vector3 *normal_to_interse
 	t_list_light *tmp;
 	t_vector3 *light_vector;
 	double percent;
-	
+
 	res = 0;
 	tmp = lights;
-	
+
 	while (tmp != NULL)
 	{
 		if (tmp->type == ambient)
@@ -61,7 +64,7 @@ double compute_light(t_vector3 *intersection_point, t_vector3 *normal_to_interse
 				percent = compute_specular(normal_to_intersect, light_vector, to_camera_vector, specular);
 				res += (tmp->light->intensity * percent);
 			}
-			
+
 		}
 		tmp = tmp->next;
 	}

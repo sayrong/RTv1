@@ -1,6 +1,6 @@
 .PHONY: clean fclean re git
 
-OS = LINUX
+OS = MACOS
 C = fast commit
 NAME = RTv1
 
@@ -17,10 +17,15 @@ SRCNAME = main.c \
 		plane_init.c \
 		sphere_init.c \
 		shape_init.c \
-		shapeset_init.c \
 		intersection_init.c \
 		camera_init.c \
-		image_init.c
+		image_init.c \
+		color.c \
+		cone.c \
+		cylinder.c \
+		list.c \
+		light.c \
+		shapeset_init.c
 
 OBJNAME = $(SRCNAME:.c=.o)
 OBJ = $(addprefix $(OBJDIR),$(OBJNAME))

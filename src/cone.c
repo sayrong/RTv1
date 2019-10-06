@@ -38,11 +38,11 @@ _Bool	cone_intersect(t_inter *inter, t_list_shape *shape_in_list)
 	double t1 = 0;
 	double t2 = 0;
 
-	
+
 	t_cone *cone = ((t_cone*)shape_in_list->content);
 	t_ray *local_ray = ray_new_copy(inter->ray);
-	
-	
+
+
 	t_vector3 *x = v3_new_minus(local_ray->origin, cone->position);
 
 	double tmp1 = length_sq(local_ray->direction);
@@ -63,6 +63,8 @@ _Bool	cone_intersect(t_inter *inter, t_list_shape *shape_in_list)
 
 	double Discr = pow(b, 2) - 4 * a * c;
 
+	ray_del(&local_ray);
+	v3_del(&x);
 	if (Discr < 0)
 		return (FALSE);
 	if (Discr == 0)
@@ -81,9 +83,9 @@ _Bool	cone_intersect(t_inter *inter, t_list_shape *shape_in_list)
 	t1 = t1 < t2 && t1 > RAY_T_MIN ? t1 : t2;
 	if (t1 > RAY_T_MIN && t1 < inter->t)
 	{
-		t_vector3	*tmp = v3_new_mult_by_num(local_ray->direction, t1);
-		t_vector3	*hit_point = v3_new_plus(local_ray->origin, tmp);
-		
+//		t_vector3	*tmp = v3_new_mult_by_num(local_ray->direction, t1);
+//		t_vector3	*hit_point = v3_new_plus(local_ray->origin, tmp);
+
 		//remove up
 //		if (cone->position->y < hit_point->y)
 //		{
@@ -93,10 +95,10 @@ _Bool	cone_intersect(t_inter *inter, t_list_shape *shape_in_list)
 		inter->t = t1;
 		return (TRUE);
 	}
-	
+
 	return (FALSE);
-	
-	
+
+
 //	double abc[3];
 //	double t[2];
 //	t_vector3 *x;
@@ -120,6 +122,6 @@ _Bool	cone_intersect(t_inter *inter, t_list_shape *shape_in_list)
 //		return (1);
 //	}
 //	return (0);
-	
-	
+
+
 }

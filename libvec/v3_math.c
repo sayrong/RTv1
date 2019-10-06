@@ -6,7 +6,7 @@
 /*   By: cschoen <cschoen@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/09/28 22:17:12 by cschoen           #+#    #+#             */
-/*   Updated: 2019/09/30 02:20:47 by cschoen          ###   ########.fr       */
+/*   Updated: 2019/10/06 22:57:16 by cschoen          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -15,7 +15,7 @@
 void free_temp_v(t_vector3 **ar, int size)
 {
 	int i;
-	
+
 	i = 0;
 	while (i < size)
 	{

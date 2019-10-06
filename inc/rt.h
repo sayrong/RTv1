@@ -6,7 +6,7 @@
 /*   By: cschoen <cschoen@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/09/29 14:15:02 by cschoen           #+#    #+#             */
-/*   Updated: 2019/10/02 02:38:31 by cschoen          ###   ########.fr       */
+/*   Updated: 2019/10/06 21:55:57 by cschoen          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -25,6 +25,11 @@
 # include <mlx.h>
 # include "../libvec/vector.h"
 # include "../libft/libft.h"
+
+# include "macoskeys.h"
+/*
+# include "linuxkeys.h"
+*/
 
 typedef struct s_color
 {
@@ -45,8 +50,8 @@ typedef struct s_light
 	t_light_type type;
 	double       intensity;
 	t_vector3    *position;
-	
-	
+
+
 }              t_light;
 
 typedef enum	e_shape_type
@@ -87,7 +92,7 @@ typedef struct	s_plane
 	t_shape_type 	shape;
 	t_color			*color;
 	int 		specular;
-	
+
 }				t_plane;
 
 typedef struct	s_sphere
@@ -165,7 +170,7 @@ typedef struct	s_rt
 	t_cam			*cam;
 	t_list_shape 	*shapes;
 	t_list_light	*light;
-	
+
 }				t_rt;
 
 
@@ -243,7 +248,7 @@ _Bool			sphere_intersect(t_inter *inter, t_list_shape *shape_in_list);
 //t_shapeset		*add_shape(t_shape *shape, t_shapeset *set);
 
 
-
+_Bool			shape_intersect(t_inter *inter, t_list_shape *shape);
 _Bool			shapeset_intersect(t_inter *inter, t_list_shape *shape_list);
 //_Bool			shapeset_does_intersect(t_ray *ray, t_shapeset *set);
 
@@ -259,6 +264,8 @@ t_cam			*camera_new(t_vector3 *origin, t_vector3 *target,
 							t_vector3 *upguide, t_vector2 *fov_ratio);
 t_cam			*camera_new_dp(t_vector3 *origin, t_vector3 *target,
 							t_vector3 *upguide, t_vector2 *fov_ratio);
+t_cam			*recalc_cam_dp(t_cam *cam, int key, t_vector3 *upguide,
+							t_vector2 *fov_ratio);
 t_ray			*make_ray(t_vector2 *point, t_cam *cam);
 
 t_win			*win_new(int width, int height);

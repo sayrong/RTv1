@@ -11,7 +11,7 @@
 t_color *white(void)
 {
 	t_color *new;
-	
+
 	if (!(new = (t_color*)malloc(sizeof(t_color))))
 		error("Create white: ");
 	new->r = 255;
@@ -39,5 +39,5 @@ t_color *get_color_from_list(t_list_shape *list)
 	else if (list->shape == CYLINDER)
 		return (((t_cylinder*)list->content)->color);
 	else
-		return (1);
+		return (NULL);
 }
