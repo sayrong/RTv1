@@ -10,6 +10,7 @@
 
 _Bool	cylinder_intersect(t_inter *inter, t_list_shape *shape_in_list)
 {
+	
 	double t1 = 0;
 	double t2 = 0;
 

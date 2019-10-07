@@ -176,6 +176,7 @@ typedef struct	s_rt
 
 t_vector3 *get_sphere_normal(t_sphere *sphere, t_vector3 *hit_point);
 t_vector3 *get_plane_normal(t_plane *plane, t_ray *ray);
+t_vector3 *get_cone_normal(t_cone *cone, t_ray *ray, t_vector3 *hit_point, double t);
 
 _Bool	cone_intersect(t_inter *inter, t_list_shape *shape_in_list);
 
@@ -199,7 +200,7 @@ int				get_color(t_color *c, double light);
 t_color			*get_color_from_list(t_list_shape *list);
 //
 
-double compute_light(t_vector3 *intersection_point, t_vector3 *normal_to_intersect, t_list_light *lights, t_vector3 *to_camera_vector, int specular);
+double compute_light(t_vector3 *intersection_point, t_vector3 *normal_to_intersect, t_list_light *lights, t_vector3 *to_camera_vector, int specular, t_list_shape *scene);
 
 
 double			sqr(double num);

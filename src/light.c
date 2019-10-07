@@ -34,7 +34,7 @@ double compute_specular(t_vector3 *normal_to_intersect, t_vector3 *light_vector,
 }
 
 
-double compute_light(t_vector3 *intersection_point, t_vector3 *normal_to_intersect, t_list_light *lights, t_vector3 *to_camera_vector, int specular)
+double compute_light(t_vector3 *intersection_point, t_vector3 *normal_to_intersect, t_list_light *lights, t_vector3 *to_camera_vector, int specular, t_list_shape *scene)
 {
 	double res;
 	t_list_light *tmp;
@@ -49,6 +49,26 @@ double compute_light(t_vector3 *intersection_point, t_vector3 *normal_to_interse
 		if (tmp->type == ambient)
 			res += tmp->light->intensity;
 		else {
+			
+			t_vector3 *tt = v3_new_minus(tmp->light->position, intersection_point);
+			double dist = length(tt);
+			
+			//to shadow find clossed object
+//			t_inter *inter;
+//			t_ray *ray;
+//			t_vector3 *dir1 = v3_new_minus(tmp->light->position, intersection_point);
+//			t_vector3 *dir2 = new_normalize(dir1);
+//
+//			ray = ray_new3(tmp->light->position, dir2, RAY_T_MAX);
+//			inter = inter_new_ray(ray);
+//			if (shape_intersect(inter, scene))
+//			{
+//				if (inter->t > dist)
+//				{
+//					tmp = tmp->next;
+//					continue ;
+//				}
+//			}
 			if (tmp->type == point)
 				light_vector = v3_new_minus(tmp->light->position, intersection_point);
 			else

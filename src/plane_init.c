@@ -78,12 +78,18 @@ _Bool	plane_intersect(t_inter *inter, t_list_shape *shape_in_list)
 	if (t <= RAY_T_MIN || t >= RAY_T_MAX)
 		return (FALSE);
 	//need to find clossed t
-	if (t < inter->t)
+//	if (t < inter->t)
+//	{
+//		inter->t = t;
+//		inter->shape = shape_in_list;
+//	}
+	if (!define_t(t, t, &inter->t))
 	{
 		inter->t = t;
 		inter->shape = shape_in_list;
+		return (TRUE);
 	}
-	return (TRUE);
+	return (FALSE);
 }
 
 t_vector3 *get_plane_normal(t_plane *plane, t_ray *ray)
