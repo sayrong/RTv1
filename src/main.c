@@ -59,20 +59,41 @@ t_vector3 *get_normal(t_inter		*inter, t_ray *ray, double t)
 		double angleRad = degrees_to_rad(cone->angle);
 		double k = tan(angleRad);
 
-		double tmp1 = dot(ray->direction, cone->dir) * t;
-		t_vector3 *x = v3_new_minus(ray->origin, cone->position);
-		double tmp2 = dot(x, cone->dir);
-		double m = tmp1 + tmp2;
+        double tmp1 = dot(ray->direction, cone->dir) * t;
+        t_vector3 *x = v3_new_minus(ray->origin, cone->position);
+        double tmp2 = dot(x, cone->dir);
+        double m = tmp1 + tmp2;
+        
+        t_vector3 *tmp3;
+        t_vector3 *tmp4;
+        t_vector3 *tmp5;
+        t_vector3 *tmp6;
+        if (hit_point->y < cone->position->y) {
+            
+  
+            tmp3 = v3_new_minus(hit_point, cone->position);
+            tmp4 = v3_new_mult_by_num(cone->dir, m);
+            tmp5 = v3_new_minus(tmp3, tmp4);
+            tmp6 = v3_new_mult_by_num(cone->dir, m);
+        } else {
+            t_vector3 *d = v3_new_mult_by_num(cone->dir, -1);
+            
+            tmp3 = v3_new_minus(hit_point, cone->position);
+            tmp4 = v3_new_mult_by_num(d, m);
+            tmp5 = v3_new_minus(tmp3, tmp4);
+            tmp6 = v3_new_mult_by_num(d, m);
+        }
+		
 
-		t_vector3 *tmp3 = v3_new_minus(hit_point, cone->position);
-		t_vector3 *tmp4 = v3_new_mult_by_num(cone->dir, m);
-		t_vector3 *tmp5 = v3_new_minus(tmp3, tmp4);
-
-		t_vector3 *tmp6 = v3_new_mult_by_num(cone->dir, m);
+		//t_vector3 *tmp6 = v3_new_mult_by_num(cone->dir, m);
 		t_vector3 *tmp7 = v3_new_mult_by_num(tmp6, k);
 		t_vector3 *tmp8 = v3_new_mult_by_num(tmp7, k);
 
-		t_vector3 *fin = v3_new_minus(tmp5, tmp8);
+        t_vector3 *fin;
+        if (hit_point->y < cone->position->y)
+            fin = v3_new_minus(tmp5, tmp8);
+        else
+            fin = v3_new_minus(tmp5, tmp5);
 
 		t_vector3 *N = v3_new_div_by_num(fin, length(fin));
 		v3_del(&tmp3);
@@ -247,7 +268,7 @@ int testCodeDim()
 	if (!(rt = (t_rt*)malloc(sizeof(t_rt))))
 		error("RT: ");
 
-	rt->size = p2_set(WIDTH / 2, HEIGHT / 2);
+	rt->size = p2_set(WIDTH, HEIGHT);
 	rt->win = win_new(rt->size.x, rt->size.y);
 	rt->img = img_new(rt->size.x, rt->size.y, rt->win);
 
@@ -318,7 +339,7 @@ int testCodeDim()
 	rt->light = new_light_list(l1, l1->type);
 
 
-	t_sphere *sun = sphere_new_dp(v3_new3(5, 5, 20), 0.3);
+	t_sphere *sun = sphere_new_dp(v3_new3(4, 5, 5), 0.3);
 	sun->color->b = 0;
 	sun->specular = -1;
 	add_new_shape(rt->shapes, (void*)sun, sun->shape);
@@ -326,8 +347,8 @@ int testCodeDim()
 	t_light *light = (t_light*)malloc(sizeof(t_light));
 	light->type = point;
 	light->intensity = 0.5;
-	light->position = v3_new3(5, 5, 20);
-	//add_new_light(rt->light, light, light->type);
+	light->position = v3_new3(4, 5, 5);
+	add_new_light(rt->light, light, light->type);
 
 
 	t_light *l2 = (t_light*)malloc(sizeof(t_light));
