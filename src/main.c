@@ -100,6 +100,11 @@ void	ray_trace(t_img *img, t_cam *cam, t_list_shape *scene, t_point2 size, t_lis
 				N = get_normal(inter, ray, inter->t);
 				t_vector3 *to_cam = v3_new_mult_by_num(ray->direction, -1);
 
+                if (inter->shape->shape == CYLINDER)
+                {
+                    int a = 1;
+                }
+                
 				light_percent = compute_light(P, N, lights, to_cam, get_specular(inter), scene);
 				t_color *tmp = get_color_from_list(inter->shape);
 				*cur_pixel = get_color(tmp, light_percent);
@@ -191,14 +196,14 @@ int testCodeDim()
 	//rt->shapes = new_shape_list((void*)sphere, sphere->shape);
 
 
-	t_sphere *sphere1 = sphere_new_dp(v3_new3(5, 0, 13), 3.0);
+	t_sphere *sphere1 = sphere_new_dp(v3_new3(4, 5, 0), 3.0);
 	sphere1->color->b = 0;
 	sphere1->color->g = 0;
 	//add object to all shapes
 	sphere1->specular = 300;
 	//add_new_shape(rt->shapes, (void*)sphere1, sphere1->shape);
-
-
+    //rt->shapes = new_shape_list((void*)sphere1, sphere1->shape);
+    
 	//create plane
 	t_vector3 *posit = v3_new3(0, 0, 0);
 	t_vector3 *norm = v3_new3(0, 1, 0);
@@ -208,7 +213,7 @@ int testCodeDim()
 	plane->color->g = 0;
 	plane->shape = PLANE;
 	plane->specular = 0;
-	//add_new_shape(rt->shapes, (void*)plane, plane->shape);
+    //add_new_shape(rt->shapes, (void*)plane, plane->shape);
 	rt->shapes = new_shape_list((void*)plane, plane->shape);
 
 
@@ -247,7 +252,7 @@ int testCodeDim()
 	t_sphere *sun = sphere_new_dp(v3_new3(10, 10, 6), 0.3); //10 10 6
 	sun->color->b = 0;
 	sun->specular = -1;
-	add_new_shape(rt->shapes, (void*)sun, sun->shape);
+	//add_new_shape(rt->shapes, (void*)sun, sun->shape);
 
 	t_light *light = (t_light*)malloc(sizeof(t_light));
 	light->type = point;
@@ -265,11 +270,11 @@ int testCodeDim()
 
 	//CYL test
 	t_cylinder *cyl = (t_cylinder*)malloc(sizeof(t_cylinder));
-	cyl->position = v3_new3(0, 0, 10);
+	cyl->position = v3_new3(4, 5, 0);
 	cyl->dir = v3_new3(0, 1, 0);
 	cyl->color = white();
 	cyl->color->g = 0;
-	cyl->radius = 2;
+	cyl->radius = 3;
 	cyl->lenght = 5; // ???
 	cyl->shape = CYLINDER;
 	//add_new_shape(rt->shapes, (void*)cyl, cyl->shape);

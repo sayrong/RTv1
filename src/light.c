@@ -54,21 +54,45 @@ double compute_light(t_vector3 *intersection_point, t_vector3 *normal_to_interse
 			double dist = length(tt);
 			
 			//to shadow find clossed object
-//			t_inter *inter;
-//			t_ray *ray;
-//			t_vector3 *dir1 = v3_new_minus(tmp->light->position, intersection_point);
-//			t_vector3 *dir2 = new_normalize(dir1);
+//            t_inter *inter;
+//            t_ray *ray;
+//            t_vector3 *dir1 = v3_new_minus(tmp->light->position, intersection_point);
 //
-//			ray = ray_new3(tmp->light->position, dir2, RAY_T_MAX);
-//			inter = inter_new_ray(ray);
-//			if (shape_intersect(inter, scene))
-//			{
-//				if (inter->t > dist)
-//				{
-//					tmp = tmp->next;
-//					continue ;
-//				}
-//			}
+//            t_vector3 *dirT = v3_new_mult_by_num(dir1, -1);
+//
+//            t_vector3 *dir2 = new_normalize(dirT);
+//
+//            t_vector3 *dir3 = v3_new_mult_by_num(dir2, -1);
+//
+//            ray = ray_new3(tmp->light->position, dir2, RAY_T_MAX);
+//            inter = inter_new_ray(ray);
+            
+            t_inter *inter;
+            t_ray *ray;
+            t_vector3 *dir1 = v3_new_minus(intersection_point, tmp->light->position);
+            t_vector3 *dir2 = new_normalize(dir1);
+            ray = ray_new3(tmp->light->position, dir2, RAY_T_MAX);
+            inter = inter_new_ray(ray);
+            
+            t_list_shape *t = scene;
+            while (t != NULL) {
+                shape_intersect(inter, t);
+                t = t->next;
+            }
+            
+            if (inter->shape != NULL)
+            {
+                if (inter->shape->shape == CYLINDER)
+                {
+                    int a = 1;
+                }
+                if (inter->t < dist - 0.1)
+                {
+                    tmp = tmp->next;
+                    continue ;
+                }
+            }
+            
 			if (tmp->type == point)
 				light_vector = v3_new_minus(tmp->light->position, intersection_point);
 			else
