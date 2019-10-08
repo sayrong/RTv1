@@ -39,101 +39,30 @@ _Bool	cone_intersect(t_inter *inter, t_list_shape *shape_in_list)
 	//  c   = X|X - (1+k*k)*(X|V)^2
 	//	X equals O-C.
 	
-//	double		abc[3];
-//	double		t[2];
-//	t_vector3	*x;
-//	t_cone		*cone;
-//	double		k_and_discr[2];
-//
-//	cone = ((t_cone*)shape_in_list->content);
-//	x = v3_new_minus(inter->ray->origin, cone->position);
-//	k_and_discr[0] = 1 + tan(degrees_to_rad(cone->angle)) * tan(degrees_to_rad(cone->angle));
-//	abc[0] = length_sq(inter->ray->direction) - k_and_discr[0] * pow(dot(inter->ray->direction, cone->dir),2);
-//	abc[1] = 2 * (dot(inter->ray->direction, x) - k_and_discr[0] * dot(inter->ray->direction, cone->dir) * dot(x, cone->dir));
-//	abc[2] = length_sq(x) - k_and_discr[0] * pow(dot(x, cone->dir),2);
-//	k_and_discr[1] = abc[1] * abc[1] - 4 * abc[0] * abc[2];
-//	free(x);
-//	if (k_and_discr[1] < 0)
-//		return (FALSE);
-//	t[0] = (-abc[1] + sqrt(k_and_discr[1])) / 2 * abc[0];
-//	t[1] = (-abc[1] - sqrt(k_and_discr[1])) / 2 * abc[0];
-//	if (!define_t(t[0], t[1], &(inter->t)))
-//	{
-//		inter->shape = shape_in_list;
-//		return (TRUE);
-//	}
-//	return (FALSE);
-	
-	
-	
-	//GOT DIFFERENCE. DONT KNOW WHY
-	
-	
-	double t1 = 0;
-	double t2 = 0;
-	
+	double		abc[3];
+	double		t[2];
+	t_vector3	*x;
+	t_cone		*cone;
+	double		k_and_discr[2];
 
-	t_cone *cone = ((t_cone*)shape_in_list->content);
-	t_ray *local_ray = ray_new_copy(inter->ray);
-
-
-	t_vector3 *x = v3_new_minus(local_ray->origin, cone->position);
-
-	double tmp1 = length_sq(local_ray->direction);
-	double angleRad = degrees_to_rad(cone->angle);
-	double tmp2 = 1 + tan(angleRad) * tan(angleRad);
-	double tmp3 = pow(dot(local_ray->direction, cone->dir),2);
-	double a = tmp1 - tmp2 * tmp3;
-
-
-	double tmp4 = dot(local_ray->direction, x);
-	double tmp5 = dot(local_ray->direction, cone->dir);
-	double tmp6 = dot(x, cone->dir);
-	double b = 2 * (tmp4 - tmp2 * tmp5 * tmp6);
-
-	double tmp7 = length_sq(x);
-	double tmp8 = pow(dot(x, cone->dir),2);
-	double c = tmp7 - tmp2 * tmp8;
-
-	double Discr = pow(b, 2) - 4 * a * c;
-
-	ray_del(&local_ray);
-	v3_del(&x);
-	if (Discr < 0)
+	cone = ((t_cone*)shape_in_list->content);
+	x = v3_new_minus(inter->ray->origin, cone->position);
+	k_and_discr[0] = 1 + tan(degrees_to_rad(cone->angle)) * tan(degrees_to_rad(cone->angle));
+	abc[0] = length_sq(inter->ray->direction) - k_and_discr[0] * pow(dot(inter->ray->direction, cone->dir),2);
+	abc[1] = 2 * (dot(inter->ray->direction, x) - k_and_discr[0] * dot(inter->ray->direction, cone->dir) * dot(x, cone->dir));
+	abc[2] = length_sq(x) - k_and_discr[0] * pow(dot(x, cone->dir),2);
+	k_and_discr[1] = pow(abc[1],2) - 4 * abc[0] * abc[2];
+	free(x);
+	if (k_and_discr[1] < 0)
 		return (FALSE);
-	if (Discr == 0)
-		t1 = -b / (2 * a);
-	else
+	t[0] = (-abc[1] + sqrt(k_and_discr[1])) / (2 * abc[0]);
+	t[1] = (-abc[1] - sqrt(k_and_discr[1])) / (2 * abc[0]);
+	if (!define_t(t[0], t[1], &(inter->t)))
 	{
-		t1 = (-b + sqrt(Discr)) / (2 * a);
-		t2 = (-b - sqrt(Discr)) / (2 * a);
-	}
-	//	if (!define_t(t1, t2, &(inter->t)))
-	//	{
-	//
-	//		inter->shape = shape_in_list;
-	//		return (TRUE);
-	//	}
-	t1 = t1 < t2 && t1 > RAY_T_MIN ? t1 : t2;
-	if (t1 > RAY_T_MIN && t1 < inter->t)
-	{
-		//		t_vector3	*tmp = v3_new_mult_by_num(local_ray->direction, t1);
-		//		t_vector3	*hit_point = v3_new_plus(local_ray->origin, tmp);
-		
-		//remove up
-		//		if (cone->position->y < hit_point->y)
-		//		{
-		//			return (FALSE);
-		//		}
 		inter->shape = shape_in_list;
-		inter->t = t1;
 		return (TRUE);
 	}
-	
 	return (FALSE);
-
-	 
-
 }
 
 

@@ -10,6 +10,13 @@
 /*                                                                            */
 /* ************************************************************************** */
 
+/*
+//	1) Переписать под норму код для пересечения цилиндра +
+//	2) Переписать под норму код для пересечения конуса +
+//	3) Переписать свет под норму
+*/
+
+
 #include "rt.h"
 
 void	draw(t_rt *rt)
@@ -39,23 +46,22 @@ t_vector3 *get_center(t_inter		*inter)
 		return NULL;
 }
 
-t_vector3 *get_normal(t_inter		*inter, t_ray *ray, double t)
+t_vector3 *get_normal(t_inter *inter)
 {
 	t_vector3	*hit_point;
 	t_vector3	*tmp;
 
-	tmp = v3_new_mult_by_num(ray->direction, t);
-	hit_point = v3_new_plus(ray->origin, tmp);
+	tmp = v3_new_mult_by_num(inter->ray->direction, inter->t);
+	hit_point = v3_new_plus(inter->ray->origin, tmp);
 	v3_del(&tmp);
-
 	if (inter->shape->shape == SPHERE)
 		return (get_sphere_normal((t_sphere*)inter->shape->content, hit_point));
 	else if (inter->shape->shape == PLANE)
-		return (get_plane_normal((t_plane*)inter->shape->content, ray));
+		return (get_plane_normal((t_plane*)inter->shape->content, inter->ray));
 	else if (inter->shape->shape == CONE)
-		return (get_cone_normal((t_cone*)inter->shape->content, ray, hit_point, t));
+		return (get_cone_normal((t_cone*)inter->shape->content, inter->ray, hit_point, inter->t));
 	else if (inter->shape->shape == CYLINDER)
-		return (get_cyl_normal((t_cylinder*)inter->shape->content, ray, hit_point, t));
+		return (get_cyl_normal((t_cylinder*)inter->shape->content, inter->ray, hit_point, inter->t));
 	return NULL;
 }
 
@@ -65,10 +71,12 @@ int get_specular(t_inter		*inter)
 {
 	if (inter->shape->shape == SPHERE)
 		return ((t_sphere*)inter->shape->content)->specular;
-	if (inter->shape->shape == PLANE)
+	else if (inter->shape->shape == PLANE)
 		return ((t_plane*)inter->shape->content)->specular;
+	else if (inter->shape->shape == CONE)
+		return ((t_cone*)inter->shape->content)->specular;
 	else
-		return 0;
+		return ((t_cylinder*)inter->shape->content)->specular;
 }
 
 void	ray_trace(t_img *img, t_cam *cam, t_list_shape *scene, t_point2 size, t_list_light *lights)
@@ -93,24 +101,9 @@ void	ray_trace(t_img *img, t_cam *cam, t_list_shape *scene, t_point2 size, t_lis
 			inter = inter_new_ray(ray);
 			if (shapeset_intersect(inter, scene))
 			{
-				t_vector3 *tmp1 = v3_new_mult_by_num(ray->direction, inter->t);
-				t_vector3 *P = v3_new_plus(ray->origin, tmp1);
-				t_vector3 *N;
-
-				N = get_normal(inter, ray, inter->t);
-				t_vector3 *to_cam = v3_new_mult_by_num(ray->direction, -1);
-
-                if (inter->shape->shape == CYLINDER)
-                {
-                    int a = 1;
-                }
-                
-				light_percent = compute_light(P, N, lights, to_cam, get_specular(inter), scene);
+				light_percent = compute_light(inter, scene, lights);
 				t_color *tmp = get_color_from_list(inter->shape);
 				*cur_pixel = get_color(tmp, light_percent);
-				v3_del(&P);
-				v3_del(&N);
-				v3_del(&tmp1);
 			}
 			else
 				*cur_pixel = 0;
@@ -237,7 +230,7 @@ int testCodeDim()
 	cone->position = v3_new3(4, 5, 0);
 	cone->dir = v3_new3(0, 1, 0);
 	cone->shape = CONE;
-	add_new_shape(rt->shapes, (void*)cone, cone->shape);
+	//add_new_shape(rt->shapes, (void*)cone, cone->shape);
 	//rt->shapes = new_shape_list((void*)cone, cone->shape);
 
 	//create light
@@ -277,7 +270,8 @@ int testCodeDim()
 	cyl->radius = 3;
 	cyl->lenght = 5; // ???
 	cyl->shape = CYLINDER;
-	//add_new_shape(rt->shapes, (void*)cyl, cyl->shape);
+	cyl->specular = 10;
+	add_new_shape(rt->shapes, (void*)cyl, cyl->shape);
 
 	ray_trace(rt->img, rt->cam, rt->shapes, p2_set(0, 0), rt->light);
 

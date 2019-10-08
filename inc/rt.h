@@ -111,6 +111,7 @@ typedef struct	s_cone
 	double 			angle;
 	t_color			*color;
 	t_shape_type 	shape;
+	int 		specular;
 }				t_cone;
 
 typedef struct	s_cylinder
@@ -121,7 +122,7 @@ typedef struct	s_cylinder
 	double			lenght;
 	t_color			*color;
 	t_shape_type 	shape;
-
+	int 		specular;
 }				t_cylinder;
 
 
@@ -174,17 +175,25 @@ typedef struct	s_rt
 }				t_rt;
 
 
+double compute_light(t_inter *inter, t_list_shape *scene, t_list_light *lights);
+
+
+t_vector3 *get_normal(t_inter *inter);
+int get_specular(t_inter *inter);
 t_vector3 *get_sphere_normal(t_sphere *sphere, t_vector3 *hit_point);
 t_vector3 *get_plane_normal(t_plane *plane, t_ray *ray);
 t_vector3 *get_cone_normal(t_cone *cone, t_ray *ray, t_vector3 *hit_point, double t);
+t_vector3 *get_cyl_normal(t_cylinder *cyl, t_ray *ray, t_vector3 *hit_point, double t);
 
 _Bool	cone_intersect(t_inter *inter, t_list_shape *shape_in_list);
 
 _Bool	cylinder_intersect(t_inter *inter, t_list_shape *shape_in_list);
-t_vector3 *get_cyl_normal(t_cylinder *cyl, t_ray *ray, t_vector3 *hit_point, double t);
+
 
 double degrees_to_rad(double angleInDegrees);
 int define_t(double t1, double t2, double *t);
+
+
 
 //lists
 t_list_shape 	*new_shape_list(void *content, t_shape_type type);
@@ -199,8 +208,6 @@ t_color			*white(void);
 int				get_color(t_color *c, double light);
 t_color			*get_color_from_list(t_list_shape *list);
 //
-
-double compute_light(t_vector3 *intersection_point, t_vector3 *normal_to_intersect, t_list_light *lights, t_vector3 *to_camera_vector, int specular, t_list_shape *scene);
 
 
 double			sqr(double num);
