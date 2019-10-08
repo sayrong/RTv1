@@ -17,7 +17,7 @@ _Bool	cylinder_intersect(t_inter *inter, t_list_shape *shape_in_list)
 	double		abc[3];
 	double		t[2];
 	t_vector3	*x;
-	t_cylinder		*cylinder;
+	t_cylinder	*cylinder;
 	double		d;
 	
 	cylinder = ((t_cylinder*)shape_in_list->content);
@@ -43,6 +43,8 @@ _Bool	cylinder_intersect(t_inter *inter, t_list_shape *shape_in_list)
 
 t_vector3 *get_cyl_normal(t_cylinder *cyl, t_ray *ray, t_vector3 *hit_point, double t)
 {
+	//N = nrm( P-C-V*m )
+	//m = D|V*t + X|V
 	//scalar that determines the closest point on the axis
 	double		m;
 	t_vector3	*x;

@@ -88,23 +88,12 @@ _Bool	sphere_intersect(t_inter *inter, t_list_shape *shape_in_list)
 		return (FALSE);
 	t[0] = (-coef[1] - sqrt(discriminant)) / (2.0 * coef[0]);
 	t[1] = (-coef[1] + sqrt(discriminant)) / (2.0 * coef[0]);
-	if (t[0] > RAY_T_MIN && t[0] < inter->t)
+	if (!define_t(t[0], t[1], &(inter->t)))
 	{
-		inter->t = t[0];
 		inter->shape = shape_in_list;
+		return (TRUE);
 	}
-	else if (t[1] > RAY_T_MIN && t[1] < inter->t)
-		inter->t = t[1];
-	else
-		return (FALSE);
-	//get clossest t
-	//need to discuss
-	if (t[1] > RAY_T_MIN && t[1] < inter->t)
-	{
-		inter->t = t[1];
-		inter->shape = shape_in_list;
-	}
-	return (TRUE);
+	return (FALSE);
 }
 
 t_vector3 *get_sphere_normal(t_sphere *sphere, t_vector3 *hit_point)

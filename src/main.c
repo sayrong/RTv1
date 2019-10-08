@@ -13,7 +13,7 @@
 /*
 //	1) Переписать под норму код для пересечения цилиндра +
 //	2) Переписать под норму код для пересечения конуса +
-//	3) Переписать свет под норму
+//	3) Переписать свет под норму +
 */
 
 
@@ -186,7 +186,7 @@ int testCodeDim()
 	sphere->color->g = 0;
 	//add object to all shapes
 	sphere->specular = 300;
-	//rt->shapes = new_shape_list((void*)sphere, sphere->shape);
+	rt->shapes = new_shape_list((void*)sphere, sphere->shape);
 
 
 	t_sphere *sphere1 = sphere_new_dp(v3_new3(4, 5, 0), 3.0);
@@ -206,8 +206,8 @@ int testCodeDim()
 	plane->color->g = 0;
 	plane->shape = PLANE;
 	plane->specular = 0;
-    //add_new_shape(rt->shapes, (void*)plane, plane->shape);
-	rt->shapes = new_shape_list((void*)plane, plane->shape);
+    add_new_shape(rt->shapes, (void*)plane, plane->shape);
+	//rt->shapes = new_shape_list((void*)plane, plane->shape);
 
 
 	t_vector3 *posit1 = v3_new3(0, 0, -55);
