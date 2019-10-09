@@ -119,7 +119,6 @@ typedef struct	s_cylinder
 	t_vector3		*position;
 	t_vector3		*dir;
 	double			radius;
-	double			lenght;
 	t_color			*color;
 	t_shape_type 	shape;
 	int 		specular;
@@ -170,7 +169,7 @@ typedef struct	s_rt
 	t_img			*img;
 	t_cam			*cam;
 	t_list_shape 	*shapes;
-	t_list_light	*light;
+	t_list_light	*lights;
 
 }				t_rt;
 
@@ -270,8 +269,7 @@ _Bool			intersected(t_inter *inter);
 t_cam			*cam_init_null(t_cam *cam);
 t_cam			*camera_new(t_vector3 *origin, t_vector3 *target,
 							t_vector3 *upguide, t_vector2 *fov_ratio);
-t_cam			*camera_new_dp(t_vector3 *origin, t_vector3 *target,
-							t_vector3 *upguide, t_vector2 *fov_ratio);
+t_cam			*camera_new_dp(t_vector3 *origin, t_vector3 *target, t_rt *rt);
 t_cam			*recalc_cam_dp(t_cam *cam, int key, t_vector3 *upguide,
 							t_vector2 *fov_ratio);
 t_ray			*make_ray(t_vector2 *point, t_cam *cam);
@@ -280,6 +278,13 @@ t_win			*win_new(int width, int height);
 t_img			*img_new(int width, int height, t_win *win);
 int				*get_pixel(int x, int y, t_img *img);
 
-void			ray_trace(t_img *img, t_cam *cam, t_list_shape *scene, t_point2 size, t_list_light *lights);
+void			ray_trace(t_rt *rt, t_point2 size);
+
+
+void initial_setup(t_rt *rt);
+void scene1(t_rt *rt);
+void scene2(t_rt *rt);
+void scene3(t_rt *rt);
+void scene4(t_rt *rt);
 
 #endif

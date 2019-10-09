@@ -14,14 +14,15 @@
 //	1) Переписать под норму код для пересечения цилиндра +
 //	2) Переписать под норму код для пересечения конуса +
 //	3) Переписать свет под норму +
-*/
+//	4) Сдлеать сцены как задании
+ */
 
 
 #include "rt.h"
 
 void	draw(t_rt *rt)
 {
-	ray_trace(rt->img, rt->cam, rt->shapes, p2_set(0, 0), rt->light);
+	ray_trace(rt, p2_set(0, 0));
 
 	mlx_put_image_to_window(rt->win->mlx_ptr, rt->win->win_ptr,
 							rt->img->img_ptr, 0, 0);
@@ -79,7 +80,7 @@ int get_specular(t_inter		*inter)
 		return ((t_cylinder*)inter->shape->content)->specular;
 }
 
-void	ray_trace(t_img *img, t_cam *cam, t_list_shape *scene, t_point2 size, t_list_light *lights)
+void	ray_trace(t_rt *rt, t_point2 size)
 {
 	t_vector2	screen_coord;
 	t_ray		*ray;
@@ -87,21 +88,21 @@ void	ray_trace(t_img *img, t_cam *cam, t_list_shape *scene, t_point2 size, t_lis
 	t_inter		*inter;
 	double		light_percent;
 
-	(!img || !cam || !scene) ? null_error() : 0;
+	(!rt->img || !rt->cam || !rt->shapes) ? null_error() : 0;
 	size.x = -1;
-	while (++size.x < img->width)
+	while (++size.x < rt->img->width)
 	{
 		size.y = -1;
-		while (++size.y < img->height)
+		while (++size.y < rt->img->height)
 		{
-			screen_coord = v2_set((2.0 * size.x) / img->width - 1.0,
-								(-2.0 * size.y) / img->height + 1.0);
-			ray = make_ray(&screen_coord, cam);
-			cur_pixel = get_pixel(size.x, size.y, img);
+			screen_coord = v2_set((2.0 * size.x) / rt->img->width - 1.0,
+								(-2.0 * size.y) / rt->img->height + 1.0);
+			ray = make_ray(&screen_coord, rt->cam);
+			cur_pixel = get_pixel(size.x, size.y, rt->img);
 			inter = inter_new_ray(ray);
-			if (shapeset_intersect(inter, scene))
+			if (shapeset_intersect(inter, rt->shapes))
 			{
-				light_percent = compute_light(inter, scene, lights);
+				light_percent = compute_light(inter, rt->shapes, rt->lights);
 				t_color *tmp = get_color_from_list(inter->shape);
 				*cur_pixel = get_color(tmp, light_percent);
 			}
@@ -173,11 +174,11 @@ int testCodeDim()
 	rt->win = win_new(rt->size.x, rt->size.y);
 	rt->img = img_new(rt->size.x, rt->size.y, rt->win);
 
-	rt->cam = camera_new_dp(v3_new3(0.0, 8.0, 50.0),
-							v3_new3(0.0, 0.0, 0.0),
-							v3_new3(0.0, 1.0, 0.0),
-							v2_new2(25.0 * PI / 180,
-									(double)rt->size.x / (double)rt->size.y));
+//	rt->cam = camera_new_dp(v3_new3(0.0, 8.0, 50.0),
+//							v3_new3(0.0, 0.0, 0.0),
+//							v3_new3(0.0, 1.0, 0.0),
+//							v2_new2(25.0 * PI / 180,
+//									(double)rt->size.x / (double)rt->size.y));
 
 
 	//create object
@@ -239,7 +240,7 @@ int testCodeDim()
 	l1->type = ambient;
 	l1->intensity = 0.2;
 	l1->position = NULL;
-	rt->light = new_light_list(l1, l1->type);
+	rt->lights = new_light_list(l1, l1->type);
 
 
 	t_sphere *sun = sphere_new_dp(v3_new3(10, 10, 6), 0.3); //10 10 6
@@ -251,7 +252,7 @@ int testCodeDim()
 	light->type = point;
 	light->intensity = 0.5;
 	light->position = v3_new3(10, 10, 6);
-	add_new_light(rt->light, light, light->type);
+	add_new_light(rt->lights, light, light->type);
 
 
 	t_light *l2 = (t_light*)malloc(sizeof(t_light));
@@ -268,12 +269,12 @@ int testCodeDim()
 	cyl->color = white();
 	cyl->color->g = 0;
 	cyl->radius = 3;
-	cyl->lenght = 5; // ???
+	//cyl->lenght = 5; // ???
 	cyl->shape = CYLINDER;
 	cyl->specular = 10;
 	add_new_shape(rt->shapes, (void*)cyl, cyl->shape);
 
-	ray_trace(rt->img, rt->cam, rt->shapes, p2_set(0, 0), rt->light);
+	//ray_trace(rt->img, rt->cam, rt->shapes, p2_set(0, 0), rt->lights);
 
 
 	mlx_put_image_to_window(rt->win->mlx_ptr, rt->win->win_ptr,
@@ -285,12 +286,48 @@ int testCodeDim()
 	return (0);
 }
 
-
-
-int		main(void)
+void initial_setup(t_rt *rt)
 {
+	rt->size = p2_set(WIDTH, HEIGHT);
+	rt->win = win_new(rt->size.x, rt->size.y);
+	rt->img = img_new(rt->size.x, rt->size.y, rt->win);
+}
 
-	testCodeDim();
 
+int select_scene(char *name, t_rt *rt)
+{
+	if (!ft_strcmp(name, "scene1"))
+		scene1(rt);
+	else if (!ft_strcmp(name, "scene2"))
+		scene2(rt);
+	else if (!ft_strcmp(name, "scene3"))
+		scene3(rt);
+	else if (!ft_strcmp(name, "scene4"))
+		scene4(rt);
+	else if (!ft_strcmp(name, "scene5"))
+		scene1(rt);
+	else if (!ft_strcmp(name, "scene6"))
+		scene1(rt);
+	else if (!ft_strcmp(name, "scene7"))
+		scene1(rt);
+	else if (!ft_strcmp(name, "exp"))
+		scene1(rt);
+	else
+		return (1);
+	return (0);
+}
+
+int		main(int argc, char *argv[])
+{
+	t_rt        rt;
+	
+	if (argc == 1)
+		put_error("Select one of scenes - argv:[scene1 - scene7]");
+	else if (argc > 2)
+		put_error("Too many arguments");
+	else if (select_scene(argv[1], &rt))
+		put_error("Wrong argument");
+	input_hook(&rt);
+	mlx_loop(rt.win->mlx_ptr);
 	return (0);
 }

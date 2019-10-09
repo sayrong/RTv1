@@ -80,11 +80,15 @@ t_cam	*recalc_cam_dp(t_cam *cam, int key, t_vector3 *upguide,
 	return (cam);
 }
 
-t_cam	*camera_new_dp(t_vector3 *origin, t_vector3 *target,
-					t_vector3 *upguide, t_vector2 *fov_ratio)
+t_cam	*camera_new_dp(t_vector3 *origin, t_vector3 *target, t_rt *rt)
 {
-	t_cam	*new_cam;
+	t_cam		*new_cam;
+	t_vector3	*upguide;
+	t_vector2	*fov_ratio;
 
+	upguide = v3_new3(0.0, 1.0, 0.0);
+	fov_ratio = v2_new2(25.0 * PI / 180,
+						(double)rt->size.x / (double)rt->size.y);
 	new_cam = camera_new(origin, target, upguide, fov_ratio);
 	v3_del(&origin);
 	v3_del(&target);
