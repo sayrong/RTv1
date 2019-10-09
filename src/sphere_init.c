@@ -88,11 +88,8 @@ _Bool	sphere_intersect(t_inter *inter, t_list_shape *shape_in_list)
 		return (FALSE);
 	t[0] = (-coef[1] - sqrt(discriminant)) / (2.0 * coef[0]);
 	t[1] = (-coef[1] + sqrt(discriminant)) / (2.0 * coef[0]);
-	if (!define_t(t[0], t[1], &(inter->t)))
-	{
-		inter->shape = shape_in_list;
+	if (!define_t(t[0], t[1], inter, shape_in_list))
 		return (TRUE);
-	}
 	return (FALSE);
 }
 
@@ -103,7 +100,8 @@ t_vector3 *get_sphere_normal(t_sphere *sphere, t_vector3 *hit_point)
 	
 	tmp = v3_new_minus(hit_point, sphere->center);
 	normal = v3_new_div_by_num(tmp, length(tmp));
-	free(tmp);
+	v3_del(&tmp);
+	v3_del(&hit_point);
 	return (normal);
 }
 

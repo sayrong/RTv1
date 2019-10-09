@@ -18,8 +18,8 @@
 
 # define TRUE 1
 # define FALSE 0
-# define WIDTH 500
-# define HEIGHT 500
+# define WIDTH 400
+# define HEIGHT 400
 # define PI 3.14159265359
 
 # include <mlx.h>
@@ -190,7 +190,7 @@ _Bool	cylinder_intersect(t_inter *inter, t_list_shape *shape_in_list);
 
 
 double degrees_to_rad(double angleInDegrees);
-int define_t(double t1, double t2, double *t);
+int define_t(double t1, double t2, t_inter *inter, t_list_shape *shape_in_list);
 
 
 
@@ -286,5 +286,9 @@ void scene1(t_rt *rt);
 void scene2(t_rt *rt);
 void scene3(t_rt *rt);
 void scene4(t_rt *rt);
+
+int	red_x_button(void *param);
+int	deal_key(int key, void *param);
+
 
 #endif

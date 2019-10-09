@@ -25,7 +25,11 @@ SRCNAME = main.c \
 		cylinder.c \
 		list.c \
 		light.c \
-		shapeset_init.c
+		shapeset_init.c \
+		scene1.c \
+		scene2.c \
+		scene3.c \
+		scene4.c
 
 OBJNAME = $(SRCNAME:.c=.o)
 OBJ = $(addprefix $(OBJDIR),$(OBJNAME))

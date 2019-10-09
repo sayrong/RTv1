@@ -71,6 +71,7 @@ t_cam	*recalc_cam_dp(t_cam *cam, int key, t_vector3 *upguide,
 //	key == SIX_KEY ? --cam->right : 0;
 //	key == PLUS_KEY ? ++cam->right : 0;
 //	key == MINUS_KEY ? --cam->right : 0;
+	v3_del(&cam->up);
 	cam->up = new_cross(cam->right, cam->forward);
 	normalize(cam->up);
 	cam->h = tan(fov_ratio->u);

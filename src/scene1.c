@@ -15,7 +15,7 @@ void setup_light1(t_rt *rt)
 	
 	l1 = (t_light*)malloc(sizeof(t_light));
 	l1->type = ambient;
-	l1->intensity = 0.05;
+	l1->intensity = 0.2;
 	l1->position = NULL;
 	rt->lights = new_light_list(l1, l1->type);
 	
@@ -29,12 +29,27 @@ void setup_light1(t_rt *rt)
 void setup_obj1(t_rt *rt)
 {
 	t_sphere    *sphere;
-	
-	sphere = sphere_new_dp(v3_new3(0, 0, 0), 3.0);
+
+	sphere = sphere_new_dp(v3_new3(0, 0, 0), 10.0);
 	sphere->color->b = 0;
 	sphere->color->g = 0;
 	sphere->specular = 10;
 	rt->shapes = new_shape_list((void*)sphere, sphere->shape);
+	
+	t_sphere    *sphere1;
+	
+	sphere1 = sphere_new_dp(v3_new3(0, 0, 15), 3.0);
+	sphere1->color->b = 255;
+	sphere1->color->g = 0;
+	sphere1->specular = 10;
+	add_new_shape(rt->shapes, (void*)sphere1, sphere1->shape);
+	
+	
+	sphere1 = sphere_new_dp(v3_new3(0, 0, 0), 2.0);
+	sphere1->color->b = 0;
+	sphere1->color->r = 0;
+	sphere1->specular = 10;
+	add_new_shape(rt->shapes, (void*)sphere1, sphere1->shape);
 }
 
 void setup_camera1(t_rt *rt)
@@ -42,7 +57,7 @@ void setup_camera1(t_rt *rt)
 	t_vector3 *origin;
 	t_vector3 *focus;
 	
-	origin = v3_new3(0.0, 0.0, -10.0);
+	origin = v3_new3(0.0, 0.0, -30.0);
 	focus = v3_new3(0.0, 0.0, 0.0);
 	rt->cam = camera_new_dp(origin, focus, rt);
 }

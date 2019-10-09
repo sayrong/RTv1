@@ -9,18 +9,19 @@
 #include "rt.h"
 
 
-int define_t(double t1, double t2, double *t)
+int define_t(double t1, double t2, t_inter *inter, t_list_shape *shape_in_list)
 {
 	double tmp = -1;
-	if (t1 > RAY_T_MIN && t1 <= t2)
+	if (t1 > RAY_T_MIN && (t1 <= t2 || t2 <= 0))
 		tmp = t1;
-	if (t2 > RAY_T_MIN && t2 < t1)
+	if (t2 > RAY_T_MIN && (t2 < t1 || t1 <= 0))
 		tmp = t2;
 	if (tmp == -1)
 		return (1);
-	if (tmp < *t)
+	if (tmp < inter->t)
 	{
-		*t = tmp;
+		inter->t = tmp;
+		inter->shape = shape_in_list;
 		return (0);
 	}
 	return (1);
@@ -57,11 +58,8 @@ _Bool	cone_intersect(t_inter *inter, t_list_shape *shape_in_list)
 		return (FALSE);
 	t[0] = (-abc[1] + sqrt(k_and_discr[1])) / (2 * abc[0]);
 	t[1] = (-abc[1] - sqrt(k_and_discr[1])) / (2 * abc[0]);
-	if (!define_t(t[0], t[1], &(inter->t)))
-	{
-		inter->shape = shape_in_list;
+	if (!define_t(t[0], t[1], inter, shape_in_list))
 		return (TRUE);
-	}
 	return (FALSE);
 }
 
@@ -85,6 +83,7 @@ t_vector3 *get_cone_normal(t_cone *cone, t_ray *ray, t_vector3 *hit_point, doubl
 	tmp[6] = v3_new_mult_by_num(tmp[5], k);
 	tmp[7] = v3_new_minus(tmp[3], tmp[6]);
 	normal = v3_new_div_by_num(tmp[7], length(tmp[7]));
+	v3_del(&hit_point);
 	free_temp_v(tmp, 8);
 	return (normal);
 }

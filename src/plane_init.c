@@ -83,12 +83,8 @@ _Bool	plane_intersect(t_inter *inter, t_list_shape *shape_in_list)
 //		inter->t = t;
 //		inter->shape = shape_in_list;
 //	}
-	if (!define_t(t, t, &inter->t))
-	{
-		inter->t = t;
-		inter->shape = shape_in_list;
+	if (!define_t(t, t, inter, shape_in_list))
 		return (TRUE);
-	}
 	return (FALSE);
 }
 

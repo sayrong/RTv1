@@ -40,6 +40,8 @@ void set_floor4(t_rt *rt)
 	plane->color->g = 0;
 	plane->shape = PLANE;
 	plane->specular = 0;
+	free(norm);
+	free(posit);
 	rt->shapes = new_shape_list((void*)plane, plane->shape);
 }
 
@@ -57,6 +59,8 @@ void set_back4(t_rt *rt)
 	plane->color->g = 0;
 	plane->shape = PLANE;
 	plane->specular = 0;
+	v3_del(&posit);
+	v3_del(&norm);
 	add_new_shape(rt->shapes, (void*)plane, plane->shape);
 }
 
