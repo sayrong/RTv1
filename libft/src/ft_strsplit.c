@@ -6,13 +6,11 @@
 /*   By: cschoen <cschoen@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2018/12/18 15:55:48 by cschoen           #+#    #+#             */
-/*   Updated: 2018/12/31 17:42:02 by cschoen          ###   ########.fr       */
+/*   Updated: 2019/10/09 09:46:08 by cschoen          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "libft.h"
-
-#include <stdio.h>
 
 static size_t	ft_elements(char const *s, char c)
 {
@@ -27,7 +25,7 @@ static size_t	ft_elements(char const *s, char c)
 			s++;
 		num++;
 	}
-	if (*s - 1 != c)
+	if (*(s - 1) != c)
 		num++;
 	return (num);
 }

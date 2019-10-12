@@ -6,7 +6,7 @@
 /*   By: cschoen <cschoen@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/09/28 20:32:31 by cschoen           #+#    #+#             */
-/*   Updated: 2019/10/06 23:19:58 by cschoen          ###   ########.fr       */
+/*   Updated: 2019/10/12 15:42:29 by cschoen          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -69,7 +69,7 @@ int testCodeDim()
 	sphere1->specular = 300;
 	//add_new_shape(rt->shapes, (void*)sphere1, sphere1->shape);
     //rt->shapes = new_shape_list((void*)sphere1, sphere1->shape);
-    
+
 	//create plane
 	t_vector3 *posit = v3_new3(0, 0, 0);
 	t_vector3 *norm = v3_new3(0, 1, 0);
@@ -92,7 +92,7 @@ int testCodeDim()
 	plane1->shape = PLANE;
 	plane1->specular = 0;
 	//add_new_shape(rt->shapes, (void*)plane1, plane1->shape);
-	
+
 
 	//test CONE
 	t_cone *cone = (t_cone*)malloc(sizeof(t_cone));
@@ -192,7 +192,7 @@ int select_scene(char *name, t_rt *rt)
 int		main(int argc, char *argv[])
 {
 	t_rt        rt;
-	
+
 	if (argc == 1)
 		put_error("Select one of scenes - argv:[scene1 - scene7]");
 	else if (argc > 2)

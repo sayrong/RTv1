@@ -1,25 +1,18 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   error.c                                            :+:      :+:    :+:   */
+/*   v3_norm.c                                          :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: cschoen <cschoen@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2019/09/29 02:55:01 by cschoen           #+#    #+#             */
-/*   Updated: 2019/09/29 15:53:58 by cschoen          ###   ########.fr       */
+/*   Created: 2019/10/07 03:38:49 by cschoen           #+#    #+#             */
+/*   Updated: 2019/10/07 03:40:41 by cschoen          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#include "vector.h"
+#include "libvec.h"
 
-void	error(char *str)
+t_vec3	v3_norm(t_vec3 v)
 {
-	perror(str);
-	exit(1);
-}
-
-void	null_error(void)
-{
-	write(1, "NULL pointer exception\n", 23);
-	exit(1);
+	return (v3_scale(v, 1.0 / v3_length(v)));
 }

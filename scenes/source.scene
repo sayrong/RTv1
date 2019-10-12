@@ -1,0 +1,66 @@
+#	All scene objects have a name and parameters.
+#		Each parameter is separated by "|" characters.
+#
+#	There should be no whitespaces between the beginning of the name
+#		and the end of its last parameter.
+#
+#	In order to comment out a line, you need to put a "#" character at the
+#		beginning(not counting whitespace characters), as you might guess.
+#
+#	To the scene you can put objects like these:
+#		Camera:
+#			camera (there should be only one or zero on the scene)
+#		Shapes:
+#			plane
+#			sphere
+#			cone
+#			cylinder
+#		Lights:
+#			ambient (there should be only one or zero on the scene)
+#			light
+#
+#	Objects names are case-INsensitive.
+#
+#	For one line - one object.
+#
+#	All other non-empty strings throw an "Unknown string" exception.
+#
+#	If the scene has no light, an error exception about it will be thrown.
+#
+#	Numbers:	Maximum number length (counting by characters): 9
+#				You can write a double number, both 0.1 and .1
+#		Examples: 100, 0.1, .01 and -10 have the same length.
+#
+#	Vectors:	Vectors have three numbers separated by commas without spaces.
+#		Examples: 0,0,0 or -1.4,4563,.4
+#
+#	Colors:		Colors have a HEX format(case-insenitive):
+#
+#	Length:| 	  Three ways			 Two ways				  One way
+#	-------| ___________________	___________________		___________________
+#	Six    | |0x| ff | ff | ff |	|0x| ff | 88 | aa |		|0x| f7 | 64 | 3d |
+#	-------| |=================|	|=================|		|=================|
+#	Three  | |0x| f  | f  | f  |	|0x| f  | 8  | a  |
+#	-------| |=================|	|=================|
+#	One    | |0x|      f       |
+#
+#	For the scene below, the parameter names are provided
+#
+#	The intensity value is in the range [0...100]
+
+#camera|position|rotation|
+camera|0,0,-10|0,0,0|
+
+#ambient|intensity
+ambient|100|
+
+#light|position|instensity|
+light|0,0,-2|50|
+
+#sphere|position|rotation|color|radius|
+plane|0,0,0|1,1,1|00ff00|
+plane|0,0,0|5,5,0|0000ff|
+sphere|0,0,10|0,0,0|ff0000|4|
+sphere|-5,0,13|0,0,0|00ffff|2
+
+#plane|position|rotation|color|
