@@ -6,7 +6,7 @@
 /*   By: cschoen <cschoen@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/09/29 14:15:02 by cschoen           #+#    #+#             */
-/*   Updated: 2019/10/12 16:28:31 by cschoen          ###   ########.fr       */
+/*   Updated: 2019/10/12 21:17:30 by cschoen          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -23,12 +23,13 @@
 # define PI 3.14159265359
 
 # include <mlx.h>
-# include "../libvec/vector.h"
-# include "../libft/libft.h"
+# include "../libvec/inc/libvec.h"
+# include "../libft/inc/libft.h"
+# include <stdio.h>
 
 # include "macoskeys.h"
 /*
-# include "linuxkeys.h"
+** # include "linuxkeys.h"
 */
 
 typedef struct			s_color
@@ -40,16 +41,16 @@ typedef struct			s_color
 
 typedef enum			e_light_type
 {
-	ambient,
-	point,
-	directional
+	AMBIENT,
+	POINT,
+	DIRECTIONAL
 }						t_light_type;
 
 typedef struct			s_light
 {
 	t_light_type		type;
 	double				intensity;
-	t_vector3			*position;
+	t_vec3				position;
 }						t_light;
 
 typedef enum			e_shape_type
@@ -77,46 +78,46 @@ typedef struct			s_list_light
 
 typedef struct			s_ray
 {
-	t_vector3			*origin;
-	t_vector3			*direction;
+	t_vec3				*origin;
+	t_vec3				*direction;
 	double				t_max;
 }						t_ray;
 
 typedef struct			s_plane
 {
-	t_vector3			*position;
-	t_vector3			*normal;
+	t_vec3				position;
+	t_vec3				normal;
 	t_shape_type		shape;
-	t_color				*color;
+	t_color				color;
 	int					specular;
 
 }						t_plane;
 
 typedef struct			s_sphere
 {
-	t_vector3			*center;
+	t_vec3				center;
 	double				radius;
 	t_shape_type		shape;
-	t_color				*color;
+	t_color				color;
 	int					specular;
 }						t_sphere;
 
 typedef struct			s_cone
 {
-	t_vector3			*position;
-	t_vector3			*dir;
+	t_vec3				position;
+	t_vec3				dir;
 	double				angle;
-	t_color				*color;
+	t_color				color;
 	t_shape_type		shape;
-	int 				specular;
+	int					specular;
 }						t_cone;
 
 typedef struct			s_cylinder
 {
-	t_vector3			*position;
-	t_vector3			*dir;
+	t_vec3				position;
+	t_vec3				dir;
 	double				radius;
-	t_color				*color;
+	t_color				color;
 	t_shape_type		shape;
 	int					specular;
 }						t_cylinder;
@@ -132,19 +133,11 @@ typedef struct			s_camera
 {
 	double				h;
 	double				w;
-	t_vector3			*origin;
-	t_vector3			*forward;
-	t_vector3			*up;
-	t_vector3			*right;
+	t_vec3				origin;
+	t_vec3				forward;
+	t_vec3				up;
+	t_vec3				right;
 }						t_cam;
-
-typedef struct			s_win
-{
-	void				*mlx_ptr;
-	void				*win_ptr;
-	int					width;
-	int					height;
-}						t_win;
 
 typedef struct			s_img
 {
@@ -159,28 +152,47 @@ typedef struct			s_img
 
 typedef struct			s_rt
 {
-	t_point2			size;
-	t_win				*win;
+	void				*mlx_ptr;
+	void				*win_ptr;
 	t_img				*img;
-	t_cam				*cam;
+	t_cam				cam;
 	t_list_shape		*shapes;
 	t_list_light		*lights;
-
+	_Bool				cam_flg;
+	_Bool				amb_flg;
 }						t_rt;
 
+int						usage(char *app_name);
+int						error(char *err_msg);
+int						p_error(char *err_msg);
+int						parse_error(char *err_msg, int line_num);
+
+int						is_valid_whitespaces(char *str);
+int						is_valid_v3(char *str);
+int						is_valid_double(char *str);
+int						is_valid_hex(char *str);
+
+double					str_to_double(char *str);
+int						str_to_integer(int *num, char *str);
+int						str_to_v3(t_vec3 *vec, char *str);
+int						str_to_rgb(t_color *col, char *str);
+
+void					parse_ambient(t_rt *rt, char **split, int line_num);
+void					parse_light(t_rt *rt, char **split, int line_num);
+void					parse_shape(t_rt *rt, char **split, int line_num);
+void					parser(char *source, t_rt *rt, int fd, int line_num);
 
 double					compute_light(t_inter *inter, t_list_shape *scene,
 										t_list_light *lights);
 
-t_vector3				*get_normal(t_inter *inter);
+t_vec3					*get_normal(t_inter *inter);
 int						get_specular(t_inter *inter);
-t_vector3				*get_sphere_normal(t_sphere *sphere,
-										t_vector3 *hit_point);
-t_vector3				*get_plane_normal(t_plane *plane, t_ray *ray);
-t_vector3				*get_cone_normal(t_cone *cone, t_ray *ray,
-										t_vector3 *hit_point, double t);
-t_vector3				*get_cyl_normal(t_cylinder *cyl, t_ray *ray,
-										t_vector3 *hit_point, double t);
+t_vec3					*get_sphere_normal(t_sphere *sphere, t_vec3 *hit_point);
+t_vec3					*get_plane_normal(t_plane *plane, t_ray *ray);
+t_vec3					*get_cone_normal(t_cone *cone, t_ray *ray,
+										t_vec3 *hit_point, double t);
+t_vec3					*get_cyl_normal(t_cylinder *cyl, t_ray *ray,
+										t_vec3 *hit_point, double t);
 
 _Bool					cone_intersect(t_inter *inter,
 										t_list_shape *shape_in_list);
@@ -216,21 +228,21 @@ void					cylinder_del(t_cylinder **cylinder);
 void					inter_del(t_inter **inter);
 
 t_ray					*ray_new(void);
-t_ray					*ray_new3(t_vector3 *origin, t_vector3 *dir,
+t_ray					*ray_new3(t_vec3 *origin, t_vec3 *dir,
 								double t_max);
 t_ray					*ray_new_copy(t_ray *ray);
 t_ray					*ray_copy(t_ray *ray1, t_ray *ray2);
-t_vector3				*calculate(t_ray *ray, double t);
+t_vec3					*calculate(t_ray *ray, double t);
 
-t_plane					*plane_new(t_vector3 *position, t_vector3 *normal);
-t_plane					*plane_new_dp(t_vector3 *position, t_vector3 *normal);
+t_plane					*plane_new(t_vec3 *position, t_vec3 *normal);
+t_plane					*plane_new_dp(t_vec3 *position, t_vec3 *normal);
 t_plane					*plane_new_copy(t_plane *plane);
 t_plane					*plane_copy(t_plane *plane1, t_plane *plane2);
 _Bool					plane_intersect(t_inter *inter,
 										t_list_shape *shape_in_list);
 
-t_sphere				*sphere_new(t_vector3 *center, double radius);
-t_sphere				*sphere_new_dp(t_vector3 *center, double radius);
+t_sphere				*sphere_new(t_vec3 *center, double radius);
+t_sphere				*sphere_new_dp(t_vec3 *center, double radius);
 t_sphere				*sphere_new_copy(t_sphere *sphere);
 t_sphere				*sphere_copy(t_sphere *sphere1, t_sphere *sphere2);
 _Bool					sphere_intersect(t_inter *inter,
@@ -243,24 +255,23 @@ _Bool					shapeset_intersect(t_inter *inter,
 t_inter					*inter_new(void);
 t_inter					*inter_new_copy(t_inter *inter);
 t_inter					*inter_new_ray(t_ray *ray);
-t_vector3				*position(t_inter *inter);
+t_vec3					*position(t_inter *inter);
 _Bool					intersected(t_inter *inter);
 
 t_cam					*cam_init_null(t_cam *cam);
-t_cam					*camera_new(t_vector3 *origin, t_vector3 *target,
-									t_vector3 *upguide, t_vector2 *fov_ratio);
-t_cam					*camera_new_dp(t_vector3 *origin, t_vector3 *target,
+/* t_cam					*camera_new(t_vec3 *origin, t_vec3 *target,
+									t_vec3 *upguide, t_vector2 *fov_ratio);
+t_cam					*camera_new_dp(t_vec3 *origin, t_vec3 *target,
 									t_rt *rt);
-t_cam					*recalc_cam_dp(t_cam *cam, int key, t_vector3 *upguide,
+t_cam					*recalc_cam_dp(t_cam *cam, int key, t_vec3 *upguide,
 									t_vector2 *fov_ratio);
 t_ray					*make_ray(t_vector2 *point, t_cam *cam);
 
-t_win					*win_new(int width, int height);
-t_img					*img_new(int width, int height, t_win *win);
+t_img					*img_new(int width, int height, t_rt *rt);
 int						*get_pixel(int x, int y, t_img *img);
 
 void					ray_trace(t_rt *rt, t_point2 size);
-
+ */
 void					initial_setup(t_rt *rt);
 void					scene1(t_rt *rt);
 void					scene2(t_rt *rt);
