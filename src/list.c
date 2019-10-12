@@ -14,7 +14,7 @@ t_list_shape *new_shape_list(void *content, t_shape_type type)
 	t_list_shape *new;
 	
 	if (!(new = (t_list_shape*)malloc(sizeof(t_list_shape))))
-		error("t_list_shape: ");
+		put_error("t_list_shape: ");
 	new->content = content;
 	new->shape = type;
 	new->next = NULL;
@@ -44,7 +44,7 @@ t_list_light *new_light_list(t_light *light, t_light_type type)
 	t_list_light *new;
 	
 	if (!(new = (t_list_light*)malloc(sizeof(t_list_light))))
-		error("sphere_new: ");
+		put_error("sphere_new: ");
 	new->light = light;
 	new->type = type;
 	new->next = NULL;

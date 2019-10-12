@@ -90,7 +90,7 @@ _Bool		shapeset_intersect(t_inter *inter, t_list_shape *shape_list)
 	i = 0;
 	shape = shape_list;
 	if (!inter || !shape)
-		null_error();
+		put_error("shape intersect");
 	does_intersect = FALSE;
 	
 	//iterate throw all object in scene

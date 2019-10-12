@@ -18,11 +18,13 @@
 ** c = X|X - (X|V)^2 - r*r
 */
 
+/*
+
 _Bool	cylinder_intersect(t_inter *inter, t_list_shape *shape_in_list)
 {
 	double		abcd[4];
 	double		t[2];
-	t_vector3	*x;
+	t_vec3	*x;
 	t_cylinder	*cylinder;
 
 	cylinder = ((t_cylinder*)shape_in_list->content);
@@ -45,17 +47,14 @@ _Bool	cylinder_intersect(t_inter *inter, t_list_shape *shape_in_list)
 	return (FALSE);
 }
 
-/*
-** N = nrm( P-C-V*m )
-** m = D|V*t + X|V
-*/
 
-t_vector3	*get_cyl_normal(t_cylinder *cyl, t_ray *ray, t_vector3 *hit_point, double t)
+
+t_vec3	*get_cyl_normal(t_cylinder *cyl, t_ray *ray, t_vec3 *hit_point, double t)
 {
 	double		m;
-	t_vector3	*x;
-	t_vector3	*tmp[3];
-	t_vector3	*normal;
+	t_vec3	*x;
+	t_vec3	*tmp[3];
+	t_vec3	*normal;
 
 	x = v3_new_minus(ray->origin, cyl->position);
 	m = dot(ray->direction, cyl->dir) * t + dot(x, cyl->dir);
@@ -68,3 +67,5 @@ t_vector3	*get_cyl_normal(t_cylinder *cyl, t_ray *ray, t_vector3 *hit_point, dou
 	v3_del(&hit_point);
 	return (normal);
 }
+
+*/

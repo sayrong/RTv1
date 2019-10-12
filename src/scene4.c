@@ -8,6 +8,8 @@
 
 #include "rt.h"
 
+/*
+
 void setup_light4(t_rt *rt)
 {
 	t_light		*light;
@@ -28,8 +30,8 @@ void setup_light4(t_rt *rt)
 
 void set_floor4(t_rt *rt)
 {
-	t_vector3 	*posit;
-	t_vector3	*norm;
+	t_vec3 	*posit;
+	t_vec3	*norm;
 	t_plane		*plane;
 	
 	posit = v3_new3(0, -3, 0);
@@ -47,8 +49,8 @@ void set_floor4(t_rt *rt)
 
 void set_back4(t_rt *rt)
 {
-	t_vector3 	*posit;
-	t_vector3	*norm;
+	t_vec3 	*posit;
+	t_vec3	*norm;
 	t_plane		*plane;
 	
 	posit = v3_new3(0, 0, 90);
@@ -68,7 +70,7 @@ void set_back4(t_rt *rt)
 void set_cone(t_rt *rt)
 {
 	t_cone	*cone;
-	t_vector3 *dir;
+	t_vec3 *dir;
 	
 	
 	cone = (t_cone*)malloc(sizeof(t_cone));
@@ -100,7 +102,7 @@ void set_sphere(t_rt *rt)
 void set_cyl(t_rt *rt)
 {
 	t_cylinder    *cyl;
-	t_vector3 *dir;
+	t_vec3 *dir;
 	
 	cyl = (t_cylinder*)malloc(sizeof(t_cylinder));
 	cyl->position = v3_new3(5, 0, 3);
@@ -128,8 +130,8 @@ void setup_obj4(t_rt *rt)
 
 void setup_camera4(t_rt *rt)
 {
-	t_vector3 *origin;
-	t_vector3 *focus;
+	t_vec3 *origin;
+	t_vec3 *focus;
 	
 	origin = v3_new3(0.0, 0.0, -35.0);
 	focus = v3_new3(0.0, 0.0, 0.0);
@@ -149,3 +151,4 @@ void scene4(t_rt *rt)
 	ft_putendl("ready");
 }
 
+ */

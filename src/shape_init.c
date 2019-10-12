@@ -124,6 +124,11 @@
 
 _Bool	shape_intersect(t_inter *inter, t_list_shape *shape)
 {
+	if (shape->shape == SPHERE)
+		return (sphere_intersect(inter, shape));
+	
+	/*
+	
 	if (!inter || !shape)
 		null_error();
 	if (shape->shape == PLANE)
@@ -134,6 +139,8 @@ _Bool	shape_intersect(t_inter *inter, t_list_shape *shape)
 		return (cone_intersect(inter, shape));
 	if (shape->shape == CYLINDER)
 		return (cylinder_intersect(inter, shape));
+	 
+	*/
 
 	return (FALSE);
 }

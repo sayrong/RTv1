@@ -12,55 +12,77 @@
 
 #include "rt.h"
 
-t_cam	*cam_init_null(t_cam *cam)
-{
-	if (!cam)
-		null_error();
-	cam->h = 0;
-	cam->w = 0;
-	cam->origin = NULL;
-	cam->forward = NULL;
-	cam->up = NULL;
-	cam->right = NULL;
-	return (cam);
-}
+//t_cam	*cam_init_null(t_cam *cam)
+//{
+//	if (!cam)
+//		null_error();
+//	cam->h = 0;
+//	cam->w = 0;
+//	cam->origin = NULL;
+//	cam->forward = NULL;
+//	cam->up = NULL;
+//	cam->right = NULL;
+//	return (cam);
+//}
 
-t_cam	*camera_new(t_vector3 *origin, t_vector3 *target,
-					t_vector3 *upguide, t_vector2 *fov_ratio)
+t_cam	camera_new(t_vec3 origin, t_vec3 target)
 {
-	t_cam	*new_cam;
-
-	if (!fov_ratio)
-		null_error();
-	if (!(new_cam = (t_cam*)malloc(sizeof(t_cam))))
-		error("camera_new: ");
-	cam_init_null(new_cam);
-	new_cam->origin = v3_new_copy(origin);
-	new_cam->forward = v3_new_minus(target, origin);
-	normalize(new_cam->forward);
-	new_cam->right = new_cross(new_cam->forward, upguide);
-	normalize(new_cam->right);
-	new_cam->up = new_cross(new_cam->right, new_cam->forward);
-	new_cam->h = tan(fov_ratio->u);
-	new_cam->w = new_cam->h * fov_ratio->v;
+	t_cam new_cam;
+	t_vec2 fov_ratio;
+	t_vec3 upguide;
+	
+	fov_ratio = v2_set(25.0 * PI / 180,
+						(double)WIDTH / (double)HEIGHT);
+	upguide = v3_new(0.0, 1.0, 0.0);
+	new_cam.origin = origin;
+	new_cam.forward = v3_sub(target, origin);
+	new_cam.forward = v3_norm(new_cam.forward);
+	new_cam.right = v3_cross(new_cam.forward, upguide);
+	new_cam.right = v3_norm(new_cam.right);
+	new_cam.up = v3_cross(new_cam.right, new_cam.forward);
+	new_cam.h = tan(fov_ratio.u);
+	new_cam.w = new_cam.h * fov_ratio.v;
 	return (new_cam);
 }
 
-t_cam	*recalc_cam_dp(t_cam *cam, int key, t_vector3 *upguide,
-						t_vector2 *fov_ratio)
+//t_cam	*camera_new(t_vec3 *origin, t_vec3 *target,
+//					t_vec3 *upguide, t_vec2 *fov_ratio)
+//{
+//	t_cam	*new_cam;
+//
+//	if (!fov_ratio)
+//		null_error();
+//	if (!(new_cam = (t_cam*)malloc(sizeof(t_cam))))
+//		error("camera_new: ");
+//	cam_init_null(new_cam);
+//	new_cam->origin = v3_new_copy(origin);
+//	new_cam->forward = v3_new_minus(target, origin);
+//	normalize(new_cam->forward);
+//	new_cam->right = new_cross(new_cam->forward, upguide);
+//	normalize(new_cam->right);
+//	new_cam->up = new_cross(new_cam->right, new_cam->forward);
+//	new_cam->h = tan(fov_ratio->u);
+//	new_cam->w = new_cam->h * fov_ratio->v;
+//	return (new_cam);
+//}
+
+/*
+
+t_cam	*recalc_cam_dp(t_cam *cam, int key, t_vec3 *upguide,
+						t_vec2 *fov_ratio)
 {
-	key == W_KEY ? ++cam->origin->y : 0;
-	key == S_KEY ? --cam->origin->y : 0;
-	key == D_KEY ? ++cam->origin->x : 0;
-	key == A_KEY ? --cam->origin->x : 0;
-	key == Q_KEY ? ++cam->origin->z : 0;
-	key == E_KEY ? --cam->origin->z : 0;
-	key == EIGHT_NUM ? ++cam->forward->y : 0;
-	key == TWO_NUM ? --cam->forward->y : 0;
-	key == FOUR_NUM ? ++cam->forward->x : 0;
-	key == SIX_NUM ? --cam->forward->x : 0;
-	key == PLUS ? ++cam->forward->z : 0;
-	key == MINUS ? --cam->forward->z : 0;
+	key == W_KEY ? ++cam->origin.y : 0;
+	key == S_KEY ? --cam->origin.y : 0;
+	key == D_KEY ? ++cam->origin.x : 0;
+	key == A_KEY ? --cam->origin.x : 0;
+	key == Q_KEY ? ++cam->origin.z : 0;
+	key == E_KEY ? --cam->origin.z : 0;
+	key == EIGHT_NUM ? ++cam->forward.y : 0;
+	key == TWO_NUM ? --cam->forward.y : 0;
+	key == FOUR_NUM ? ++cam->forward.x : 0;
+	key == SIX_NUM ? --cam->forward.x : 0;
+	key == PLUS ? ++cam->forward.z : 0;
+	key == MINUS ? --cam->forward.z : 0;
 	normalize(cam->forward);
 	v3_del(&cam->right);
 	cam->right = new_cross(cam->forward, upguide);
@@ -81,38 +103,55 @@ t_cam	*recalc_cam_dp(t_cam *cam, int key, t_vector3 *upguide,
 	return (cam);
 }
 
-t_cam	*camera_new_dp(t_vector3 *origin, t_vector3 *target, t_rt *rt)
+ 
+ */
+ 
+//t_cam	*camera_new_dp(t_vec3 *origin, t_vec3 *target, t_rt *rt)
+//{
+//	t_cam	*new_cam;
+//	t_vec3	*upguide;
+//	t_vec2	*fov_ratio;
+//
+//	upguide = v3_new3(0.0, 1.0, 0.0);
+//	fov_ratio = v2_new2(25.0 * PI / 180,
+//						(double)rt->size.x / (double)rt->size.y);
+//	new_cam = camera_new(origin, target, upguide, fov_ratio);
+//	v3_del(&origin);
+//	v3_del(&target);
+//	v3_del(&upguide);
+//	v2_del(&fov_ratio);
+//	return (new_cam);
+//}
+
+void set_ray_direction(t_ray* r, t_vec2 *point, t_cam *cam)
 {
-	t_cam		*new_cam;
-	t_vector3	*upguide;
-	t_vector2	*fov_ratio;
-
-	upguide = v3_new3(0.0, 1.0, 0.0);
-	fov_ratio = v2_new2(25.0 * PI / 180,
-						(double)rt->size.x / (double)rt->size.y);
-	new_cam = camera_new(origin, target, upguide, fov_ratio);
-	v3_del(&origin);
-	v3_del(&target);
-	v3_del(&upguide);
-	v2_del(&fov_ratio);
-	return (new_cam);
-}
-
-t_ray	*make_ray(t_vector2 *point, t_cam *cam)
-{
-	t_vector3	*direction;
-	t_vector3	*temp;
-	t_ray		*ray;
-
+	t_vec3 tmp;
+	
 	if (!point || !cam)
-		null_error();
-	temp = v3_new_mult_by_num(cam->right, point->u * cam->w);
-	direction = v3_new_mult_by_num(cam->up, point->v * cam->h);
-	v3_plus(direction, temp);
-	v3_del(&temp);
-	v3_plus(direction, cam->forward);
-	normalize(direction);
-	ray = ray_new3(cam->origin, direction, RAY_T_MAX);
-	v3_del(&direction);
-	return (ray);
+		put_error("null");
+	tmp = v3_scale(cam->right, point->u * cam->w);
+	r->direction = v3_scale(cam->up, point->v * cam->h);
+	r->direction = v3_add(r->direction, tmp);
+	r->direction = v3_add(r->direction, cam->forward);
+	r->direction = v3_norm(r->direction);
 }
+
+//t_ray	*make_ray(t_vec2 *point, t_cam *cam)
+//{
+//	t_vec3	*direction;
+//	t_vec3	*temp;
+//	t_ray	*ray;
+//
+//	if (!point || !cam)
+//		put_error("null");
+//	temp = v3_new_mult_by_num(cam->right, point->u * cam->w);
+//	direction = v3_new_mult_by_num(cam->up, point->v * cam->h);
+//	v3_plus(direction, temp);
+//	v3_del(&temp);
+//	v3_plus(direction, cam->forward);
+//	normalize(direction);
+//	ray = ray_new3(cam->origin, direction, RAY_T_MAX);
+//	v3_del(&direction);
+//	return (ray);
+//}
+

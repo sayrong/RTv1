@@ -12,6 +12,7 @@
 
 #include "rt.h"
 
+/*
 t_inter		*inter_new(void)
 {
 	t_inter	*new_inter;
@@ -23,19 +24,15 @@ t_inter		*inter_new(void)
 	new_inter->shape = NULL;
 	return (new_inter);
 }
+ */
 
-t_inter		*inter_new_ray(t_ray *ray)
+void inter_new_ray(t_inter *inter, t_ray *ray)
 {
-	t_inter	*new_inter;
-
 	if (!ray)
-		null_error();
-	if (!(new_inter = (t_inter*)malloc(sizeof(t_inter))))
-		error("inter_new_ray: ");
-	new_inter->ray = ray_new_copy(ray);
-	new_inter->t = ray->t_max;
-	new_inter->shape = NULL;
-	return (new_inter);
+		put_error("nULL");
+	inter->ray = ray;
+	inter->t = RAY_T_MAX;
+	inter->shape = NULL;
 }
 
 //t_inter		*inter_new_copy(t_inter *inter)
@@ -67,7 +64,9 @@ t_inter		*inter_new_ray(t_ray *ray)
 //	return (inter1);
 //}
 
-t_vector3	*position(t_inter *inter)
+/*
+
+t_vec3	*position(t_inter *inter)
 {
 	if (!inter)
 		null_error();
@@ -79,4 +78,6 @@ _Bool		intersected(t_inter *inter)
 	if (!inter)
 		null_error();
 	return (inter->shape != NULL);
+
 }
+*/

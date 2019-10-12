@@ -20,6 +20,7 @@
 
 #include "rt.h"
 
+//испрользовать просто error
 void	put_error(char *str)
 {
 	if (str)
@@ -29,10 +30,11 @@ void	put_error(char *str)
 
 static void	input_hook(t_rt *rt)
 {
-	mlx_hook(rt->win->win_ptr, 17, 1, red_x_button, (void *)0);
-	mlx_hook(rt->win->win_ptr, 2, 3, deal_key, (void *)rt);
+	mlx_hook(rt->win_ptr, 17, 1, red_x_button, (void *)0);
+	mlx_hook(rt->win_ptr, 2, 3, deal_key, (void *)rt);
 }
 
+/*
 int testCodeDim()
 {
 	t_rt        *rt;
@@ -41,10 +43,6 @@ int testCodeDim()
 	//Create camera
 	if (!(rt = (t_rt*)malloc(sizeof(t_rt))))
 		error("RT: ");
-
-	rt->size = p2_set(WIDTH, HEIGHT);
-	rt->win = win_new(rt->size.x, rt->size.y);
-	rt->img = img_new(rt->size.x, rt->size.y, rt->win);
 
 //	rt->cam = camera_new_dp(v3_new3(0.0, 8.0, 50.0),
 //							v3_new3(0.0, 0.0, 0.0),
@@ -71,8 +69,8 @@ int testCodeDim()
     //rt->shapes = new_shape_list((void*)sphere1, sphere1->shape);
     
 	//create plane
-	t_vector3 *posit = v3_new3(0, 0, 0);
-	t_vector3 *norm = v3_new3(0, 1, 0);
+	t_vec3 *posit = v3_new3(0, 0, 0);
+	t_vec3 *norm = v3_new3(0, 1, 0);
 	t_plane *plane = plane_new(posit, norm);
 	plane->color = white();
 	plane->color->r = 0;
@@ -83,8 +81,8 @@ int testCodeDim()
 	//rt->shapes = new_shape_list((void*)plane, plane->shape);
 
 
-	t_vector3 *posit1 = v3_new3(0, 0, -55);
-	t_vector3 *norm1 = v3_new3(0, 0, 1);
+	t_vec3 *posit1 = v3_new3(0, 0, -55);
+	t_vec3 *norm1 = v3_new3(0, 0, 1);
 	t_plane *plane1 = plane_new(posit1, norm1);
 	plane1->color = white();
 	plane1->color->r = 0;
@@ -149,20 +147,20 @@ int testCodeDim()
 	//ray_trace(rt->img, rt->cam, rt->shapes, p2_set(0, 0), rt->lights);
 
 
-	mlx_put_image_to_window(rt->win->mlx_ptr, rt->win->win_ptr,
+	mlx_put_image_to_window(rt->mlx_ptr, rt->win_ptr,
 							rt->img->img_ptr, 0, 0);
 	ft_putendl("ready");
 	input_hook(rt);
-	mlx_loop(rt->win->mlx_ptr);
-
+	
 	return (0);
 }
+ 
+ */
 
 void initial_setup(t_rt *rt)
 {
-	rt->size = p2_set(WIDTH, HEIGHT);
-	rt->win = win_new(rt->size.x, rt->size.y);
-	rt->img = img_new(rt->size.x, rt->size.y, rt->win);
+	setup_mlx(rt);
+	rt->img = img_new(WIDTH, HEIGHT, rt);
 }
 
 
@@ -170,20 +168,20 @@ int select_scene(char *name, t_rt *rt)
 {
 	if (!ft_strcmp(name, "scene1"))
 		scene1(rt);
-	else if (!ft_strcmp(name, "scene2"))
-		scene2(rt);
-	else if (!ft_strcmp(name, "scene3"))
-		scene3(rt);
-	else if (!ft_strcmp(name, "scene4"))
-		scene4(rt);
-	else if (!ft_strcmp(name, "scene5"))
-		scene1(rt);
-	else if (!ft_strcmp(name, "scene6"))
-		scene1(rt);
-	else if (!ft_strcmp(name, "scene7"))
-		scene1(rt);
-	else if (!ft_strcmp(name, "exp"))
-		scene1(rt);
+//	else if (!ft_strcmp(name, "scene2"))
+//		scene2(rt);
+//	else if (!ft_strcmp(name, "scene3"))
+//		scene3(rt);
+//	else if (!ft_strcmp(name, "scene4"))
+//		scene4(rt);
+//	else if (!ft_strcmp(name, "scene5"))
+//		scene1(rt);
+//	else if (!ft_strcmp(name, "scene6"))
+//		scene1(rt);
+//	else if (!ft_strcmp(name, "scene7"))
+//		scene1(rt);
+//	else if (!ft_strcmp(name, "exp"))
+//		scene1(rt);
 	else
 		return (1);
 	return (0);
@@ -200,6 +198,6 @@ int		main(int argc, char *argv[])
 	else if (select_scene(argv[1], &rt))
 		put_error("Wrong argument");
 	input_hook(&rt);
-	mlx_loop(rt.win->mlx_ptr);
+	mlx_loop(rt.mlx_ptr);
 	return (0);
 }

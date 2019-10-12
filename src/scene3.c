@@ -8,6 +8,8 @@
 
 #include "rt.h"
 
+/*
+
 void setup_light3(t_rt *rt)
 {
 	t_light		*light;
@@ -28,8 +30,8 @@ void setup_light3(t_rt *rt)
 
 void set_floor3(t_rt *rt)
 {
-	t_vector3 	*posit;
-	t_vector3	*norm;
+	t_vec3 	*posit;
+	t_vec3	*norm;
 	t_plane		*plane;
 	
 	posit = v3_new3(0, -3, 0);
@@ -61,8 +63,8 @@ void setup_obj3(t_rt *rt)
 
 void setup_camera3(t_rt *rt)
 {
-	t_vector3 *origin;
-	t_vector3 *focus;
+	t_vec3 *origin;
+	t_vec3 *focus;
 	
 	origin = v3_new3(0.0, 0.0, -20.0);
 	focus = v3_new3(0.0, 0.0, 0.0);
@@ -81,3 +83,5 @@ void scene3(t_rt *rt)
 							rt->img->img_ptr, 0, 0);
 	ft_putendl("ready");
 }
+
+*/

@@ -12,6 +12,8 @@
 
 #include "rt.h"
 
+/*
+
 t_ray		*ray_new(void)
 {
 	t_ray	*new_r;
@@ -24,7 +26,7 @@ t_ray		*ray_new(void)
 	return (new_r);
 }
 
-t_ray		*ray_new3(t_vector3 *origin, t_vector3 *dir, double t_max)
+t_ray		*ray_new3(t_vec3 *origin, t_vec3 *dir, double t_max)
 {
 	t_ray	*new_r;
 
@@ -68,9 +70,9 @@ t_ray		*ray_copy(t_ray *ray1, t_ray *ray2)
 }
 
 //point of intersection when found T value
-t_vector3	*calculate(t_ray *ray, double t)
+t_vec3	*calculate(t_ray *ray, double t)
 {
-	t_vector3	*new_v;
+	t_vec3	*new_v;
 
 	if (!ray)
 		null_error();
@@ -79,3 +81,5 @@ t_vector3	*calculate(t_ray *ray, double t)
 	v3_plus(new_v, ray->origin);
 	return (new_v);
 }
+ 
+ */

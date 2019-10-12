@@ -8,106 +8,91 @@
 
 #include "rt.h"
 
-double compute_specular(t_vector3 *normal_to_intersect, t_vector3 *light_vector, t_inter *inter, int object_specular)
+double compute_specular(t_vec3 normal_to_intersect, t_vec3 light_vector, t_inter *inter, int object_specular)
 {
-	t_vector3 *tmp[3];
 	double percent;
 	double angle;
-	t_vector3 *to_camera_vector;
+	t_vec3 to_camera_vector;
+	t_vec3 light;
 
 	percent = 0;
-	to_camera_vector = v3_new_mult_by_num(inter->ray->direction, -1);
-	tmp[0] = v3_new_mult_by_num(normal_to_intersect, 2);
-	tmp[1] = v3_new_mult_by_num(tmp[0], dot(normal_to_intersect, light_vector));
-	tmp[2] = v3_new_minus(tmp[1], light_vector);
-	angle = dot(tmp[2], to_camera_vector);
+	to_camera_vector = v3_scale(inter->ray->direction, -1);
+	light = v3_scale(normal_to_intersect, 2);
+	light = v3_scale(light, v3_dot(normal_to_intersect, light_vector));
+	light = v3_sub(light, light_vector);
+	angle = v3_dot(light, to_camera_vector);
 	if (angle > 0)
-	{
-		percent = pow(angle/(length(tmp[2]) * length(to_camera_vector)), object_specular);
-	}
-	free_temp_v(tmp, 3);
-	v3_del(&to_camera_vector);
+		percent = pow(angle/(v3_length(light) * v3_length(to_camera_vector)), object_specular);
 	return (percent);
 }
 
-t_vector3 *get_intersection_point(t_inter *inter)
+t_vec3 get_intersection_point(t_inter *inter)
 {
-	t_vector3 *tmp;
-	t_vector3 *intersection_point;
+	t_vec3 intersection_point;
 	
-	tmp = v3_new_mult_by_num(inter->ray->direction, inter->t);
-	intersection_point = v3_new_plus(inter->ray->origin, tmp);
-	free(tmp);
+	intersection_point = v3_scale(inter->ray->direction, inter->t);
+	intersection_point = v3_add(inter->ray->origin, intersection_point);
 	return (intersection_point);
 }
 
-void clear_shadow(t_vector3 **tmp, t_inter *inter, t_ray *ray)
-{
-	free_temp_v(tmp, 2);
-	inter_del(&inter);
-	ray_del(&ray);
-}
+//void clear_shadow(t_vec3 **tmp, t_inter *inter, t_ray *ray)
+//{
+//	free_temp_v(tmp, 2);
+//	inter_del(&inter);
+//	ray_del(&ray);
+//}
 
-int is_in_shadow(t_list_light *light, t_vector3 *intersection_point, t_list_shape *scene)
+int is_in_shadow(t_list_light *light, t_list_shape *scene, t_vec3 intersection_point)
 {
-	t_inter *inter;
-	t_ray *ray;
-	t_vector3 *tmp[2];
+	t_inter inter;
+	t_vec3 dir;
+	t_ray ray;
 	double	dist;
 	t_list_shape *obj;
 	
-	tmp[0] = v3_new_minus(light->light->position, intersection_point);
-	dist = length(tmp[0]);
-	tmp[1] = v3_new_minus(intersection_point, light->light->position);
-	normalize(tmp[1]);
-	ray = ray_new3(light->light->position, tmp[1], RAY_T_MAX);
-	inter = inter_new_ray(ray);
+	dist = v3_length(v3_sub(light->light->position, intersection_point));
+	dir = v3_sub(intersection_point, light->light->position);
+	dir = v3_norm(dir);
+	ray.origin = light->light->position;
+	ray.direction = dir;
+	ray.t_max = RAY_T_MAX;
+	inter_new_ray(&inter, &ray);
 	
 	obj = scene;
 	while (obj != NULL) {
-		shape_intersect(inter, obj);
+		shape_intersect(&inter, obj);
 		obj = obj->next;
 	}
-	if (inter->shape != NULL)
-		if (inter->t < dist - 0.1)
-		{
-			clear_shadow(tmp, inter, ray);
-			return (1);
-		}
-	clear_shadow(tmp, inter, ray);
+	if (inter.t < dist - 0.1)
+		return (1);
 	return (0);
 }
 
-double diffuse_light(t_list_light *light, t_inter *inter)
+double diffuse_light(t_list_light *light, t_inter *inter, t_vec3 intersection_point)
 {
 	double res;
 	double angle;
-	t_vector3 *light_vector;
-	t_vector3 *intersection_point;
-	t_vector3 *normal_to_intersect;
+	t_vec3 light_vector;
+	t_vec3 normal_to_intersect;
 	
 	
 	res = 0;
-	intersection_point = get_intersection_point(inter);
 	normal_to_intersect = get_normal(inter);
 	
 	if (light->type == point)
-		light_vector = v3_new_minus(light->light->position, intersection_point);
+		light_vector = v3_sub(light->light->position, intersection_point);
 	else
 		light_vector = light->light->position;
-	angle = dot(normal_to_intersect, light_vector);
+	angle = v3_dot(normal_to_intersect, light_vector);
 	if (angle > 0)
 	{
-		res += ((light->light->intensity * angle) / (length(normal_to_intersect) * length(light_vector)));
+		res += ((light->light->intensity * angle) / (v3_length(normal_to_intersect) * v3_length(light_vector)));
 	}
 	if (get_specular(inter) > 0)
 	{
 		angle = compute_specular(normal_to_intersect, light_vector, inter, get_specular(inter));
 		res += (light->light->intensity * angle);
 	}
-	free(light_vector);
-	free(intersection_point);
-	free(normal_to_intersect);
 	return (res);
 }
 
@@ -115,7 +100,7 @@ double compute_light(t_inter *inter, t_list_shape *scene, t_list_light *lights)
 {
 	double res;
 	t_list_light *light;
-	t_vector3 *intersection;
+	t_vec3 intersection;
 	
 	res = 0;
 	light = lights;
@@ -125,12 +110,11 @@ double compute_light(t_inter *inter, t_list_shape *scene, t_list_light *lights)
 		if (light->type == ambient)
 			res += light->light->intensity;
 		else
-			if (!is_in_shadow(light, intersection, scene))
-				res += diffuse_light(light, inter);
+			if (!is_in_shadow(light,scene, intersection))
+				res += diffuse_light(light, inter, intersection);
 		light = light->next;
 	}
 	if (res > 1)
 		res = 1;
-	free(intersection);
 	return (res);
 }

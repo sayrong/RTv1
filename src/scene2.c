@@ -8,6 +8,8 @@
 
 #include "rt.h"
 
+/*
+
 void setup_light2(t_rt *rt)
 {
 	t_light		*light;
@@ -44,8 +46,8 @@ void setup_obj2(t_rt *rt)
 
 void setup_camera2(t_rt *rt)
 {
-	t_vector3 *origin;
-	t_vector3 *focus;
+	t_vec3 *origin;
+	t_vec3 *focus;
 	
 	origin = v3_new3(0.0, 0.0, -10.0);
 	focus = v3_new3(0.0, 0.0, 0.0);
@@ -65,3 +67,5 @@ void scene2(t_rt *rt)
 	ft_putendl("ready");
 }
 
+*/
+ 

@@ -8,16 +8,11 @@
 
 #include "rt.h"
 
-t_color *white(void)
+void white(t_color* new)
 {
-	t_color *new;
-
-	if (!(new = (t_color*)malloc(sizeof(t_color))))
-		error("Create white: ");
 	new->r = 255;
 	new->g = 255;
 	new->b = 255;
-	return (new);
 }
 
 int get_color(t_color *c, double light)
@@ -31,7 +26,7 @@ int get_color(t_color *c, double light)
 t_color *get_color_from_list(t_list_shape *list)
 {
 	if (list->shape == SPHERE)
-		return (((t_sphere*)list->content)->color);
+		return &(((t_sphere*)list->content)->color);
 	else if (list->shape == PLANE)
 		return (((t_plane*)list->content)->color);
 	else if (list->shape == CONE)

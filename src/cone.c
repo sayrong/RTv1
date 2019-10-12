@@ -9,6 +9,7 @@
 #include "rt.h"
 
 
+
 int define_t(double t1, double t2, t_inter *inter, t_list_shape *shape_in_list)
 {
 	double tmp = -1;
@@ -28,6 +29,11 @@ int define_t(double t1, double t2, t_inter *inter, t_list_shape *shape_in_list)
 }
 
 
+/*
+
+
+
+
 double degrees_to_rad(double angleInDegrees)
 {
 	return ((angleInDegrees * M_PI / 180.0) / 2);
@@ -42,7 +48,7 @@ _Bool	cone_intersect(t_inter *inter, t_list_shape *shape_in_list)
 	
 	double		abc[3];
 	double		t[2];
-	t_vector3	*x;
+	t_vec3	*x;
 	t_cone		*cone;
 	double		k_and_discr[2];
 
@@ -64,12 +70,12 @@ _Bool	cone_intersect(t_inter *inter, t_list_shape *shape_in_list)
 }
 
 
-t_vector3 *get_cone_normal(t_cone *cone, t_ray *ray, t_vector3 *hit_point, double t)
+t_vec3 *get_cone_normal(t_cone *cone, t_ray *ray, t_vec3 *hit_point, double t)
 {
 	double		k;
 	double		m;
-	t_vector3	*tmp[8];
-	t_vector3	*normal;
+	t_vec3	*tmp[8];
+	t_vec3	*normal;
 	
 	//N = nrm( P-C-V*m - V*m*k*k )
 	k = tan(degrees_to_rad(cone->angle));
@@ -89,7 +95,7 @@ t_vector3 *get_cone_normal(t_cone *cone, t_ray *ray, t_vector3 *hit_point, doubl
 }
 
 
-
+*/
 
 
 

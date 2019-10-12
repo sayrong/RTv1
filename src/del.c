@@ -12,6 +12,8 @@
 
 #include "rt.h"
 
+/*
+
 void	ray_del(t_ray **ray)
 {
 	if (ray != NULL && *ray != NULL)
@@ -43,6 +45,8 @@ void	sphere_del(t_sphere **sphere)
 		*sphere = NULL;
 	}
 }
+ 
+ */
 
 //void	shape_del(t_shape **shape)
 //{
@@ -60,13 +64,14 @@ void	sphere_del(t_sphere **sphere)
 //	}
 //}
 
-void	inter_del(t_inter **inter)
-{
-	if (inter != NULL && *inter != NULL)
-	{
-		ray_del(&(*inter)->ray);
-		//shape_del(&(*inter)->shape);
-		free(*inter);
-		*inter = NULL;
-	}
-}
+//void	inter_del(t_inter **inter)
+//{
+//	if (inter != NULL && *inter != NULL)
+//	{
+//		ray_del(&(*inter)->ray);
+//		//shape_del(&(*inter)->shape);
+//		free(*inter);
+//		*inter = NULL;
+//	}
+//}
+

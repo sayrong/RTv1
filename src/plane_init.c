@@ -12,7 +12,12 @@
 
 #include "rt.h"
 
-t_plane	*plane_new(t_vector3 *position, t_vector3 *normal)
+
+
+/*
+
+
+t_plane	*plane_new(t_vec3 *position, t_vec3 *normal)
 {
 	t_plane	*new_plane;
 
@@ -23,7 +28,7 @@ t_plane	*plane_new(t_vector3 *position, t_vector3 *normal)
 	return (new_plane);
 }
 
-t_plane	*plane_new_dp(t_vector3 *position, t_vector3 *normal)
+t_plane	*plane_new_dp(t_vec3 *position, t_vec3 *normal)
 {
 	t_plane	*new_plane;
 
@@ -46,23 +51,23 @@ t_plane	*plane_new_copy(t_plane *plane)
 	return (new_plane);
 }
 
-t_plane	*plane_copy(t_plane *plane1, t_plane *plane2)
-{
-	if (!plane2)
-		plane_del(&plane1);
-	else if (!plane1)
-		plane1 = plane_new_copy(plane2);
-	else
-	{
-		plane1->position = v3_copy(plane1->position, plane2->position);
-		plane1->normal = v3_copy(plane1->normal, plane2->normal);
-	}
-	return (plane1);
-}
+//t_plane	*plane_copy(t_plane *plane1, t_plane *plane2)
+//{
+//	if (!plane2)
+//		plane_del(&plane1);
+//	else if (!plane1)
+//		plane1 = plane_new_copy(plane2);
+//	else
+//	{
+//		plane1->position = v3_copy(plane1->position, plane2->position);
+//		plane1->normal = v3_copy(plane1->normal, plane2->normal);
+//	}
+//	return (plane1);
+//}
 
 _Bool	plane_intersect(t_inter *inter, t_list_shape *shape_in_list)
 {
-	t_vector3	*temp;
+	t_vec3	*temp;
 	double		d_dot_n;
 	double		t;
 	t_plane		*plane;
@@ -88,9 +93,9 @@ _Bool	plane_intersect(t_inter *inter, t_list_shape *shape_in_list)
 	return (FALSE);
 }
 
-t_vector3 *get_plane_normal(t_plane *plane, t_ray *ray)
+t_vec3 *get_plane_normal(t_plane *plane, t_ray *ray)
 {
-	t_vector3	*normal;
+	t_vec3	*normal;
 	double 		d;
 	
 	d = dot(ray->direction, plane->normal);
@@ -104,7 +109,7 @@ t_vector3 *get_plane_normal(t_plane *plane, t_ray *ray)
 
 //_Bool	plane_does_intersect(t_ray *ray, t_shape *shape)
 //{
-//	t_vector3	*temp;
+//	t_vec3	*temp;
 //	double		d_dot_n;
 //	double		t;
 //
@@ -120,3 +125,8 @@ t_vector3 *get_plane_normal(t_plane *plane, t_ray *ray)
 //	return (TRUE);
 //}
 
+ 
+ 
+ */
+ 
+ 
