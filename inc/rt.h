@@ -180,7 +180,7 @@ typedef struct		s_thread
 
 //Create objects
 t_cylinder		*cylinder_new(t_vec3 position, t_vec3 direction, double r, int spec);
-t_sphere		*sphere_new(t_vec3 center, double radius);
+t_sphere		*sphere_new(t_vec3 center, double radius, int spec);
 t_cone			*cone_new(t_vec3 position, t_vec3 direction, double angle, int spec);
 t_plane			*plane_new(t_vec3 position, t_vec3 normal, int spec);
 t_cam	camera_new(t_vec3 origin, t_vec3 target);
@@ -244,7 +244,9 @@ t_img			*img_new(int width, int height, t_rt *rt);
 int				*get_pixel(int x, int y, t_img *img);
 
 //main
-void			ray_trace(t_rt *rt, t_point2 size);
+void send_ray(t_inter *inter, int position, t_thread *src);
+void	draw(t_rt *rt);
+void	calculate(void *data);
 
 
 void initial_setup(t_rt *rt);

@@ -17,7 +17,7 @@ double		sqr(double num)
 	return (num * num);
 }
 
-t_sphere	*sphere_new(t_vec3 center, double radius)
+t_sphere	*sphere_new(t_vec3 center, double radius, int spec)
 {
 	t_sphere	*new_sphere;
 
@@ -25,6 +25,7 @@ t_sphere	*sphere_new(t_vec3 center, double radius)
 		put_error("sphere_new: ");
 	new_sphere->center = center;
 	new_sphere->radius = radius;
+	new_sphere->specular = spec;
 	new_sphere->shape = SPHERE;
 	white(&(new_sphere->color));
 	return (new_sphere);

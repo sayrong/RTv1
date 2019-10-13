@@ -63,9 +63,7 @@ void scene3(t_rt *rt)
 	set_floor3(rt);
 	setup_obj3(rt);
 	setup_light3(rt);
-	ray_trace(rt, p2_set(0, 0));
-	mlx_put_image_to_window(rt->mlx_ptr, rt->win_ptr,
-							rt->img->img_ptr, 0, 0);
+	draw(rt);
 	ft_putendl("ready");
 }
 

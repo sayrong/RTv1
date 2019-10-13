@@ -53,9 +53,7 @@ void scene2(t_rt *rt)
 	setup_camera2(rt);
 	setup_obj2(rt);
 	setup_light2(rt);
-	ray_trace(rt, p2_set(0, 0));
-	mlx_put_image_to_window(rt->mlx_ptr, rt->win_ptr,
-							rt->img->img_ptr, 0, 0);
+	draw(rt);
 	ft_putendl("ready");
 }
 

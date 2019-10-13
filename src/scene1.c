@@ -29,7 +29,7 @@ void setup_obj1(t_rt *rt)
 {
 	t_sphere    *sphere;
 	
-	sphere = sphere_new(v3_new(0, 0, 0), 3.0);
+	sphere = sphere_new(v3_new(0, 0, 0), 3.0, 10);
 	sphere->color.b = 0;
 	sphere->color.g = 0;
 	sphere->specular = 10;
@@ -53,8 +53,6 @@ void scene1(t_rt *rt)
 	setup_camera1(rt);
 	setup_obj1(rt);
 	setup_light1(rt);
-	ray_trace(rt, p2_set(0, 0));
-	mlx_put_image_to_window(rt->mlx_ptr, rt->win_ptr,
-							rt->img->img_ptr, 0, 0);
+	draw(rt);
 	ft_putendl("ready");
 }
