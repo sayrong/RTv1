@@ -6,13 +6,13 @@
 #    By: cschoen <cschoen@student.42.fr>            +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2019/10/07 02:04:41 by cschoen           #+#    #+#              #
-#    Updated: 2019/10/13 15:52:23 by cschoen          ###   ########.fr        #
+#    Updated: 2019/10/14 01:11:49 by cschoen          ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
 .PHONY: clean fclean re norm fullnorm git
 
-OS = MACOS
+OS = LINUX
 C = fast commit
 NAME = RTv1
 
