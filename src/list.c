@@ -12,19 +12,19 @@
 t_list_shape *new_shape_list(void *content, t_shape_type type)
 {
 	t_list_shape *new;
-	
+
 	if (!(new = (t_list_shape*)malloc(sizeof(t_list_shape))))
-		put_error("t_list_shape: ");
+		p_error("malloc t_list_shape");
 	new->content = content;
 	new->shape = type;
 	new->next = NULL;
 	return (new);
 }
 
-void		add_new_shape(t_list_shape *list, void *content, t_shape_type type)
+t_list_shape		*add_new_shape(t_list_shape *list, void *content, t_shape_type type)
 {
 	t_list_shape *tmp;
-	
+
 	tmp = list;
 	if (list == NULL)
 		list = new_shape_list(content, type);
@@ -34,6 +34,7 @@ void		add_new_shape(t_list_shape *list, void *content, t_shape_type type)
 			tmp = tmp->next;
 		tmp->next = new_shape_list(content, type);
 	}
+	return (list);
 }
 
 
@@ -42,19 +43,19 @@ void		add_new_shape(t_list_shape *list, void *content, t_shape_type type)
 t_list_light *new_light_list(t_light *light, t_light_type type)
 {
 	t_list_light *new;
-	
+
 	if (!(new = (t_list_light*)malloc(sizeof(t_list_light))))
-		put_error("sphere_new: ");
+		p_error("malloc t_list_light");
 	new->light = light;
 	new->type = type;
 	new->next = NULL;
 	return (new);
 }
 
-void		add_new_light(t_list_light *list, t_light *light, t_light_type type)
+t_list_light		*add_new_light(t_list_light *list, t_light *light, t_light_type type)
 {
 	t_list_light *tmp;
-	
+
 	tmp = list;
 	if (list == NULL)
 		list = new_light_list(light, type);
@@ -64,4 +65,5 @@ void		add_new_light(t_list_light *list, t_light *light, t_light_type type)
 			tmp = tmp->next;
 		tmp->next = new_light_list(light, type);
 	}
+	return (list);
 }

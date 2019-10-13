@@ -6,7 +6,7 @@
 /*   By: cschoen <cschoen@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/09/29 14:15:02 by cschoen           #+#    #+#             */
-/*   Updated: 2019/10/06 21:55:57 by cschoen          ###   ########.fr       */
+/*   Updated: 2019/10/13 12:57:40 by cschoen          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -26,8 +26,9 @@
 
 # include <pthread.h>
 # include <mlx.h>
-# include "libvec.h"
-# include "../libft/libft.h"
+# include "../libvec/inc/libvec.h"
+# include "../libft/inc/libft.h"
+# include <stdio.h>
 
 # include "macoskeys.h"
 /*
@@ -43,9 +44,9 @@ typedef struct s_color
 
 typedef enum e_light_type
 {
-	ambient,
-	point,
-	directional
+	AMBIENT,
+	POINT,
+	DIRECTIONAL
 }           t_light_type;
 
 typedef struct s_light
@@ -160,14 +161,14 @@ typedef struct	s_img
 
 typedef struct	s_rt
 {
-	//t_point2		size;
 	void			*mlx_ptr;
 	void			*win_ptr;
 	t_img			*img;
 	t_cam			cam;
 	t_list_shape 	*shapes;
 	t_list_light	*lights;
-
+	_Bool				cam_flg;
+	_Bool				amb_flg;
 }				t_rt;
 
 typedef struct		s_thread
@@ -177,6 +178,26 @@ typedef struct		s_thread
 	int				y_min;
 	int				y_max;
 }					t_thread;
+
+int						usage(char *app_name);
+int						error(char *err_msg);
+int						p_error(char *err_msg);
+int						parse_error(char *err_msg, int line_num);
+
+int						is_valid_whitespaces(char *str);
+int						is_valid_v3(char *str);
+int						is_valid_double(char *str);
+int						is_valid_hex(char *str);
+
+double					str_to_double(char *str);
+int						str_to_integer(int *num, char *str);
+int						str_to_v3(t_vec3 *vec, char *str);
+int						str_to_rgb(t_color *col, char *str);
+
+void					parse_ambient(t_rt *rt, char **split, int line_num);
+void					parse_light(t_rt *rt, char **split, int line_num);
+void					parse_shape(t_rt *rt, char **split, int line_num);
+void					parser(char *source, t_rt *rt, int fd, int line_num);
 
 //Create objects
 t_cylinder		*cylinder_new(t_vec3 position, t_vec3 direction, double r, int spec);
@@ -197,10 +218,10 @@ t_cam			*recalc_cam_dp(t_cam *cam, int key, t_vec3 upguide,
 
 //Lists
 t_list_shape 	*new_shape_list(void *content, t_shape_type type);
-void			add_new_shape(t_list_shape *list, void *content, t_shape_type type);
+t_list_shape			*add_new_shape(t_list_shape *list, void *content, t_shape_type type);
 
 t_list_light *new_light_list(t_light *light, t_light_type type);
-void		add_new_light(t_list_light *list, t_light *light, t_light_type type);
+t_list_light		*add_new_light(t_list_light *list, t_light *light, t_light_type type);
 
 
 //Ray
@@ -227,16 +248,9 @@ _Bool			shape_intersect(t_inter *inter, t_list_shape *shape);
 _Bool			shapeset_intersect(t_inter *inter, t_list_shape *shape_list);
 
 //Color
-void white(t_color* new);
+void white(t_color* color);
 int				get_color(t_color *c, double light);
 t_color			*get_color_from_list(t_list_shape *list);
-
-
-//Math
-double			sqr(double num);
-
-//Error
-void			put_error(char *str);
 
 //mlx
 void			setup_mlx(t_rt *rt);
@@ -246,19 +260,13 @@ int				*get_pixel(int x, int y, t_img *img);
 //main
 void send_ray(t_inter *inter, int position, t_thread *src);
 void	draw(t_rt *rt);
-void	calculate(void *data);
+void	*calculate(void *data);
 
 
 void initial_setup(t_rt *rt);
-void scene1(t_rt *rt);
-void scene2(t_rt *rt);
-void scene3(t_rt *rt);
-void scene4(t_rt *rt);
+
 
 int	red_x_button(void *param);
 int	deal_key(int key, void *param);
-
-
-void	draw(t_rt *rt);
 
 #endif

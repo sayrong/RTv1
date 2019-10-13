@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   cylinder.c                                         :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: balvyn-s <marvin@42.fr>                    +#+  +:+       +#+        */
+/*   By: cschoen <cschoen@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/10/09 18:10:14 by balvyn-s          #+#    #+#             */
-/*   Updated: 2019/10/09 18:37:19 by balvyn-s         ###   ########.fr       */
+/*   Updated: 2019/10/13 12:40:20 by cschoen          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -15,9 +15,9 @@
 t_cylinder *cylinder_new(t_vec3 position, t_vec3 direction, double r, int spec)
 {
 	t_cylinder	*new_cylinder;
-	
+
 	if (!(new_cylinder = (t_cylinder*)malloc(sizeof(t_cylinder))))
-		put_error("sphere_new: ");
+		p_error("malloc t_cylinder");
 	new_cylinder->position = position;
 	new_cylinder->dir = v3_norm(direction);
 	new_cylinder->radius = r;

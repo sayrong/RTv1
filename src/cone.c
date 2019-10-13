@@ -32,9 +32,9 @@ int define_t(double t1, double t2, t_inter *inter, t_list_shape *shape_in_list)
 t_cone *cone_new(t_vec3 position, t_vec3 direction, double angle, int spec)
 {
 	t_cone	*new_cone;
-	
+
 	if (!(new_cone = (t_cone*)malloc(sizeof(t_cone))))
-		put_error("sphere_new: ");
+		p_error("sphere_new");
 	new_cone->position = position;
 	new_cone->dir = v3_norm(direction);
 	new_cone->angle = angle;
@@ -87,7 +87,7 @@ t_vec3 get_cone_normal(t_cone *cone, t_ray *ray, t_vec3 hit_point, double t)
 	double		m;
 	t_vec3		tmp[8];
 	t_vec3		normal;
-	
+
 	//N = nrm( P-C-V*m - V*m*k*k )
 	k = tan(degrees_to_rad(cone->angle));
 	tmp[0] = v3_sub(ray->origin, cone->position);

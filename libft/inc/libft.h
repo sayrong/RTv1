@@ -6,7 +6,7 @@
 /*   By: cschoen <cschoen@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2018/12/02 17:00:38 by cschoen           #+#    #+#             */
-/*   Updated: 2019/07/14 13:42:59 by cschoen          ###   ########.fr       */
+/*   Updated: 2019/10/09 14:01:02 by cschoen          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -89,6 +89,7 @@ void				ft_lstiter(t_list *lst, void (*f)(t_list *elem));
 t_list				*ft_lstmap(t_list *lst, t_list *(*f)(t_list *elem));
 
 int					ft_abs(int n);
+double				ft_dabs(double n);
 char				*ft_strrev(char *str);
 size_t				ft_lstlen(t_list *lst);
 t_list				*ft_lstsplit(char const *s, char c);

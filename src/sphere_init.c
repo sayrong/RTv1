@@ -6,23 +6,18 @@
 /*   By: cschoen <cschoen@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/09/30 00:05:54 by cschoen           #+#    #+#             */
-/*   Updated: 2019/10/02 01:20:34 by cschoen          ###   ########.fr       */
+/*   Updated: 2019/10/13 12:45:36 by cschoen          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "rt.h"
-
-double		sqr(double num)
-{
-	return (num * num);
-}
 
 t_sphere	*sphere_new(t_vec3 center, double radius, int spec)
 {
 	t_sphere	*new_sphere;
 
 	if (!(new_sphere = (t_sphere*)malloc(sizeof(t_sphere))))
-		put_error("sphere_new: ");
+		p_error("sphere_new: ");
 	new_sphere->center = center;
 	new_sphere->radius = radius;
 	new_sphere->specular = spec;
@@ -39,13 +34,13 @@ _Bool	sphere_intersect(t_inter *inter, t_list_shape *shape_in_list)
 	double	t[2];
 	t_sphere *sphere;
 
-	(!inter || !inter->ray || !shape_in_list) ? put_error("null") : 0;
+	(!inter || !inter->ray || !shape_in_list) ? p_error("null") : 0;
 	sphere = (t_sphere*)shape_in_list->content;
-	
+
 	new_origin = v3_sub(inter->ray->origin, sphere->center);
 	coef[0] = length_sq(inter->ray->direction);
 	coef[1] = 2.0 * v3_dot(inter->ray->direction, new_origin);
-	coef[2] = length_sq(new_origin) - sqr(sphere->radius);
+	coef[2] = length_sq(new_origin) - sphere->radius * sphere->radius;
 	discriminant = coef[1] * coef[1] - 4.0 * coef[0] * coef[2];
 	if (discriminant < 0.0)
 		return (FALSE);

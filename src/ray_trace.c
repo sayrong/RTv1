@@ -14,7 +14,7 @@ t_vec3 get_normal(t_inter *inter)
 {
 	t_vec3	hit_point;
 	t_vec3	tmp;
-	
+
 	tmp = v3_scale(inter->ray->direction, inter->t);
 	hit_point = v3_add(inter->ray->origin, tmp);
 	if (inter->shape->shape == SPHERE)
@@ -39,24 +39,22 @@ int get_specular(t_inter		*inter)
 		return ((t_cylinder*)inter->shape->content)->specular;
 }
 
-void	calculate(void *data);
-
 void	draw(t_rt *rt)
 {
 	pthread_t	threads[THREADS_NUM];
 	t_thread	data[THREADS_NUM];
 	int			i;
-	
+
 	i = -1;
 	while (++i < THREADS_NUM) {
 		data[i].rt = rt;
 		data[i].rt_id = i;
 		if (pthread_create(threads + i, NULL, calculate, &(data[i])))
-			put_error("Bad pthread_create return value");
+			p_error("pthread_create");
 	}
 	while (i--)
 		if (pthread_join(threads[i], NULL))
-			put_error("Bad pthread_join return value");
+			p_error("pthread_join");
 	mlx_put_image_to_window(rt->mlx_ptr, rt->win_ptr,
 							rt->img->img_ptr, 0, 0);
 }
@@ -67,7 +65,7 @@ void send_ray(t_inter *inter, int position, t_thread *src)
 	t_vec2		screen_coord;
 	int			*cur_pixel;
 	double		light_percent;
-	
+
 	x_y[0] = position % WIDTH;
 	x_y[1] = position / HEIGHT;
 	screen_coord = v2_set((2.0 * x_y[0]) / WIDTH - 1.0,
@@ -85,13 +83,13 @@ void send_ray(t_inter *inter, int position, t_thread *src)
 		*cur_pixel = 0;
 }
 
-void	calculate(void *data)
+void	*calculate(void *data)
 {
 	int			start_end[2];
 	t_thread	*src;
 	t_ray		r;
 	t_inter		inter;
-	
+
 	src = (t_thread *)data;
 	start_end[0] = STEP * src->rt_id;
 	start_end[1] = src->rt_id == THREADS_NUM - 1 ? HEIGHT * WIDTH : start_end[0] + STEP;
@@ -103,4 +101,5 @@ void	calculate(void *data)
 		send_ray(&inter, start_end[0], src);
 		start_end[0]++;
 	}
+	return (NULL);
 }

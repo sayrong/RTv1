@@ -6,7 +6,7 @@
 /*   By: cschoen <cschoen@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/09/30 23:48:51 by cschoen           #+#    #+#             */
-/*   Updated: 2019/10/02 02:32:55 by cschoen          ###   ########.fr       */
+/*   Updated: 2019/10/13 12:45:41 by cschoen          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -21,9 +21,9 @@ _Bool		shapeset_intersect(t_inter *inter, t_list_shape *shape_list)
 	i = 0;
 	shape = shape_list;
 	if (!inter || !shape)
-		put_error("shape intersect");
+		p_error("shape intersect");
 	does_intersect = FALSE;
-	
+
 	//iterate throw all object in scene
 	while (shape != NULL) {
 		i += shape_intersect(inter, shape);
@@ -37,7 +37,7 @@ _Bool		shapeset_intersect(t_inter *inter, t_list_shape *shape_list)
 _Bool	shape_intersect(t_inter *inter, t_list_shape *shape)
 {
 	if (!inter || !shape)
-		put_error("NULL shape");
+		p_error("NULL shape");
 	if (shape->shape == PLANE)
 		return (plane_intersect(inter, shape));
 	if (shape->shape == SPHERE)

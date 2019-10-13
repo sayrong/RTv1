@@ -6,7 +6,7 @@
 /*   By: cschoen <cschoen@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2018/12/18 14:08:50 by cschoen           #+#    #+#             */
-/*   Updated: 2018/12/18 15:52:01 by cschoen          ###   ########.fr       */
+/*   Updated: 2019/10/09 09:07:46 by cschoen          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -14,29 +14,20 @@
 
 char	*ft_strtrim(char const *s)
 {
-	char	*new_str;
-	char	*res;
+	unsigned int	start;
+	size_t			finish;
 
-	new_str = NULL;
-	res = NULL;
 	if (s == NULL)
 		return (NULL);
-	while (*s == ' ' || *s == '\n' || *s == '\t')
-		s++;
-	if ((new_str = ft_strnew(ft_strlen(s))) != NULL)
-	{
-		ft_strcpy(new_str, s);
-		new_str = ft_strrev(new_str);
-		if (new_str == NULL)
-			return (NULL);
-		while (*new_str == ' ' || *new_str == '\n' || *new_str == '\t')
-			new_str++;
-		res = ft_strnew(ft_strlen(new_str));
-		if (res != NULL)
-		{
-			ft_strcpy(res, new_str);
-			res = ft_strrev(res);
-		}
-	}
-	return (res);
+	start = 0;
+	finish = ft_strlen(s) - 1;
+	while ((s[start] >= '\t' && s[start] <= '\r') || s[start] == ' ')
+		++start;
+	while ((s[finish] >= '\t' && s[finish] <= '\r') || s[finish] == ' ')
+		--finish;
+	if (start <= finish)
+		return (ft_strsub(s, start, finish - start + 1));
+	else
+		return (ft_strnew(0));
+	return (NULL);
 }

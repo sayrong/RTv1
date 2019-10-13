@@ -6,15 +6,14 @@
 #    By: cschoen <cschoen@student.42.fr>            +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2019/10/07 02:53:18 by cschoen           #+#    #+#              #
-#    Updated: 2019/10/08 01:03:39 by cschoen          ###   ########.fr        #
+#    Updated: 2019/10/13 12:24:05 by cschoen          ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
 NAME = libvec.a
 GCC = gcc -Wall -Wextra -Werror -g
 SRCNAME = v3_new.c v3_copy.c v3_add.c v3_sub.c v3_scale.c v3_dot.c \
-		v3_length.c v3_norm.c v3_cross.c v3_rot_x.c v3_rot_y.c v3_rot_z.c \
-		v3_rot_xyz.c v3_rot_zyx.c
+		v3_length.c v3_norm.c v3_cross.c some_vector.c
 
 OBJNAME = $(SRCNAME:.c=.o)
 INCNAME = libvec.h
