@@ -6,7 +6,7 @@
 /*   By: cschoen <cschoen@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/10/12 18:52:59 by cschoen           #+#    #+#             */
-/*   Updated: 2019/10/12 19:54:50 by cschoen          ###   ########.fr       */
+/*   Updated: 2019/10/13 11:29:30 by cschoen          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -26,8 +26,8 @@ void	parse_ambient(t_rt *rt, char **split, int line_num)
 	if (!is_valid_double(split[1]))
 		parse_error("Invalid param: intensity value of the ambient", line_num);
 	new_l->intensity = str_to_double(split[1]);
-	if (new_l->intensity < 0 || new_l->intensity > 100)
-		parse_error("Range for intensity of the ambient: [0...100]", line_num);
+	if (new_l->intensity <= 0 || new_l->intensity > 100)
+		parse_error("Range for intensity of the ambient: (0...100]", line_num);
 	new_l->intensity /= 100;
 	rt->lights = add_new_light(rt->lights, new_l, AMBIENT);
 }
@@ -47,8 +47,8 @@ void	parse_light(t_rt *rt, char **split, int line_num)
 	if (!is_valid_double(split[2]))
 		parse_error("Invalid param: intensity value of the light", line_num);
 	new_l->intensity = str_to_double(split[2]);
-	if (new_l->intensity < 0 || new_l->intensity > 100)
-		parse_error("Range for intensity of the light: [0...100]", line_num);
+	if (new_l->intensity <= 0 || new_l->intensity > 100)
+		parse_error("Range for intensity of the light: (0...100]", line_num);
 	new_l->intensity /= 100;
 	if (ft_strequ(split[0], "point"))
 		rt->lights = add_new_light(rt->lights, new_l, POINT);
