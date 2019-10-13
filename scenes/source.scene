@@ -9,7 +9,7 @@
 #
 #	To the scene you can put objects like these:
 #		Camera:
-#			camera (there should be only one or zero on the scene)
+#			camera (there should be only one on the scene)
 #		Shapes:
 #			plane
 #			sphere
@@ -17,7 +17,8 @@
 #			cylinder
 #		Lights:
 #			ambient (there should be only one or zero on the scene)
-#			light
+#			point
+#			directional
 #
 #	Objects names are case-INsensitive.
 #
@@ -46,7 +47,8 @@
 #
 #	For the scene below, the parameter names are provided
 #
-#	The intensity value is in the range [0...100]
+#	The intensity value(double) is in the range (0...100]
+#	The specular value(int) is in the range [0...1000]
 
 #camera|position|rotation|
 camera|0,0,-20|0,0,0|
@@ -54,13 +56,22 @@ camera|0,0,-20|0,0,0|
 #ambient|intensity
 ambient|10|
 
-#light|position|instensity|
-point|4,0,2|50|
+#point|target|instensity|
+#point|9,1,2|50|
 
-#sphere|position|rotation|color|radius|
-#plane|0,0,0|1,1,1|100|00ff00|
-#plane|0,0,0|5,5,0|200|0000ff|
+#directional|target|instensity|
+directional|5,2,1|50|
+
+#plane|position|normal|specular|color|
+plane|0,0,0|0,1,0|100|00ff00|
+
+#sphere|center|radius|specular|color|
 sphere|0,0,10|2|100|ff0000|
-#sphere|-5,0,13|1|500|00ffff|
 
-#plane|position|rotation|color|
+sphere|-5,0,15|2|100|ff0000|
+
+#cylinder|position|direction|radius|specular|color|
+#cylinder|0,0,0|0,1,0|3|1000|ff0|
+
+#cone|position|direction|angle|specular|color|
+#cone|0,0,0|0,1,0|30|100|0ff|
