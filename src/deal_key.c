@@ -1,12 +1,12 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   mlx.c                                              :+:      :+:    :+:   */
+/*   deal_key.c                                         :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: cschoen <cschoen@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/10/09 18:03:54 by balvyn-s          #+#    #+#             */
-/*   Updated: 2019/10/13 12:43:45 by cschoen          ###   ########.fr       */
+/*   Updated: 2019/10/13 15:52:40 by cschoen          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -22,19 +22,6 @@ _Bool	is_move(int key)
 {
 	return (key == W_KEY || key == S_KEY || key == A_KEY || key == D_KEY ||
 			key == Q_KEY || key == E_KEY);
-}
-
-
-
-
-
-
-void setup_mlx(t_rt *rt)
-{
-	if (!(rt->mlx_ptr = mlx_init()))
-		p_error("Failed to set up mlx");
-	rt->win_ptr = mlx_new_window(rt->mlx_ptr, WIDTH, HEIGHT, "RTv1");
-	!rt->win_ptr ? p_error("Failed to create a new window") : 0;
 }
 
 int		deal_key(int key, void *param)

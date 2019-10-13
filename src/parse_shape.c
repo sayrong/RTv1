@@ -6,7 +6,7 @@
 /*   By: cschoen <cschoen@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/10/12 19:56:31 by cschoen           #+#    #+#             */
-/*   Updated: 2019/10/13 12:06:20 by cschoen          ###   ########.fr       */
+/*   Updated: 2019/10/13 18:41:15 by cschoen          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -21,6 +21,8 @@ static void	parse_plane(t_rt *rt, char **split, int line_num)
 
 	if (!str_to_v3(&position, split[1]))
 		parse_error("Invalid param: position point of the plane", line_num);
+	if (normal.x == 0 && normal.y == 0 && normal.z == 0)
+		parse_error("Normal vector must not be zero vector", line_num);
 	if (!str_to_v3(&normal, split[2]))
 		parse_error("Invalid param: normal vector of the plane", line_num);
 	if (!str_to_integer(&specular, split[3]))
@@ -68,6 +70,8 @@ static void	parse_cylinder(t_rt *rt, char **split, int line_num)
 	if (!str_to_v3(&pos_dir[1], split[2]))
 		parse_error("Invalid param: direction vector of the cylinder",
 					line_num);
+	if (pos_dir[1].x == 0 && pos_dir[1].y == 0 && pos_dir[1].z == 0)
+		parse_error("Direction vector must not be zero vector", line_num);
 	if (!is_valid_double(split[3]))
 		parse_error("Invalid param: radius value of the cylinder", line_num);
 	if ((radius = str_to_double(split[3])) <= 0)
@@ -93,10 +97,12 @@ static void	parse_cone(t_rt *rt, char **split, int line_num)
 		parse_error("Invalid param: position point of the cone", line_num);
 	if (!str_to_v3(&pos_dir[1], split[2]))
 		parse_error("Invalid param: direction vector of the cone", line_num);
+	if (pos_dir[1].x == 0 && pos_dir[1].y == 0 && pos_dir[1].z == 0)
+		parse_error("Direction vector must not be zero vector", line_num);
 	if (!is_valid_double(split[3]))
 		parse_error("Invalid param: angle value of the cone", line_num);
-	if ((angle = str_to_double(split[3])) <= 0)
-		parse_error("Angle of the cone must be positive", line_num);
+	if ((angle = str_to_double(split[3])) <= 0 || angle >= 180)
+		parse_error("Range for angle of the cone: (0...180)", line_num);
 	if (!str_to_integer(&specular, split[4]))
 		parse_error("Invalid param: specular value of the cone", line_num);
 	if (specular < 0 || specular > 1000)

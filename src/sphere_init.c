@@ -6,7 +6,7 @@
 /*   By: cschoen <cschoen@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/09/30 00:05:54 by cschoen           #+#    #+#             */
-/*   Updated: 2019/10/13 14:39:21 by cschoen          ###   ########.fr       */
+/*   Updated: 2019/10/13 18:07:57 by cschoen          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -17,7 +17,7 @@ t_sphere	*sphere_new(t_vec3 center, double radius, int spec)
 	t_sphere	*new_sphere;
 
 	if (!(new_sphere = (t_sphere*)malloc(sizeof(t_sphere))))
-		p_error("sphere_new: ");
+		p_error("malloc t_sphere");
 	new_sphere->center = center;
 	new_sphere->radius = radius;
 	new_sphere->specular = spec;
@@ -26,17 +26,16 @@ t_sphere	*sphere_new(t_vec3 center, double radius, int spec)
 	return (new_sphere);
 }
 
-_Bool	sphere_intersect(t_inter *inter, t_list_shape *shape_in_list)
+_Bool		sphere_intersect(t_inter *inter, t_list_shape *shape_in_list)
 {
-	t_vec3	new_origin;
-	double	coef[3];
-	double	discriminant;
-	double	t[2];
-	t_sphere *sphere;
+	t_vec3		new_origin;
+	double		coef[3];
+	double		discriminant;
+	double		t[2];
+	t_sphere	*sphere;
 
 	(!inter || !inter->ray || !shape_in_list) ? p_error("null") : 0;
 	sphere = (t_sphere*)shape_in_list->content;
-
 	new_origin = v3_sub(inter->ray->origin, sphere->center);
 	coef[0] = v3_length_sq(inter->ray->direction);
 	coef[1] = 2.0 * v3_dot(inter->ray->direction, new_origin);
@@ -51,12 +50,11 @@ _Bool	sphere_intersect(t_inter *inter, t_list_shape *shape_in_list)
 	return (FALSE);
 }
 
-t_vec3 get_sphere_normal(t_sphere *sphere, t_vec3 hit_point)
+t_vec3		get_sphere_normal(t_sphere *sphere, t_vec3 hit_point)
 {
-	t_vec3 normal;
+	t_vec3	normal;
 
 	normal = v3_sub(hit_point, sphere->center);
 	normal = v3_norm(normal);
 	return (normal);
 }
-

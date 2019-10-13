@@ -6,7 +6,7 @@
 /*   By: cschoen <cschoen@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/10/12 17:17:56 by cschoen           #+#    #+#             */
-/*   Updated: 2019/10/12 21:04:37 by cschoen          ###   ########.fr       */
+/*   Updated: 2019/10/13 18:43:33 by cschoen          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -44,6 +44,9 @@ static void	parse_cam(t_rt *rt, char **split, int line_num)
 		parse_error("Invalid param: position vector of the camera", line_num);
 	if (!str_to_v3(&target, split[2]))
 		parse_error("Invalid param: target point of the camera", line_num);
+	if (origin.x == target.x && origin.y == target.y && origin.z == target.z)
+		parse_error("Position and rotation must have different values",
+					line_num);
 	rt->cam = camera_new(origin, target);
 }
 
@@ -60,8 +63,10 @@ static void	parse_split(char **split, t_rt *rt, int line_num)
 		parse_cam(rt, split, line_num);
 	else if (ft_strequ(split[0], "ambient"))
 		parse_ambient(rt, split, line_num);
-	else if (ft_strequ(split[0], "point") || ft_strequ(split[0], "directional"))
-		parse_light(rt, split, line_num);
+	else if (ft_strequ(split[0], "point"))
+		parse_point(rt, split, line_num);
+	else if (ft_strequ(split[0], "directional"))
+		parse_directional(rt, split, line_num);
 	else if (ft_strequ(split[0], "plane") || ft_strequ(split[0], "sphere") ||
 			ft_strequ(split[0], "cylinder") || ft_strequ(split[0], "cone"))
 		parse_shape(rt, split, line_num);

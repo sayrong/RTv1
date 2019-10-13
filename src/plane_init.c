@@ -6,7 +6,7 @@
 /*   By: cschoen <cschoen@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/09/29 19:15:45 by cschoen           #+#    #+#             */
-/*   Updated: 2019/10/13 12:44:20 by cschoen          ###   ########.fr       */
+/*   Updated: 2019/10/13 17:57:55 by cschoen          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -28,13 +28,13 @@ t_plane	*plane_new(t_vec3 position, t_vec3 normal, int spec)
 
 _Bool	plane_intersect(t_inter *inter, t_list_shape *shape_in_list)
 {
-	t_vec3		temp;
-	double		d_dot_n;
-	double		t;
-	t_plane		*plane;
+	t_vec3	temp;
+	double	d_dot_n;
+	double	t;
+	t_plane	*plane;
 
 	if (!inter || !inter->ray || !shape_in_list)
-		p_error("null plane inter");
+		error("NULL in plane_intersect");
 	plane = (t_plane*)shape_in_list->content;
 	if ((d_dot_n = v3_dot(inter->ray->direction, plane->normal)) == 0.0)
 		return (FALSE);
@@ -47,12 +47,12 @@ _Bool	plane_intersect(t_inter *inter, t_list_shape *shape_in_list)
 	return (FALSE);
 }
 
-t_vec3 get_plane_normal(t_plane *plane, t_ray *ray)
+t_vec3	get_plane_normal(t_plane *plane, t_ray *ray)
 {
-	double 	d;
+	double	d;
 
 	d = v3_dot(ray->direction, plane->normal);
 	if (d < 0)
 		return (plane->normal);
-	return(v3_div(plane->normal, -1));
+	return (v3_div(plane->normal, -1));
 }

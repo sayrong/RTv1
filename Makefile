@@ -6,7 +6,7 @@
 #    By: cschoen <cschoen@student.42.fr>            +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2019/10/07 02:04:41 by cschoen           #+#    #+#              #
-#    Updated: 2019/10/13 15:24:59 by cschoen          ###   ########.fr        #
+#    Updated: 2019/10/13 15:52:23 by cschoen          ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -35,7 +35,7 @@ VECNAME = $(VECDIR)$(LIB_VEC)
 LIBHEAD = $(LFTINC)libft.h $(VECINC)libvec.h
 INCNAME = $(INCDIR)rt.h $(INCDIR)linuxkeys.h $(INCDIR)macoskeys.h
 
-SRCNAME = main.c ray_trace.c plane_init.c sphere_init.c mlx.c error.c \
+SRCNAME = main.c ray_trace.c plane_init.c sphere_init.c deal_key.c error.c \
 		intersection_init.c camera_init.c image_init.c color.c \
 		cone.c cylinder.c list.c light.c shapeset_init.c validator.c \
 		parser.c parse_functions.c parse_light.c parse_shape.c

@@ -6,7 +6,7 @@
 /*   By: cschoen <cschoen@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/09/29 14:15:02 by cschoen           #+#    #+#             */
-/*   Updated: 2019/10/13 12:57:40 by cschoen          ###   ########.fr       */
+/*   Updated: 2019/10/13 18:44:04 by cschoen          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -22,7 +22,7 @@
 # define HEIGHT 400
 # define PI 3.14159265359
 # define THREADS_NUM 8
-# define STEP (WIDTH* HEIGHT) / THREADS_NUM
+# define STEP (WIDTH * HEIGHT) / THREADS_NUM
 
 # include <pthread.h>
 # include <mlx.h>
@@ -54,8 +54,7 @@ typedef struct s_light
 	t_light_type type;
 	double       intensity;
 	t_vec3   	position;
-
-
+	t_vec3		target;
 }              t_light;
 
 typedef enum	e_shape_type
@@ -195,7 +194,8 @@ int						str_to_v3(t_vec3 *vec, char *str);
 int						str_to_rgb(t_color *col, char *str);
 
 void					parse_ambient(t_rt *rt, char **split, int line_num);
-void					parse_light(t_rt *rt, char **split, int line_num);
+void					parse_point(t_rt *rt, char **split, int line_num);
+void					parse_directional(t_rt *rt, char **split, int line_num);
 void					parse_shape(t_rt *rt, char **split, int line_num);
 void					parser(char *source, t_rt *rt, int fd, int line_num);
 
@@ -252,19 +252,13 @@ void white(t_color* color);
 int				get_color(t_color *c, double light);
 t_color			*get_color_from_list(t_list_shape *list);
 
-//mlx
-void			setup_mlx(t_rt *rt);
 t_img			*img_new(int width, int height, t_rt *rt);
 int				*get_pixel(int x, int y, t_img *img);
 
 //main
-void send_ray(t_inter *inter, int position, t_thread *src);
+void	send_ray(t_inter *inter, int position, t_thread *src);
 void	draw(t_rt *rt);
 void	*calculate(void *data);
-
-
-void initial_setup(t_rt *rt);
-
 
 int	red_x_button(void *param);
 int	deal_key(int key, void *param);

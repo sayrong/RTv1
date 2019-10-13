@@ -1,38 +1,45 @@
-//
-//  color.c
-//  RTV2
-//
-//  Created by Babette Alvyn sharp on 04/10/2019.
-//  Copyright © 2019 Babette Alvyn sharp. All rights reserved.
-//
+/* ************************************************************************** */
+/*                                                                            */
+/*                                                        :::      ::::::::   */
+/*   color.c                                            :+:      :+:    :+:   */
+/*                                                    +:+ +:+         +:+     */
+/*   By: cschoen <cschoen@student.42.fr>            +#+  +:+       +#+        */
+/*                                                +#+#+#+#+#+   +#+           */
+/*   Created: 2019/10/13 15:57:10 by cschoen           #+#    #+#             */
+/*   Updated: 2019/10/13 16:00:52 by cschoen          ###   ########.fr       */
+/*                                                                            */
+/* ************************************************************************** */
 
 #include "rt.h"
 
-void white(t_color* new)
+void	white(t_color *color)
 {
-	new->r = 255;
-	new->g = 255;
-	new->b = 255;
+	color->r = 255;
+	color->g = 255;
+	color->b = 255;
 }
 
-int get_color(t_color *c, double light)
+int		get_color(t_color *c, double light)
 {
-	int newRed = c->r * light;
-	int newGreen = c->g * light;
-	int newBlue = c->b * light;
-	return (newRed << 16 | newGreen << 8 | newBlue);
+	int	new_red;
+	int	new_green;
+	int	new_blue;
+
+	new_red = c->r * light;
+	new_green = c->g * light;
+	new_blue = c->b * light;
+	return (new_red << 16 | new_green << 8 | new_blue);
 }
 
-t_color *get_color_from_list(t_list_shape *list)
+t_color	*get_color_from_list(t_list_shape *list)
 {
 	if (list->shape == SPHERE)
-		return &(((t_sphere*)list->content)->color);
+		return (&(((t_sphere*)list->content)->color));
 	else if (list->shape == PLANE)
-		return &(((t_plane*)list->content)->color);
+		return (&(((t_plane*)list->content)->color));
 	else if (list->shape == CONE)
-		return &(((t_cone*)list->content)->color);
+		return (&(((t_cone*)list->content)->color));
 	else if (list->shape == CYLINDER)
-		return &(((t_cylinder*)list->content)->color);
-	else
-		return (NULL);
+		return (&(((t_cylinder*)list->content)->color));
+	return (NULL);
 }

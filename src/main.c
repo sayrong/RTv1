@@ -6,7 +6,7 @@
 /*   By: cschoen <cschoen@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/09/28 20:32:31 by cschoen           #+#    #+#             */
-/*   Updated: 2019/10/13 12:48:59 by cschoen          ###   ########.fr       */
+/*   Updated: 2019/10/13 15:40:59 by cschoen          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -18,13 +18,7 @@ static void	input_hook(t_rt *rt)
 	mlx_hook(rt->win_ptr, 2, 3, deal_key, (void *)rt);
 }
 
-void		initial_setup(t_rt *rt)
-{
-	setup_mlx(rt);
-	rt->img = img_new(WIDTH, HEIGHT, rt);
-}
-
-int		main(int argc, char *argv[])
+int			main(int argc, char *argv[])
 {
 	t_rt	rt;
 	int		fd;
@@ -37,7 +31,11 @@ int		main(int argc, char *argv[])
 	if (argc != 2)
 		usage(argv[0]);
 	parser(argv[1], &rt, fd, parse_line);
-	initial_setup(&rt);
+	if (!(rt.mlx_ptr = mlx_init()))
+		p_error("Failed to set up the connection to the X server");
+	rt.win_ptr = mlx_new_window(rt.mlx_ptr, WIDTH, HEIGHT, "RTv1");
+	!rt.win_ptr ? p_error("Failed to create a new window") : 0;
+	rt.img = img_new(WIDTH, HEIGHT, &rt);
 	draw(&rt);
 	input_hook(&rt);
 	mlx_loop(rt.mlx_ptr);

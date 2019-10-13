@@ -6,7 +6,7 @@
 /*   By: cschoen <cschoen@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/10/12 18:52:59 by cschoen           #+#    #+#             */
-/*   Updated: 2019/10/13 11:29:30 by cschoen          ###   ########.fr       */
+/*   Updated: 2019/10/13 18:55:16 by cschoen          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -32,26 +32,49 @@ void	parse_ambient(t_rt *rt, char **split, int line_num)
 	rt->lights = add_new_light(rt->lights, new_l, AMBIENT);
 }
 
-void	parse_light(t_rt *rt, char **split, int line_num)
+void	parse_point(t_rt *rt, char **split, int line_num)
 {
 	t_light	*new_l;
 
 	if (!(new_l = (t_light*)malloc(sizeof(t_light))))
 		p_error("malloc t_light");
 	if (!split[1] || !split[2] || split[3])
-		parse_error("Light should have two parameters", line_num);
+		parse_error("Point light should have two parameters", line_num);
 	if (!str_to_v3(&new_l->position, split[1]))
-		ft_strequ(split[0], "point") ?
-			parse_error("Invalid param: target point of the light", line_num) :
-			parse_error("Invalid param: target vector of the light", line_num);
+		parse_error("Invalid param: target point of the point light", line_num);
 	if (!is_valid_double(split[2]))
-		parse_error("Invalid param: intensity value of the light", line_num);
+		parse_error("Invalid param: intensity value of the point light",
+					line_num);
 	new_l->intensity = str_to_double(split[2]);
 	if (new_l->intensity <= 0 || new_l->intensity > 100)
 		parse_error("Range for intensity of the light: (0...100]", line_num);
 	new_l->intensity /= 100;
-	if (ft_strequ(split[0], "point"))
-		rt->lights = add_new_light(rt->lights, new_l, POINT);
-	else
-		rt->lights = add_new_light(rt->lights, new_l, DIRECTIONAL);
+	rt->lights = add_new_light(rt->lights, new_l, POINT);
+}
+
+void	parse_directional(t_rt *rt, char **split, int line_num)
+{
+	t_light	*new_l;
+
+	if (!(new_l = (t_light*)malloc(sizeof(t_light))))
+		p_error("malloc t_light");
+	if (!split[1] || !split[2] || !split[3] || split[4])
+		parse_error("Directional light should have three parameters", line_num);
+	if (!str_to_v3(&new_l->position, split[1]))
+		parse_error("Invalid param: position point of the directional point",
+					line_num);
+	if (!str_to_v3(&new_l->target, split[2]))
+		parse_error("Invalid param: target point of the directional point",
+					line_num);
+	if (new_l->position.x == new_l->target.x &&
+		new_l->position.y == new_l->target.y &&
+		new_l->position.z == new_l->target.z)
+		parse_error("Position and target vectors must be different", line_num);
+	if (!is_valid_double(split[3]))
+		parse_error("Invalid param: intensity value of the light", line_num);
+	new_l->intensity = str_to_double(split[3]);
+	if (new_l->intensity <= 0 || new_l->intensity > 100)
+		parse_error("Range for intensity of the light: (0...100]", line_num);
+	new_l->intensity /= 100;
+	rt->lights = add_new_light(rt->lights, new_l, DIRECTIONAL);
 }

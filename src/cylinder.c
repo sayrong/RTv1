@@ -6,13 +6,13 @@
 /*   By: cschoen <cschoen@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/10/09 18:10:14 by balvyn-s          #+#    #+#             */
-/*   Updated: 2019/10/13 12:40:20 by cschoen          ###   ########.fr       */
+/*   Updated: 2019/10/13 16:54:05 by cschoen          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "rt.h"
 
-t_cylinder *cylinder_new(t_vec3 position, t_vec3 direction, double r, int spec)
+t_cylinder	*cylinder_new(t_vec3 position, t_vec3 direction, double r, int spec)
 {
 	t_cylinder	*new_cylinder;
 
@@ -27,14 +27,13 @@ t_cylinder *cylinder_new(t_vec3 position, t_vec3 direction, double r, int spec)
 	return (new_cylinder);
 }
 
-
 /*
-** a = D|D - (D|V)^2
-** b/2 = D|X - (D|V)*(X|V)
-** c = X|X - (X|V)^2 - r*r
+**	a = D|D - (D|V)^2
+**	b/2 = D|X - (D|V)*(X|V)
+**	c = X|X - (X|V)^2 - r*r
 */
 
-_Bool	cylinder_intersect(t_inter *inter, t_list_shape *shape_in_list)
+_Bool		cylinder_intersect(t_inter *inter, t_list_shape *shape_in_list)
 {
 	double		abcd[4];
 	double		t[2];
@@ -45,11 +44,11 @@ _Bool	cylinder_intersect(t_inter *inter, t_list_shape *shape_in_list)
 	x = v3_sub(inter->ray->origin, cylinder->position);
 	abcd[0] = v3_dot(inter->ray->direction, inter->ray->direction)
 		- pow(v3_dot(inter->ray->direction, cylinder->dir), 2);
-	abcd[1] = 2 * (v3_dot(inter->ray->direction, x)
-			- (v3_dot(inter->ray->direction, cylinder->dir)
-				* v3_dot(x, cylinder->dir)));
-	abcd[2] = v3_dot(x, x) - pow(v3_dot(x, cylinder->dir), 2)
-		- cylinder->radius * cylinder->radius;
+	abcd[1] = 2 * (v3_dot(inter->ray->direction, x) -
+				(v3_dot(inter->ray->direction, cylinder->dir) *
+					v3_dot(x, cylinder->dir)));
+	abcd[2] = v3_dot(x, x) - pow(v3_dot(x, cylinder->dir), 2) -
+				cylinder->radius * cylinder->radius;
 	abcd[3] = pow(abcd[1], 2) - 4 * abcd[0] * abcd[2];
 	if (abcd[3] < 0)
 		return (FALSE);
@@ -60,8 +59,8 @@ _Bool	cylinder_intersect(t_inter *inter, t_list_shape *shape_in_list)
 	return (FALSE);
 }
 
-
-t_vec3	get_cyl_normal(t_cylinder *cyl, t_ray *ray, t_vec3 hit_point, double t)
+t_vec3		get_cyl_normal(t_cylinder *cyl, t_ray *ray, t_vec3 hit_point,
+							double t)
 {
 	double	m;
 	t_vec3	x;
@@ -73,7 +72,6 @@ t_vec3	get_cyl_normal(t_cylinder *cyl, t_ray *ray, t_vec3 hit_point, double t)
 	tmp[0] = v3_sub(hit_point, cyl->position);
 	tmp[1] = v3_scale(cyl->dir, m);
 	tmp[2] = v3_sub(tmp[0], tmp[1]);
-	//normal = v3_new_div_by_num(tmp[2], length(tmp[2]));
 	normal = v3_norm(tmp[2]);
 	return (normal);
 }

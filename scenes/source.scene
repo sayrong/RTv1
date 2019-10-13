@@ -61,8 +61,8 @@ point|9,5,2|50|
 point|9,-5,2|50|
 
 
-#directional|target|instensity|
-directional|5,2,1|50|
+#directional|position|target|instensity|
+directional|5,2,1|0,0,0|50|
 
 #plane|position|normal|specular|color|
 plane|0,0,0|0,1,0|0|00ff00|
