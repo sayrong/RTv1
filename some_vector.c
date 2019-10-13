@@ -30,3 +30,11 @@ double			length_sq(t_vec3 v)
 {
 	return (v.x * v.x + v.y * v.y + v.z * v.z);
 }
+
+t_vec3	v3_div(t_vec3 v, double a)
+{
+	v.x /= a;
+	v.y /= a;
+	v.z /= a;
+	return (v);
+}

@@ -12,121 +12,47 @@
 
 #include "rt.h"
 
-
-
-/*
-
-
-t_plane	*plane_new(t_vec3 *position, t_vec3 *normal)
+t_plane	*plane_new(t_vec3 position, t_vec3 normal, int spec)
 {
 	t_plane	*new_plane;
 
 	if (!(new_plane = (t_plane*)malloc(sizeof(t_plane))))
-		error("plane_new: ");
-	new_plane->position = v3_new_copy(position);
-	new_plane->normal = v3_new_copy(normal);
+		put_error("plane_new: ");
+	new_plane->position = position;
+	new_plane->normal = v3_norm(normal);
+	new_plane->specular = spec;
+	new_plane->shape = PLANE;
+	white(&new_plane->color);
 	return (new_plane);
 }
-
-t_plane	*plane_new_dp(t_vec3 *position, t_vec3 *normal)
-{
-	t_plane	*new_plane;
-
-	new_plane = plane_new(position, normal);
-	v3_del(&position);
-	v3_del(&normal);
-	return (new_plane);
-}
-
-t_plane	*plane_new_copy(t_plane *plane)
-{
-	t_plane	*new_plane;
-
-	if (!plane)
-		null_error();
-	if (!(new_plane = (t_plane*)malloc(sizeof(t_plane))))
-		error("plane_new_copy: ");
-	new_plane->position = v3_new_copy(plane->position);
-	new_plane->normal = v3_new_copy(plane->normal);
-	return (new_plane);
-}
-
-//t_plane	*plane_copy(t_plane *plane1, t_plane *plane2)
-//{
-//	if (!plane2)
-//		plane_del(&plane1);
-//	else if (!plane1)
-//		plane1 = plane_new_copy(plane2);
-//	else
-//	{
-//		plane1->position = v3_copy(plane1->position, plane2->position);
-//		plane1->normal = v3_copy(plane1->normal, plane2->normal);
-//	}
-//	return (plane1);
-//}
 
 _Bool	plane_intersect(t_inter *inter, t_list_shape *shape_in_list)
 {
-	t_vec3	*temp;
+	t_vec3		temp;
 	double		d_dot_n;
 	double		t;
 	t_plane		*plane;
 
 	if (!inter || !inter->ray || !shape_in_list)
-		null_error();
+		put_error("null plane inter");
 	plane = (t_plane*)shape_in_list->content;
-	if ((d_dot_n = dot(inter->ray->direction, plane->normal)) == 0.0)
+	if ((d_dot_n = v3_dot(inter->ray->direction, plane->normal)) == 0.0)
 		return (FALSE);
-	temp = v3_new_minus(plane->position, inter->ray->origin);
-	t = dot(temp, plane->normal) / d_dot_n;
-	v3_del(&temp);
+	temp = v3_sub(plane->position, inter->ray->origin);
+	t = v3_dot(temp, plane->normal) / d_dot_n;
 	if (t <= RAY_T_MIN || t >= RAY_T_MAX)
 		return (FALSE);
-	//need to find clossed t
-//	if (t < inter->t)
-//	{
-//		inter->t = t;
-//		inter->shape = shape_in_list;
-//	}
 	if (!define_t(t, t, inter, shape_in_list))
 		return (TRUE);
 	return (FALSE);
 }
 
-t_vec3 *get_plane_normal(t_plane *plane, t_ray *ray)
+t_vec3 get_plane_normal(t_plane *plane, t_ray *ray)
 {
-	t_vec3	*normal;
-	double 		d;
+	double 	d;
 	
-	d = dot(ray->direction, plane->normal);
+	d = v3_dot(ray->direction, plane->normal);
 	if (d < 0)
-		normal = v3_new_copy(plane->normal);
-	else
-		normal = v3_new_mult_by_num(plane->normal, -1);
-	return (normal);
+		return (plane->normal);
+	return(v3_div(plane->normal, -1));
 }
-
-
-//_Bool	plane_does_intersect(t_ray *ray, t_shape *shape)
-//{
-//	t_vec3	*temp;
-//	double		d_dot_n;
-//	double		t;
-//
-//	if (!ray || !shape || !shape->plane)
-//		null_error();
-//	if ((d_dot_n = dot(ray->direction, shape->plane->normal)) == 0.0)
-//		return (FALSE);
-//	temp = v3_new_minus(shape->plane->position, ray->origin);
-//	t = dot(temp, shape->plane->normal) / d_dot_n;
-//	v3_del(&temp);
-//	if (t <= RAY_T_MIN || t >= RAY_T_MAX)
-//		return (FALSE);
-//	return (TRUE);
-//}
-
- 
- 
- */
- 
- 

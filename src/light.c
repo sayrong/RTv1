@@ -35,13 +35,6 @@ t_vec3 get_intersection_point(t_inter *inter)
 	return (intersection_point);
 }
 
-//void clear_shadow(t_vec3 **tmp, t_inter *inter, t_ray *ray)
-//{
-//	free_temp_v(tmp, 2);
-//	inter_del(&inter);
-//	ray_del(&ray);
-//}
-
 int is_in_shadow(t_list_light *light, t_list_shape *scene, t_vec3 intersection_point)
 {
 	t_inter inter;

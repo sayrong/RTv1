@@ -8,7 +8,6 @@
 
 #include "rt.h"
 
-/*
 
 void setup_light2(t_rt *rt)
 {
@@ -17,14 +16,13 @@ void setup_light2(t_rt *rt)
 	
 	l1 = (t_light*)malloc(sizeof(t_light));
 	l1->type = ambient;
-	l1->intensity = 0.05;
-	l1->position = NULL;
+	l1->intensity = 0.1;
 	rt->lights = new_light_list(l1, l1->type);
 	
 	light = (t_light*)malloc(sizeof(t_light));
 	light->type = point;
 	light->intensity = 0.4;
-	light->position = v3_new3(-4, 0, -5);
+	light->position = v3_new(-4, 0, -5);
 	add_new_light(rt->lights, light, light->type);
 }
 
@@ -32,26 +30,20 @@ void setup_obj2(t_rt *rt)
 {
 	t_cylinder    *cyl;
 	
-	cyl = (t_cylinder*)malloc(sizeof(t_cylinder));
-	cyl->position = v3_new3(0, 0, 0);
-	cyl->dir = v3_new3(0, 1, 0);
-	cyl->color = white();
-	cyl->color->r = 0;
-	cyl->color->b = 0;
-	cyl->radius = 2;
-	cyl->shape = CYLINDER;
-	cyl->specular = 10;
+	cyl = cylinder_new(v3_new(0, 0, 0), v3_new(0, 1, 0), 2, 10);
+	cyl->color.b = 0;
+	cyl->color.r = 0;
 	rt->shapes = new_shape_list((void*)cyl, cyl->shape);
 }
 
 void setup_camera2(t_rt *rt)
 {
-	t_vec3 *origin;
-	t_vec3 *focus;
+	t_vec3 origin;
+	t_vec3 focus;
 	
-	origin = v3_new3(0.0, 0.0, -10.0);
-	focus = v3_new3(0.0, 0.0, 0.0);
-	rt->cam = camera_new_dp(origin, focus, rt);
+	origin = v3_new(0.0, 0.0, -10.0);
+	focus = v3_new(0.0, 0.0, 0.0);
+	rt->cam = camera_new(origin, focus);
 }
 
 void scene2(t_rt *rt)
@@ -62,10 +54,10 @@ void scene2(t_rt *rt)
 	setup_obj2(rt);
 	setup_light2(rt);
 	ray_trace(rt, p2_set(0, 0));
-	mlx_put_image_to_window(rt->win->mlx_ptr, rt->win->win_ptr,
+	mlx_put_image_to_window(rt->mlx_ptr, rt->win_ptr,
 							rt->img->img_ptr, 0, 0);
 	ft_putendl("ready");
 }
 
-*/
+
  

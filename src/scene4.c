@@ -8,8 +8,6 @@
 
 #include "rt.h"
 
-/*
-
 void setup_light4(t_rt *rt)
 {
 	t_light		*light;
@@ -17,52 +15,33 @@ void setup_light4(t_rt *rt)
 	
 	l1 = (t_light*)malloc(sizeof(t_light));
 	l1->type = ambient;
-	l1->intensity = 0.05;
-	l1->position = NULL;
+	l1->intensity = 0.1;
 	rt->lights = new_light_list(l1, l1->type);
 	
 	light = (t_light*)malloc(sizeof(t_light));
 	light->type = point;
 	light->intensity = 0.5;
-	light->position = v3_new3(-4, 5, -3);
+	light->position = v3_new(-4, 5, -3);
 	add_new_light(rt->lights, light, light->type);
 }
 
 void set_floor4(t_rt *rt)
 {
-	t_vec3 	*posit;
-	t_vec3	*norm;
 	t_plane		*plane;
-	
-	posit = v3_new3(0, -3, 0);
-	norm = v3_new3(0, 1, 0);
-	plane = plane_new(posit, norm);
-	plane->color = white();
-	plane->color->r = 100;
-	plane->color->g = 0;
-	plane->shape = PLANE;
-	plane->specular = 0;
-	free(norm);
-	free(posit);
+
+	plane = plane_new(v3_new(0, -3, 0), v3_new(0, 1, 0), 10);
+	plane->color.r = 100;
+	plane->color.g = 0;
 	rt->shapes = new_shape_list((void*)plane, plane->shape);
 }
 
 void set_back4(t_rt *rt)
 {
-	t_vec3 	*posit;
-	t_vec3	*norm;
 	t_plane		*plane;
 	
-	posit = v3_new3(0, 0, 90);
-	norm = v3_new3(0, 0, 1);
-	plane = plane_new(posit, norm);
-	plane->color = white();
-	plane->color->r = 0;
-	plane->color->g = 0;
-	plane->shape = PLANE;
-	plane->specular = 0;
-	v3_del(&posit);
-	v3_del(&norm);
+	plane = plane_new(v3_new(0, 0, 90), v3_new(0, 0, 1), 10);
+	plane->color.r = 0;
+	plane->color.g = 0;
 	add_new_shape(rt->shapes, (void*)plane, plane->shape);
 }
 
@@ -70,21 +49,9 @@ void set_back4(t_rt *rt)
 void set_cone(t_rt *rt)
 {
 	t_cone	*cone;
-	t_vec3 *dir;
 	
-	
-	cone = (t_cone*)malloc(sizeof(t_cone));
-	cone->angle = 90;
-	cone->color = white();
-	cone->color->b = 0;
-	cone->position = v3_new3(-5, 2, 5);
-	
-	//dir must be normalized
-	dir = v3_new3(3, 5, 0);
-	normalize(dir);
-	cone->dir = dir;
-	cone->specular = 10;
-	cone->shape = CONE;
+	cone = cone_new(v3_new(-5, 2, 5), v3_new(3, 5, 0), 90, 10);
+	cone->color.b = 0;
 	add_new_shape(rt->shapes, (void*)cone, cone->shape);
 }
 
@@ -92,9 +59,9 @@ void set_sphere(t_rt *rt)
 {
 	t_sphere    *sphere;
 	
-	sphere = sphere_new_dp(v3_new3(0, 0, 0), 4.0);
-	sphere->color->b = 0;
-	sphere->color->g = 0;
+	sphere = sphere_new(v3_new(0, 0, 0), 4.0);
+	sphere->color.b = 0;
+	sphere->color.g = 0;
 	sphere->specular = 10;
 	add_new_shape(rt->shapes, (void*)sphere, sphere->shape);
 }
@@ -102,20 +69,10 @@ void set_sphere(t_rt *rt)
 void set_cyl(t_rt *rt)
 {
 	t_cylinder    *cyl;
-	t_vec3 *dir;
-	
-	cyl = (t_cylinder*)malloc(sizeof(t_cylinder));
-	cyl->position = v3_new3(5, 0, 3);
-	
-	dir = v3_new3(-5, 7, 1);
-	normalize(dir);
-	cyl->dir = dir;
-	cyl->color = white();
-	cyl->color->r = 0;
-	cyl->color->b = 0;
-	cyl->radius = 3;
-	cyl->shape = CYLINDER;
-	cyl->specular = 10;
+
+	cyl = cylinder_new(v3_new(5, 0, 3), v3_new(-5, 7, 1), 3, 10);
+	cyl->color.r = 0;
+	cyl->color.b = 0;
 	add_new_shape(rt->shapes, (void*)cyl, cyl->shape);
 }
 
@@ -130,12 +87,12 @@ void setup_obj4(t_rt *rt)
 
 void setup_camera4(t_rt *rt)
 {
-	t_vec3 *origin;
-	t_vec3 *focus;
+	t_vec3 origin;
+	t_vec3 focus;
 	
-	origin = v3_new3(0.0, 0.0, -35.0);
-	focus = v3_new3(0.0, 0.0, 0.0);
-	rt->cam = camera_new_dp(origin, focus, rt);
+	origin = v3_new(0.0, 0.0, -35.0);
+	focus = v3_new(0.0, 0.0, 0.0);
+	rt->cam = camera_new(origin, focus);
 }
 
 void scene4(t_rt *rt)
@@ -145,10 +102,10 @@ void scene4(t_rt *rt)
 	setup_camera4(rt);
 	setup_obj4(rt);
 	setup_light4(rt);
-	ray_trace(rt, p2_set(0, 0));
-	mlx_put_image_to_window(rt->win->mlx_ptr, rt->win->win_ptr,
-							rt->img->img_ptr, 0, 0);
+	//ray_trace(rt, p2_set(0, 0));
+	draw(rt);
+	//mlx_put_image_to_window(rt->mlx_ptr, rt->win_ptr,
+	//						rt->img->img_ptr, 0, 0);
 	ft_putendl("ready");
 }
 
- */

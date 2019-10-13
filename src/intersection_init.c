@@ -12,20 +12,6 @@
 
 #include "rt.h"
 
-/*
-t_inter		*inter_new(void)
-{
-	t_inter	*new_inter;
-
-	if (!(new_inter = (t_inter*)malloc(sizeof(t_inter))))
-		error("inter_new: ");
-	new_inter->ray = ray_new();
-	new_inter->t = RAY_T_MAX;
-	new_inter->shape = NULL;
-	return (new_inter);
-}
- */
-
 void inter_new_ray(t_inter *inter, t_ray *ray)
 {
 	if (!ray)
@@ -35,49 +21,15 @@ void inter_new_ray(t_inter *inter, t_ray *ray)
 	inter->shape = NULL;
 }
 
-//t_inter		*inter_new_copy(t_inter *inter)
-//{
-//	t_inter	*new_inter;
-//
-//	if (!inter)
-//		null_error();
-//	if (!(new_inter = (t_inter*)malloc(sizeof(t_inter))))
-//		error("inter_new_copy: ");
-//	new_inter->ray = ray_new_copy(inter->ray);
-//	new_inter->t = inter->t;
-//	new_inter->shape = shape_new_copy(inter->shape);
-//	return (new_inter);
-//}
-
-//t_inter		*inter_copy(t_inter *inter1, t_inter *inter2)
-//{
-//	if (!inter2)
-//		inter_del(&inter1);
-//	else if (!inter1)
-//		inter1 = inter_new_copy(inter2);
-//	else
-//	{
-//		inter1->ray = ray_copy(inter1->ray, inter2->ray);
-//		inter1->t = inter2->t;
-//		inter1->shape = shape_copy(inter1->shape, inter2->shape);
-//	}
-//	return (inter1);
-//}
-
-/*
-
-t_vec3	*position(t_inter *inter)
+void set_ray_direction(t_ray* r, t_vec2 *point, t_cam *cam)
 {
-	if (!inter)
-		null_error();
-	return (calculate(inter->ray, inter->t));
+	t_vec3 tmp;
+	
+	if (!point || !cam)
+		put_error("null");
+	tmp = v3_scale(cam->right, point->u * cam->w);
+	r->direction = v3_scale(cam->up, point->v * cam->h);
+	r->direction = v3_add(r->direction, tmp);
+	r->direction = v3_add(r->direction, cam->forward);
+	r->direction = v3_norm(r->direction);
 }
-
-_Bool		intersected(t_inter *inter)
-{
-	if (!inter)
-		null_error();
-	return (inter->shape != NULL);
-
-}
-*/

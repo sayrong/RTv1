@@ -21,7 +21,10 @@
 # define WIDTH 400
 # define HEIGHT 400
 # define PI 3.14159265359
+# define THREADS_NUM 8
+# define STEP (WIDTH* HEIGHT) / THREADS_NUM
 
+# include <pthread.h>
 # include <mlx.h>
 # include "libvec.h"
 # include "../libft/libft.h"
@@ -87,11 +90,11 @@ typedef struct	s_ray
 
 typedef struct	s_plane
 {
-	t_vec3		*position;
-	t_vec3		*normal;
+	t_vec3			position;
+	t_vec3			normal;
 	t_shape_type 	shape;
-	t_color			*color;
-	int 		specular;
+	t_color			color;
+	int 			specular;
 
 }				t_plane;
 
@@ -106,22 +109,22 @@ typedef struct	s_sphere
 
 typedef struct	s_cone
 {
-	t_vec3		*position;
-	t_vec3		*dir;
+	t_vec3			position;
+	t_vec3			dir;
 	double 			angle;
-	t_color			*color;
+	t_color			color;
 	t_shape_type 	shape;
-	int 		specular;
+	int 			specular;
 }				t_cone;
 
 typedef struct	s_cylinder
 {
-	t_vec3		*position;
-	t_vec3		*dir;
+	t_vec3			position;
+	t_vec3			dir;
 	double			radius;
-	t_color			*color;
+	t_color			color;
 	t_shape_type 	shape;
-	int 		specular;
+	int 			specular;
 }				t_cylinder;
 
 
@@ -167,120 +170,80 @@ typedef struct	s_rt
 
 }				t_rt;
 
+typedef struct		s_thread
+{
+	t_rt			*rt;
+	int				rt_id;
+	int				y_min;
+	int				y_max;
+}					t_thread;
 
-double compute_light(t_inter *inter, t_list_shape *scene, t_list_light *lights);
+//Create objects
+t_cylinder		*cylinder_new(t_vec3 position, t_vec3 direction, double r, int spec);
+t_sphere		*sphere_new(t_vec3 center, double radius);
+t_cone			*cone_new(t_vec3 position, t_vec3 direction, double angle, int spec);
+t_plane			*plane_new(t_vec3 position, t_vec3 normal, int spec);
+t_cam	camera_new(t_vec3 origin, t_vec3 target);
 
-
-t_vec3 get_normal(t_inter *inter);
-int get_specular(t_inter *inter);
-//t_vec3 *get_sphere_normal(t_sphere *sphere, t_vec3 *hit_point);
+//Normals
 t_vec3 get_sphere_normal(t_sphere *sphere, t_vec3 hit_point);
-t_vec3 *get_plane_normal(t_plane *plane, t_ray *ray);
-t_vec3 *get_cone_normal(t_cone *cone, t_ray *ray, t_vec3 *hit_point, double t);
-t_vec3 *get_cyl_normal(t_cylinder *cyl, t_ray *ray, t_vec3 *hit_point, double t);
+t_vec3 get_cyl_normal(t_cylinder *cyl, t_ray *ray, t_vec3 hit_point, double t);
+t_vec3 get_plane_normal(t_plane *plane, t_ray *ray);
+t_vec3 get_cone_normal(t_cone *cone, t_ray *ray, t_vec3 hit_point, double t);
 
-_Bool	cone_intersect(t_inter *inter, t_list_shape *shape_in_list);
+//Move cam
+t_cam			*recalc_cam_dp(t_cam *cam, int key, t_vec3 upguide,
+							   t_vec2 fov_ratio);
 
-_Bool	cylinder_intersect(t_inter *inter, t_list_shape *shape_in_list);
-
-
-double degrees_to_rad(double angleInDegrees);
-int define_t(double t1, double t2, t_inter *inter, t_list_shape *shape_in_list);
-
-
-
-//lists
+//Lists
 t_list_shape 	*new_shape_list(void *content, t_shape_type type);
 void			add_new_shape(t_list_shape *list, void *content, t_shape_type type);
 
 t_list_light *new_light_list(t_light *light, t_light_type type);
 void		add_new_light(t_list_light *list, t_light *light, t_light_type type);
-//
-
-//color
-void white(t_color* new);
-int				get_color(t_color *c, double light);
-t_color			*get_color_from_list(t_list_shape *list);
-//
 
 
-double			sqr(double num);
-
-void			put_error(char *str);
-
-void			ray_del(t_ray **ray);
-void			plane_del(t_plane **plane);
-void			sphere_del(t_sphere **sphere);
-void			cone_del(t_cone **cone);
-void			cylinder_del(t_cylinder **cylinder);
-//void			shape_del(t_shape **shape);
-void			inter_del(t_inter **inter);
-
-t_ray			*ray_new(void);
-t_ray			*ray_new3(t_vec3 *origin, t_vec3 *dir, double t_max);
-t_ray			*ray_new_copy(t_ray *ray);
-t_ray			*ray_copy(t_ray *ray1, t_ray *ray2);
-t_vec3		*calculate(t_ray *ray, double t);
-
-t_plane			*plane_new(t_vec3 *position, t_vec3 *normal);
-t_plane			*plane_new_dp(t_vec3 *position, t_vec3 *normal);
-t_plane			*plane_new_copy(t_plane *plane);
-//t_plane			*plane_copy(t_plane *plane1, t_plane *plane2);
-_Bool			plane_intersect(t_inter *inter, t_list_shape *shape_in_list);
-//_Bool			plane_does_intersect(t_ray *ray, t_shape *shape);
-
-
-//FIXED
-t_sphere		*sphere_new(t_vec3 center, double radius);
-void set_ray_direction(t_ray* r, t_vec2 *point, t_cam *cam);
+//Ray
 void inter_new_ray(t_inter *inter, t_ray *ray);
+void set_ray_direction(t_ray* r, t_vec2 *point, t_cam *cam);
+
+//Light
+double compute_light(t_inter *inter, t_list_shape *scene, t_list_light *lights);
 
 
-t_sphere		*sphere_new_dp(t_vec3 *center, double radius);
-//t_sphere		*sphere_new_copy(t_sphere *sphere);
-//t_sphere		*sphere_copy(t_sphere *sphere1, t_sphere *sphere2);
-_Bool			sphere_intersect(t_inter *inter, t_list_shape *shape_in_list);
-//_Bool			sphere_does_intersect(t_ray *ray, t_shape *shape);
+//Common
+t_vec3 get_normal(t_inter *inter);
+int get_specular(t_inter *inter);
+double degrees_to_rad(double angleInDegrees);
+int define_t(double t1, double t2, t_inter *inter, t_list_shape *shape_in_list);
 
-//t_shape			*shape_init_null(t_shape *shape);
-//t_shape			*shape_new(void);
-//t_shape			*shape_copy_plane(t_shape *shape, t_plane *plane);
-//t_shape			*shape_copy_sphere(t_shape *shape, t_sphere *sphere);
-//t_shape			*shape_new_copy(t_shape *shape);
-//t_shape			*shape_copy(t_shape *shape1, t_shape *shape2);
-//_Bool			shape_intersect(t_inter *inter, t_shape *shape);
-//_Bool			shape_does_intersect(t_ray *ray, t_shape *shape);
-
-//t_shapeset		*shapeset_new(int size);
-//t_shapeset		*resize_set(t_shapeset *set, int new_size);
-//t_shapeset		*add_shape(t_shape *shape, t_shapeset *set);
-
+//Intersect
+_Bool	cone_intersect(t_inter *inter, t_list_shape *shape_in_list);
+_Bool	cylinder_intersect(t_inter *inter, t_list_shape *shape_in_list);
+_Bool	plane_intersect(t_inter *inter, t_list_shape *shape_in_list);
+_Bool	sphere_intersect(t_inter *inter, t_list_shape *shape_in_list);
 
 _Bool			shape_intersect(t_inter *inter, t_list_shape *shape);
 _Bool			shapeset_intersect(t_inter *inter, t_list_shape *shape_list);
-//_Bool			shapeset_does_intersect(t_ray *ray, t_shapeset *set);
 
-t_inter			*inter_new(void);
-t_inter			*inter_new_copy(t_inter *inter);
-//t_inter			*inter_copy(t_inter *inter1, t_inter *inter2);
+//Color
+void white(t_color* new);
+int				get_color(t_color *c, double light);
+t_color			*get_color_from_list(t_list_shape *list);
 
-t_vec3		*position(t_inter *inter);
-_Bool			intersected(t_inter *inter);
 
-//t_cam			*cam_init_null(t_cam *cam);
-//t_cam			*camera_new(t_vec3 *origin, t_vec3 *target, t_vec3 *upguide, t_vec2 *fov_ratio);
-t_cam	camera_new(t_vec3 origin, t_vec3 target);
+//Math
+double			sqr(double num);
 
-t_cam			*camera_new_dp(t_vec3 *origin, t_vec3 *target, t_rt *rt);
-t_cam			*recalc_cam_dp(t_cam *cam, int key, t_vec3 *upguide,
-							t_vec2 *fov_ratio);
-t_ray			*make_ray(t_vec2 *point, t_cam *cam);
+//Error
+void			put_error(char *str);
 
-//t_win			*win_new(int width, int height);
+//mlx
 void			setup_mlx(t_rt *rt);
 t_img			*img_new(int width, int height, t_rt *rt);
 int				*get_pixel(int x, int y, t_img *img);
 
+//main
 void			ray_trace(t_rt *rt, t_point2 size);
 
 
@@ -293,5 +256,7 @@ void scene4(t_rt *rt);
 int	red_x_button(void *param);
 int	deal_key(int key, void *param);
 
+
+void	draw(t_rt *rt);
 
 #endif
