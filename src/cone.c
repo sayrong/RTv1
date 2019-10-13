@@ -67,9 +67,9 @@ _Bool	cone_intersect(t_inter *inter, t_list_shape *shape_in_list)
 	cone = ((t_cone*)shape_in_list->content);
 	x = v3_sub(inter->ray->origin, cone->position);
 	k_and_discr[0] = 1 + tan(degrees_to_rad(cone->angle)) * tan(degrees_to_rad(cone->angle));
-	abc[0] = length_sq(inter->ray->direction) - k_and_discr[0] * pow(v3_dot(inter->ray->direction, cone->dir),2);
+	abc[0] = v3_length_sq(inter->ray->direction) - k_and_discr[0] * pow(v3_dot(inter->ray->direction, cone->dir),2);
 	abc[1] = 2 * (v3_dot(inter->ray->direction, x) - k_and_discr[0] * v3_dot(inter->ray->direction, cone->dir) * v3_dot(x, cone->dir));
-	abc[2] = length_sq(x) - k_and_discr[0] * pow(v3_dot(x, cone->dir),2);
+	abc[2] = v3_length_sq(x) - k_and_discr[0] * pow(v3_dot(x, cone->dir),2);
 	k_and_discr[1] = pow(abc[1],2) - 4 * abc[0] * abc[2];
 	if (k_and_discr[1] < 0)
 		return (FALSE);

@@ -6,7 +6,7 @@
 #    By: cschoen <cschoen@student.42.fr>            +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2019/10/07 02:14:29 by cschoen           #+#    #+#              #
-#    Updated: 2019/10/12 15:50:35 by cschoen          ###   ########.fr        #
+#    Updated: 2019/10/13 15:21:58 by cschoen          ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -65,7 +65,8 @@ clean:
 	@/bin/rm -rf $(OBJDIR)
 	@printf "$(PURPLE)Libft:\t$(RED)%-25s$(GREEN)[done]$(NONE)\n" $@
 
-fclean: clean
+fclean:
+	@/bin/rm -rf $(OBJDIR)
 	@/bin/rm -rf $(NAME)
 	@printf "$(PURPLE)Libft:\t$(RED)%-25s$(GREEN)[done]$(NONE)\n" $@
 

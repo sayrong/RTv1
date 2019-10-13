@@ -1,23 +1,18 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   v3_rot_x.c                                         :+:      :+:    :+:   */
+/*   v3_length_sq.c                                     :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: cschoen <cschoen@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2019/10/07 21:17:48 by cschoen           #+#    #+#             */
-/*   Updated: 2019/10/07 21:26:14 by cschoen          ###   ########.fr       */
+/*   Created: 2019/10/13 14:27:12 by cschoen           #+#    #+#             */
+/*   Updated: 2019/10/13 14:36:18 by cschoen          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "libvec.h"
 
-t_vec3	v3_rot_x(t_vec3 v, double angle)
+double	v3_length_sq(t_vec3 v)
 {
-	t_vec3	new_v;
-
-	new_v.x = v.x;
-	new_v.y = v.y * cos(angle) - v.z * sin(angle);
-	new_v.z = v.y * sin(angle) + v.z * cos(angle);
-	return (new_v);
+	return (v.x * v.x + v.y * v.y + v.z * v.z);
 }

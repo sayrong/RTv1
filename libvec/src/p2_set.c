@@ -1,23 +1,22 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   v3_rot_z.c                                         :+:      :+:    :+:   */
+/*   p2_set.c                                           :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: cschoen <cschoen@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2019/10/07 21:26:24 by cschoen           #+#    #+#             */
-/*   Updated: 2019/10/07 21:27:49 by cschoen          ###   ########.fr       */
+/*   Created: 2019/10/13 14:27:09 by cschoen           #+#    #+#             */
+/*   Updated: 2019/10/13 14:34:03 by cschoen          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "libvec.h"
 
-t_vec3	v3_rot_z(t_vec3 v, double angle)
+t_point2	p2_set(int x, int y)
 {
-	t_vec3	new_v;
+	t_point2	new_p2;
 
-	new_v.x = v.x * cos(angle) - v.y * sin(angle);
-	new_v.y = v.x * sin(angle) + v.y * cos(angle);
-	new_v.z = v.z;
-	return (new_v);
+	new_p2.x = x;
+	new_p2.y = y;
+	return (new_p2);
 }

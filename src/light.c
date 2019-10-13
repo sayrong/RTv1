@@ -56,7 +56,7 @@ int is_in_shadow(t_list_light *light, t_list_shape *scene, t_vec3 intersection_p
 		shape_intersect(&inter, obj);
 		obj = obj->next;
 	}
-	if (inter.t < dist - 0.1)
+	if (inter.t < dist - 0.0000001)
 		return (1);
 	return (0);
 }

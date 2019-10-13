@@ -6,7 +6,7 @@
 #    By: cschoen <cschoen@student.42.fr>            +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2019/10/07 02:04:41 by cschoen           #+#    #+#              #
-#    Updated: 2019/10/13 13:06:56 by cschoen          ###   ########.fr        #
+#    Updated: 2019/10/13 15:24:59 by cschoen          ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -35,7 +35,6 @@ VECNAME = $(VECDIR)$(LIB_VEC)
 LIBHEAD = $(LFTINC)libft.h $(VECINC)libvec.h
 INCNAME = $(INCDIR)rt.h $(INCDIR)linuxkeys.h $(INCDIR)macoskeys.h
 
-
 SRCNAME = main.c ray_trace.c plane_init.c sphere_init.c mlx.c error.c \
 		intersection_init.c camera_init.c image_init.c color.c \
 		cone.c cylinder.c list.c light.c shapeset_init.c validator.c \
@@ -56,8 +55,8 @@ LFTSRCNAME = ft_strlen.c ft_strlcat.c ft_memcmp.c ft_atoi.c ft_isascii.c \
 		ft_lstlen.c ft_lstsplit.c ft_lstabi.c ft_wordcnt.c ft_strstrsplit.c \
 		get_next_line.c
 
-VECSRCNAME = v3_new.c v3_copy.c v3_add.c v3_sub.c v3_scale.c v3_dot.c \
-		v3_length.c v3_norm.c v3_cross.c some_vector.c
+VECSRCNAME = v3_new.c v3_add.c v3_sub.c v3_scale.c v3_div.c v3_dot.c \
+		v3_length_sq.c v3_length.c v3_norm.c v3_cross.c v2_set.c p2_set.c
 
 LFTSRC = $(addprefix $(LFTDIR)src/, $(LFTSRCNAME))
 VECSRC = $(addprefix $(VECDIR)src/, $(VECSRCNAME))
@@ -77,34 +76,35 @@ WFLAGS = -Wall -Wextra -Werror -g
 RED = \033[31m
 GREEN = \033[32m
 YELLOW = \033[33m
-CYAN = \033[34m
+BLUE = \033[34m
 PURPLE = \033[35m
+CYAN = \033[36m
 NONE = \033[0m
 
 all: $(BINDIR)$(NAME)
 
 $(BINDIR)$(NAME): $(OBJDIR) $(OBJ) $(LFTSRC) $(VECSRC) $(INCNAME) $(LIBHEAD)
 	@$(MAKE) -C $(LFTDIR)
-	@printf "$(PURPLE)RTv1:\t$(CYAN)%-25s$(GREEN)[done]$(NONE)\n" $(LIB_FT)
+	@printf "$(PURPLE)RTv1:\t$(YELLOW)%-25s$(GREEN)[done]$(NONE)\n" $(LIB_FT)
 	@$(MAKE) -C $(VECDIR)
-	@printf "$(PURPLE)RTv1:\t$(CYAN)%-25s$(GREEN)[done]$(NONE)\n" $(LIB_VEC)
+	@printf "$(PURPLE)RTv1:\t$(YELLOW)%-25s$(GREEN)[done]$(NONE)\n" $(LIB_VEC)
 	@mkdir -p $(BINDIR)
-	@printf "$(PURPLE)RTv1:\t$(CYAN)%-25s$(GREEN)[done]$(NONE)\n" $(BINDIR)
+	@printf "$(PURPLE)RTv1:\t$(BLUE)%-25s$(GREEN)[done]$(NONE)\n" $(BINDIR)
 	@gcc $(WFLAGS) $(OBJ) $(MLXINIT) $($(OS)) $(LFTINIT) $(VECINIT) \
 	-I $(INCDIR) -o $(BINDIR)$(NAME)
-	@printf "$(PURPLE)RTv1:\t$(CYAN)%-25s$(GREEN)[done]$(NONE)\n" $@
+	@printf "$(PURPLE)RTv1:\t$(YELLOW)%-25s$(GREEN)[done]$(NONE)\n" $@
 
 $(LIB_FT):
 	@$(MAKE) -C $(LFTDIR)
-	@printf "$(PURPLE)RTv1:\t$(CYAN)%-25s$(GREEN)[done]$(NONE)\n" $@
+	@printf "$(PURPLE)RTv1:\t$(YELLOW)%-25s$(GREEN)[done]$(NONE)\n" $@
 
 $(LIB_VEC):
 	@$(MAKE) -C $(VECDIR)
-	@printf "$(PURPLE)RTv1:\t$(CYAN)%-25s$(GREEN)[done]$(NONE)\n" $@
+	@printf "$(PURPLE)RTv1:\t$(YELLOW)%-25s$(GREEN)[done]$(NONE)\n" $@
 
 $(OBJDIR):
 	@mkdir -p $(OBJDIR)
-	@printf "$(PURPLE)RTv1:\t$(CYAN)%-25s$(GREEN)[done]$(NONE)\n" $@
+	@printf "$(PURPLE)RTv1:\t$(BLUE)%-25s$(GREEN)[done]$(NONE)\n" $@
 
 $(OBJDIR)%.o: $(SRCDIR)%.c $(INCNAME)
 	@gcc $(WFLAGS) -c $(INC) $< -o $@
@@ -114,13 +114,14 @@ clean:
 	@$(MAKE) -C $(LFTDIR) clean
 	@$(MAKE) -C $(VECDIR) clean
 	@rm -rf $(OBJDIR)
-	@printf "$(PURPLE)RTv1:\t$(YELLOW)%-25s$(RED)[done]$(NONE)\n" $@
+	@printf "$(PURPLE)RTv1:\t$(RED)%-25s$(GREEN)[done]$(NONE)\n" $@
 
-fclean: clean
+fclean:
 	@$(MAKE) -C $(LFTDIR) fclean
 	@$(MAKE) -C $(VECDIR) fclean
+	@rm -rf $(OBJDIR)
 	@rm -rf $(BINDIR)
-	@printf "$(PURPLE)RTv1:\t$(YELLOW)%-25s$(RED)[done]$(NONE)\n" $@
+	@printf "$(PURPLE)RTv1:\t$(RED)%-25s$(GREEN)[done]$(NONE)\n" $@
 
 re: fclean all
 

@@ -6,7 +6,7 @@
 /*   By: cschoen <cschoen@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/09/30 00:05:54 by cschoen           #+#    #+#             */
-/*   Updated: 2019/10/13 12:45:36 by cschoen          ###   ########.fr       */
+/*   Updated: 2019/10/13 14:39:21 by cschoen          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -38,9 +38,9 @@ _Bool	sphere_intersect(t_inter *inter, t_list_shape *shape_in_list)
 	sphere = (t_sphere*)shape_in_list->content;
 
 	new_origin = v3_sub(inter->ray->origin, sphere->center);
-	coef[0] = length_sq(inter->ray->direction);
+	coef[0] = v3_length_sq(inter->ray->direction);
 	coef[1] = 2.0 * v3_dot(inter->ray->direction, new_origin);
-	coef[2] = length_sq(new_origin) - sphere->radius * sphere->radius;
+	coef[2] = v3_length_sq(new_origin) - sphere->radius * sphere->radius;
 	discriminant = coef[1] * coef[1] - 4.0 * coef[0] * coef[2];
 	if (discriminant < 0.0)
 		return (FALSE);
