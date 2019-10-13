@@ -60,7 +60,6 @@ ambient|10|
 point|9,5,2|50|
 point|9,-5,2|50|
 
-
 #directional|position|target|instensity|
 directional|5,2,1|0,0,0|50|
 

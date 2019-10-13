@@ -6,7 +6,7 @@
 /*   By: cschoen <cschoen@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/10/13 17:52:57 by cschoen           #+#    #+#             */
-/*   Updated: 2019/10/13 17:54:47 by cschoen          ###   ########.fr       */
+/*   Updated: 2019/10/14 01:41:16 by cschoen          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -57,7 +57,6 @@ t_list_light	*add_new_light(t_list_light *list, t_light *light,
 							t_light_type type)
 {
 	t_list_light	*tmp;
-
 	tmp = list;
 	if (list == NULL)
 		list = new_light_list(light, type);
