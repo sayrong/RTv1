@@ -6,7 +6,7 @@
 /*   By: cschoen <cschoen@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/10/12 17:17:56 by cschoen           #+#    #+#             */
-/*   Updated: 2019/10/14 01:36:35 by cschoen          ###   ########.fr       */
+/*   Updated: 2019/10/14 06:21:52 by cschoen          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -45,7 +45,10 @@ static void	parse_cam(t_rt *rt, char **split, int line_num)
 	if (!str_to_v3(&target, split[2]))
 		parse_error("Invalid param: target point of the camera", line_num);
 	if (origin.x == target.x && origin.y == target.y && origin.z == target.z)
-		parse_error("Position and rotation must have different values",
+		parse_error("Position and target must have different values",
+					line_num);
+	if (v3_length(v3_sub(origin, target)) <= 1)
+		parse_error("Lenght between position and target must be greater than 1",
 					line_num);
 	rt->cam = camera_new(origin, target);
 }

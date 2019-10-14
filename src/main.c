@@ -6,11 +6,17 @@
 /*   By: cschoen <cschoen@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/09/28 20:32:31 by cschoen           #+#    #+#             */
-/*   Updated: 2019/10/14 01:47:19 by cschoen          ###   ########.fr       */
+/*   Updated: 2019/10/14 04:01:55 by cschoen          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "rt.h"
+
+int			red_x_button(void *param)
+{
+	(void)param;
+	exit(0);
+}
 
 static void	input_hook(t_rt *rt)
 {

@@ -6,7 +6,7 @@
 /*   By: cschoen <cschoen@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/10/07 03:13:48 by cschoen           #+#    #+#             */
-/*   Updated: 2019/10/13 15:26:41 by cschoen          ###   ########.fr       */
+/*   Updated: 2019/10/14 05:17:30 by cschoen          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -46,6 +46,10 @@ double			v3_length_sq(t_vec3 v);
 double			v3_length(t_vec3 v);
 t_vec3			v3_norm(t_vec3 v);
 t_vec3			v3_cross(t_vec3 v1, t_vec3 v2);
+
+t_vec3			v3_rot_x(t_vec3 v, double angle);
+t_vec3			v3_rot_y(t_vec3 v, double angle);
+t_vec3			v3_rot_z(t_vec3 v, double angle);
 
 t_vec2			v2_set(double u, double v);
 t_point2		p2_set(int x, int y);

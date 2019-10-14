@@ -6,22 +6,54 @@
 /*   By: cschoen <cschoen@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/10/09 18:03:54 by balvyn-s          #+#    #+#             */
-/*   Updated: 2019/10/13 15:52:40 by cschoen          ###   ########.fr       */
+/*   Updated: 2019/10/14 06:27:36 by cschoen          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "rt.h"
 
-int		red_x_button(void *param)
-{
-	(void)param;
-	exit(0);
-}
-
-_Bool	is_move(int key)
+static _Bool	is_move(int key)
 {
 	return (key == W_KEY || key == S_KEY || key == A_KEY || key == D_KEY ||
 			key == Q_KEY || key == E_KEY);
+}
+
+static _Bool	is_rotate(int key)
+{
+	return (key == TWO_NUM || key == FOUR_NUM || key == SIX_NUM ||
+			key == EIGHT_NUM);
+}
+
+static void		move_cam(t_cam *cam, int key)
+{
+	t_vec3	step;
+	double	move;
+
+	move = (key == W_KEY || key == D_KEY || key == E_KEY) ? MOVE : -MOVE;
+	step = v3_sub(cam->target, cam->origin);
+	if (key == A_KEY || key == D_KEY)
+		step = v3_cross(step, cam->up);
+	else if (key == Q_KEY || key == E_KEY)
+		step = v3_cross(step, cam->right);
+	step = v3_scale(step, move);
+	cam->origin = v3_add(cam->origin, step);
+	cam->target = v3_add(cam->target, step);
+	*cam = camera_new(cam->origin, cam->target);
+}
+
+static void		rotate_cam(t_cam *cam, int key)
+{
+	t_vec3	step;
+	double	angle;
+
+	angle = (key == EIGHT_NUM || key == SIX_NUM) ? -ANGLE : ANGLE;
+	step = v3_sub(cam->target, cam->origin);
+	if (key == SIX_NUM || key == FOUR_NUM)
+		step = v3_rot_y(step, angle);
+	else if (key == TWO_NUM || key == EIGHT_NUM)
+		step = v3_rot_x(step, angle);
+	cam->target = v3_add(cam->origin, step);
+	*cam = camera_new(cam->origin, cam->target);
 }
 
 int		deal_key(int key, void *param)
@@ -32,9 +64,9 @@ int		deal_key(int key, void *param)
 	if (key == ESC)
 		red_x_button(param);
 	if (is_move(key))
-		recalc_cam_dp(&rt->cam, key, v3_new(0.0, 1.0, 0.0),
-						v2_set(25.0 * PI / 180,
-							(double)WIDTH / (double)HEIGHT));
+		move_cam(&rt->cam, key);
+	else if (is_rotate(key))
+		rotate_cam(&rt->cam, key);
 	draw(rt);
 	return (0);
 }

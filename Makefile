@@ -6,7 +6,7 @@
 #    By: cschoen <cschoen@student.42.fr>            +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2019/10/07 02:04:41 by cschoen           #+#    #+#              #
-#    Updated: 2019/10/14 01:11:49 by cschoen          ###   ########.fr        #
+#    Updated: 2019/10/14 05:18:33 by cschoen          ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -56,7 +56,8 @@ LFTSRCNAME = ft_strlen.c ft_strlcat.c ft_memcmp.c ft_atoi.c ft_isascii.c \
 		get_next_line.c
 
 VECSRCNAME = v3_new.c v3_add.c v3_sub.c v3_scale.c v3_div.c v3_dot.c \
-		v3_length_sq.c v3_length.c v3_norm.c v3_cross.c v2_set.c p2_set.c
+		v3_length_sq.c v3_length.c v3_norm.c v3_cross.c v2_set.c p2_set.c \
+		v3_rot_x.c v3_rot_y.c v3_rot_z.c
 
 LFTSRC = $(addprefix $(LFTDIR)src/, $(LFTSRCNAME))
 VECSRC = $(addprefix $(VECDIR)src/, $(VECSRCNAME))

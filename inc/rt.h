@@ -6,7 +6,7 @@
 /*   By: cschoen <cschoen@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/09/29 14:15:02 by cschoen           #+#    #+#             */
-/*   Updated: 2019/10/14 01:24:54 by cschoen          ###   ########.fr       */
+/*   Updated: 2019/10/14 05:38:48 by cschoen          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -23,6 +23,8 @@
 # define PI 3.14159265359
 # define THREADS_NUM 8
 # define STEP (WIDTH * HEIGHT) / THREADS_NUM
+# define MOVE 0.02
+# define ANGLE 2
 
 # include <mlx.h>
 # include <pthread.h>
@@ -137,6 +139,7 @@ typedef struct			s_camera
 	double				h;
 	double				w;
 	t_vec3				origin;
+	t_vec3				target;
 	t_vec3				forward;
 	t_vec3				up;
 	t_vec3				right;
@@ -228,7 +231,7 @@ double					compute_light(t_inter *inter, t_list_shape *scene,
 
 t_vec3					get_normal(t_inter *inter);
 int						get_specular(t_inter *inter);
-double					degrees_to_rad(double angleInDegrees);
+double					degrees_to_rad(double angle_in_degrees);
 int						define_t(double t1, double t2, t_inter *inter,
 									t_list_shape *shape_in_list);
 
@@ -250,10 +253,8 @@ int						get_color(t_color *c, double light);
 t_color					*get_color_from_list(t_list_shape *list);
 
 void					send_ray(t_inter *inter, int position, t_thread *src);
-void					draw(t_rt *rt);
 void					*calculate(void *data);
-t_cam					*recalc_cam_dp(t_cam *cam, int key, t_vec3 upguide,
-									t_vec2 fov_ratio);
+void					draw(t_rt *rt);
 
 int						red_x_button(void *param);
 int						deal_key(int key, void *param);
