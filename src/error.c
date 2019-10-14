@@ -6,7 +6,7 @@
 /*   By: cschoen <cschoen@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/10/12 17:01:44 by cschoen           #+#    #+#             */
-/*   Updated: 2019/10/12 17:07:03 by cschoen          ###   ########.fr       */
+/*   Updated: 2019/10/14 23:45:18 by cschoen          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -16,7 +16,7 @@ int	usage(char *app_name)
 {
 	ft_putstr("Usage: ");
 	ft_putstr(app_name);
-	ft_putendl(" template");
+	ft_putendl(" SOURCE");
 	exit(1);
 }
 

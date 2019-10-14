@@ -6,7 +6,7 @@
 /*   By: cschoen <cschoen@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/09/29 14:15:02 by cschoen           #+#    #+#             */
-/*   Updated: 2019/10/14 22:42:15 by cschoen          ###   ########.fr       */
+/*   Updated: 2019/10/14 23:36:01 by cschoen          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -18,8 +18,8 @@
 
 # define TRUE 1
 # define FALSE 0
-# define WIDTH 400
-# define HEIGHT 400
+# define WIDTH 800
+# define HEIGHT 800
 # define PI 3.14159265359
 # define THREADS_NUM 8
 # define STEP (WIDTH * HEIGHT) / THREADS_NUM
@@ -224,7 +224,7 @@ t_list_light			*add_new_light(t_list_light *list, t_light *light,
 									t_light_type type);
 
 void					inter_new_ray(t_inter *inter, t_ray *ray);
-void					set_ray_direction(t_ray* r, t_vec2 *point, t_cam *cam);
+void					set_ray_direction(t_ray *r, t_vec2 *point, t_cam *cam);
 
 double					compute_light(t_inter *inter, t_list_shape *scene,
 									t_list_light *lights);
@@ -248,7 +248,7 @@ _Bool					shape_intersect(t_inter *inter, t_list_shape *shape);
 _Bool					shapeset_intersect(t_inter *inter,
 									t_list_shape *shape_list);
 
-void					white(t_color* color);
+void					white(t_color *color);
 int						get_color(t_color *c, double light);
 t_color					*get_color_from_list(t_list_shape *list);
 
