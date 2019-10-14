@@ -6,7 +6,7 @@
 /*   By: cschoen <cschoen@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/10/09 18:03:54 by balvyn-s          #+#    #+#             */
-/*   Updated: 2019/10/14 06:27:36 by cschoen          ###   ########.fr       */
+/*   Updated: 2019/10/14 07:26:41 by cschoen          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -56,7 +56,7 @@ static void		rotate_cam(t_cam *cam, int key)
 	*cam = camera_new(cam->origin, cam->target);
 }
 
-int		deal_key(int key, void *param)
+int				deal_key(int key, void *param)
 {
 	t_rt	*rt;
 
@@ -67,6 +67,8 @@ int		deal_key(int key, void *param)
 		move_cam(&rt->cam, key);
 	else if (is_rotate(key))
 		rotate_cam(&rt->cam, key);
+	else if (key == P_KEY)
+		rt->play ^= TRUE;
 	draw(rt);
 	return (0);
 }

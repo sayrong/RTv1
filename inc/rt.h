@@ -6,7 +6,7 @@
 /*   By: cschoen <cschoen@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/09/29 14:15:02 by cschoen           #+#    #+#             */
-/*   Updated: 2019/10/14 05:38:48 by cschoen          ###   ########.fr       */
+/*   Updated: 2019/10/14 07:35:33 by cschoen          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -31,10 +31,10 @@
 # include "../libvec/inc/libvec.h"
 # include "../libft/inc/libft.h"
 # include <stdio.h>
-# include "linuxkeys.h"
+# include "macoskeys.h"
 
 /*
-** # include "macoskeys.h"
+** # include "linuxkeys.h"
 */
 
 typedef struct			s_color
@@ -166,6 +166,7 @@ typedef struct			s_rt
 	t_list_light		*lights;
 	_Bool				cam_flg;
 	_Bool				amb_flg;
+	_Bool				play;
 }						t_rt;
 
 typedef struct			s_thread
