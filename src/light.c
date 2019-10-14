@@ -78,10 +78,7 @@ double	diffuse_light(t_list_light *light, t_inter *inter,
 
 	res = 0;
 	normal_to_intersect = get_normal(inter);
-	if (light->type == POINT)
-		light_vector = v3_sub(light->light->position, intersection_point);
-	else
-		light_vector = light->light->position;
+	light_vector = v3_sub(light->light->position, intersection_point);
 	angle = v3_dot(normal_to_intersect, light_vector);
 	if (angle > 0)
 	{
@@ -110,8 +107,9 @@ double	compute_light(t_inter *inter, t_list_shape *scene, t_list_light *lights)
 	{
 		if (light->type == AMBIENT)
 			res += light->light->intensity;
-		else if (!is_in_shadow(light, scene, intersection))
-			res += diffuse_light(light, inter, intersection);
+		else if (light->type == POINT)
+			if (!is_in_shadow(light, scene, intersection))
+				res += diffuse_light(light, inter, intersection);
 		light = light->next;
 	}
 	if (res > 1)
