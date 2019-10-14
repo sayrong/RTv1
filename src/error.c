@@ -16,7 +16,7 @@ int	usage(char *app_name)
 {
 	ft_putstr("Usage: ");
 	ft_putstr(app_name);
-	ft_putendl(" source.scene");
+	ft_putendl(" template");
 	exit(1);
 }
 
