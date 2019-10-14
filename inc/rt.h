@@ -6,7 +6,7 @@
 /*   By: cschoen <cschoen@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/09/29 14:15:02 by cschoen           #+#    #+#             */
-/*   Updated: 2019/10/14 07:35:33 by cschoen          ###   ########.fr       */
+/*   Updated: 2019/10/14 22:42:15 by cschoen          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -47,8 +47,7 @@ typedef struct			s_color
 typedef enum			e_light_type
 {
 	AMBIENT,
-	POINT,
-	DIRECTIONAL
+	POINT
 }						t_light_type;
 
 typedef struct			s_light
@@ -143,6 +142,7 @@ typedef struct			s_camera
 	t_vec3				forward;
 	t_vec3				up;
 	t_vec3				right;
+	t_vec3				upguide;
 }						t_cam;
 
 typedef struct			s_img
@@ -194,7 +194,6 @@ int						str_to_rgb(t_color *col, char *str);
 
 void					parse_ambient(t_rt *rt, char **split, int line_num);
 void					parse_point(t_rt *rt, char **split, int line_num);
-void					parse_directional(t_rt *rt, char **split, int line_num);
 void					parse_shape(t_rt *rt, char **split, int line_num);
 void					parser(char *source, t_rt *rt, int fd, int line_num);
 

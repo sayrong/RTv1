@@ -6,7 +6,7 @@
 /*   By: cschoen <cschoen@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/10/12 17:17:56 by cschoen           #+#    #+#             */
-/*   Updated: 2019/10/14 06:21:52 by cschoen          ###   ########.fr       */
+/*   Updated: 2019/10/14 22:41:16 by cschoen          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -68,8 +68,6 @@ static void	parse_split(char **split, t_rt *rt, int line_num)
 		parse_ambient(rt, split, line_num);
 	else if (ft_strequ(split[0], "point"))
 		parse_point(rt, split, line_num);
-	else if (ft_strequ(split[0], "directional"))
-		parse_directional(rt, split, line_num);
 	else if (ft_strequ(split[0], "plane") || ft_strequ(split[0], "sphere") ||
 			ft_strequ(split[0], "cylinder") || ft_strequ(split[0], "cone"))
 		parse_shape(rt, split, line_num);

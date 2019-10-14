@@ -6,7 +6,7 @@
 /*   By: cschoen <cschoen@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/10/13 15:53:12 by cschoen           #+#    #+#             */
-/*   Updated: 2019/10/14 02:09:12 by cschoen          ###   ########.fr       */
+/*   Updated: 2019/10/14 20:03:36 by cschoen          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -81,7 +81,7 @@ double	diffuse_light(t_list_light *light, t_inter *inter,
 	if (light->type == POINT)
 		light_vector = v3_sub(light->light->position, intersection_point);
 	else
-		light_vector = light->light->position;
+		light_vector = v3_sub(light->light->position, light->light->target);
 	angle = v3_dot(normal_to_intersect, light_vector);
 	if (angle > 0)
 	{
